@@ -13,7 +13,7 @@ db.exec('CREATE TABLE IF NOT EXISTS state(key TEXT PRIMARY KEY, value TEXT)');
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/api/state', (req, res) => {
+function getState(req, res) {
   const rows = db.prepare('SELECT key, value FROM state').all();
   const result = {};
   for (const row of rows) {
@@ -23,9 +23,9 @@ app.get('/api/state', (req, res) => {
     controlState: result['control-state'] || {},
     openGroups: result['open-groups'] || {}
   });
-});
+}
 
-app.put('/api/state', (req, res) => {
+function putState(req, res) {
   const { controlState, openGroups } = req.body;
   const upsert = db.prepare('INSERT INTO state(key, value) VALUES(?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value');
   const tx = db.transaction(() => {
@@ -34,10 +34,14 @@ app.put('/api/state', (req, res) => {
   });
   tx();
   res.json({ ok: true });
-});
+}
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// New routes
+app.get('/api/soc2/state', getState);
+app.put('/api/soc2/state', putState);
 
-app.listen(PORT, () => console.log(`SOC 2 Tracker running on port ${PORT}`));
+// Backward compat
+app.get('/api/state', getState);
+app.put('/api/state', putState);
+
+app.listen(PORT, () => console.log(`ChatB2B Admin Console running on port ${PORT}`));

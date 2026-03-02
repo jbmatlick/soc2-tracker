@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>SOC 2 Type 1 Tracker — ShrinkMyStack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(5rem + 48px);
+}
+body {
+  min-height: 100dvh;
+  padding-top: 48px;
+  line-height: 1.6;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+img, picture, video, canvas { display: block; max-width: 100%; height: auto; }
+input, button, textarea, select { font: inherit; color: inherit; }
+h1, h2, h3, h4, h5, h6 { text-wrap: balance; line-height: 1.15; }
+p, li, figcaption { text-wrap: pretty; max-width: 72ch; }
+ul[role="list"], ol[role="list"] { list-style: none; }
+button { cursor: pointer; background: none; border: none; }
+table { border-collapse: collapse; width: 100%; }
+::selection { background: oklch(from var(--color-primary) l c h / 0.25); color: var(--color-text); }
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+
+/* ===== TOKENS ===== */
+:root {
+  --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+  --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+  --text-base: clamp(1rem,     0.9rem  + 0.5vw,  1.125rem);
+  --text-lg:   clamp(1.125rem, 0.95rem + 0.85vw, 1.5rem);
+  --text-xl:   clamp(1.5rem,   1rem    + 1.5vw,  2.25rem);
+  --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.5rem);
+
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+  --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
+
+  --font-body: 'Inter', 'Helvetica Neue', sans-serif;
+  --radius-sm: 0.375rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem; --radius-full: 9999px;
+  --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  --content-wide: 1200px;
+}
+
+/* ===== LIGHT MODE ===== */
+:root, [data-theme="light"] {
+  --color-bg: #f7f6f2; --color-surface: #f9f8f5; --color-surface-2: #fbfbf9;
+  --color-surface-offset: #f3f0ec; --color-surface-offset-2: #edeae5;
+  --color-surface-dynamic: #e6e4df; --color-divider: #dcd9d5; --color-border: #d4d1ca;
+  --color-text: #28251d; --color-text-muted: #7a7974; --color-text-faint: #bab9b4; --color-text-inverse: #f9f8f4;
+  --color-primary: #01696f; --color-primary-hover: #0c4e54; --color-primary-active: #0f3638; --color-primary-highlight: #cedcd8;
+  --color-warning: #964219; --color-warning-highlight: #ddcfc6;
+  --color-error: #a12c7b; --color-error-highlight: #e0ced7;
+  --color-success: #437a22; --color-success-highlight: #d4dfcc;
+  --color-blue: #006494; --color-blue-highlight: #c6d8e4;
+  --color-purple: #7a39bb; --color-purple-highlight: #dacfde;
+  --color-orange: #da7101; --color-orange-highlight: #e7d7c4;
+  --color-gold: #d19900; --color-gold-highlight: #e9e0c6;
+  --shadow-sm: 0 1px 2px oklch(0.2 0.01 80 / 0.06);
+  --shadow-md: 0 4px 12px oklch(0.2 0.01 80 / 0.08);
+  --shadow-lg: 0 12px 32px oklch(0.2 0.01 80 / 0.12);
+}
+
+/* ===== DARK MODE ===== */
+[data-theme="dark"] {
+  --color-bg: #171614; --color-surface: #1c1b19; --color-surface-2: #201f1d;
+  --color-surface-offset: #1d1c1a; --color-surface-offset-2: #22211f;
+  --color-surface-dynamic: #2d2c2a; --color-divider: #262523; --color-border: #393836;
+  --color-text: #cdccca; --color-text-muted: #797876; --color-text-faint: #5a5957; --color-text-inverse: #2b2a28;
+  --color-primary: #4f98a3; --color-primary-hover: #227f8b; --color-primary-active: #1a626b; --color-primary-highlight: #313b3b;
+  --color-warning: #bb653b; --color-warning-highlight: #564942;
+  --color-error: #d163a7; --color-error-highlight: #4c3d46;
+  --color-success: #6daa45; --color-success-highlight: #3a4435;
+  --color-blue: #5591c7; --color-blue-highlight: #3a4550;
+  --color-purple: #a86fdf; --color-purple-highlight: #4e4652;
+  --color-orange: #fdab43; --color-orange-highlight: #564b3e;
+  --color-gold: #e8af34; --color-gold-highlight: #4d4332;
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.2);
+  --shadow-md: 0 4px 12px oklch(0 0 0 / 0.3);
+  --shadow-lg: 0 12px 32px oklch(0 0 0 / 0.4);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-bg: #171614; --color-surface: #1c1b19; --color-surface-2: #201f1d;
+    --color-surface-offset: #1d1c1a; --color-surface-offset-2: #22211f;
+    --color-surface-dynamic: #2d2c2a; --color-divider: #262523; --color-border: #393836;
+    --color-text: #cdccca; --color-text-muted: #797876; --color-text-faint: #5a5957; --color-text-inverse: #2b2a28;
+    --color-primary: #4f98a3; --color-primary-hover: #227f8b; --color-primary-active: #1a626b; --color-primary-highlight: #313b3b;
+    --color-warning: #bb653b; --color-warning-highlight: #564942;
+    --color-error: #d163a7; --color-error-highlight: #4c3d46;
+    --color-success: #6daa45; --color-success-highlight: #3a4435;
+    --color-blue: #5591c7; --color-blue-highlight: #3a4550;
+    --color-purple: #a86fdf; --color-purple-highlight: #4e4652;
+    --color-orange: #fdab43; --color-orange-highlight: #564b3e;
+    --color-gold: #e8af34; --color-gold-highlight: #4d4332;
+    --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.2);
+    --shadow-md: 0 4px 12px oklch(0 0 0 / 0.3);
+    --shadow-lg: 0 12px 32px oklch(0 0 0 / 0.4);
+  }
+}
+
+/* ===== LAYOUT ===== */
+.dashboard {
+  max-width: var(--content-wide);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+}
+@media (min-width: 768px) {
+  .dashboard { padding: var(--space-8) var(--space-6); }
+}
+@media (min-width: 1024px) {
+  .dashboard { padding: var(--space-8) var(--space-8); }
+}
+
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+  flex-wrap: wrap;
+}
+.header-left { flex: 1; min-width: 200px; }
+.header-title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-1);
+}
+.header-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-shrink: 0;
+}
+
+/* Progress Ring */
+.progress-ring-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.progress-ring-container {
+  position: relative;
+  width: 56px;
+  height: 56px;
+}
+.progress-ring-container svg {
+  transform: rotate(-90deg);
+  width: 56px;
+  height: 56px;
+}
+.progress-ring-bg {
+  fill: none;
+  stroke: var(--color-surface-dynamic);
+  stroke-width: 5;
+}
+.progress-ring-fill {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.progress-ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.progress-ring-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  border: 1px solid oklch(from var(--color-text) l c h / 0.08);
+  color: var(--color-text);
+  transition: background var(--transition-interactive);
+}
+.theme-toggle:hover { background: var(--color-surface-dynamic); }
+.theme-toggle:active { transform: scale(0.95); }
+
+/* ===== KPI CARDS ===== */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+.kpi-card {
+  background: var(--color-surface);
+  border: 1px solid oklch(from var(--color-text) l c h / 0.06);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.kpi-label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+.kpi-value {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.01em;
+}
+.kpi-sub {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== ACCORDION GROUP ===== */
+.controls-section {
+  margin-bottom: var(--space-8);
+}
+.controls-section-title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.group {
+  background: var(--color-surface);
+  border: 1px solid oklch(from var(--color-text) l c h / 0.06);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-3);
+  overflow: hidden;
+  transition: box-shadow var(--transition-interactive);
+}
+.group:has(.group-header:hover) {
+  box-shadow: var(--shadow-sm);
+}
+.group-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: var(--space-1) var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  cursor: pointer;
+  transition: background var(--transition-interactive);
+  user-select: none;
+}
+.group-header:hover {
+  background: var(--color-surface-offset);
+}
+.group-header:active {
+  background: var(--color-surface-offset-2);
+}
+.group-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  grid-column: 1;
+}
+.group-name {
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+.group-cc {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+.group-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  grid-column: 1;
+}
+.group-meta-item {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.group-progress-bar {
+  width: 80px;
+  height: 4px;
+  background: var(--color-surface-dynamic);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.group-progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: width 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.group-chevron {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--color-text-faint);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), color var(--transition-interactive);
+}
+.group.open .group-chevron {
+  transform: rotate(180deg);
+  color: var(--color-text-muted);
+}
+.group-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.group.open .group-body {
+  max-height: 5000px;
+}
+.group-body-inner {
+  padding: 0 var(--space-5) var(--space-4);
+}
+
+/* ===== CONTROL CARD ===== */
+.control {
+  background: var(--color-bg);
+  border: 1px solid oklch(from var(--color-text) l c h / 0.05);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-2);
+  transition: border-color var(--transition-interactive);
+}
+.control:last-child { margin-bottom: 0; }
+.control.done {
+  border-color: oklch(from var(--color-success) l c h / 0.2);
+}
+.control-main {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  min-height: 52px;
+}
+@media (max-width: 600px) {
+  .control-main {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    gap: var(--space-2);
+  }
+  .control-right {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
+
+/* Custom Checkbox */
+.control-check {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.control-check input {
+  position: absolute;
+  opacity: 0;
+  width: 44px;
+  height: 44px;
+  left: -11px;
+  top: -11px;
+  cursor: pointer;
+  z-index: 1;
+  margin: 0;
+}
+.control-check .checkmark {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  transition: background var(--transition-interactive), border-color var(--transition-interactive);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.control-check .checkmark svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--color-text-inverse);
+  stroke-width: 2.5;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity var(--transition-interactive), transform var(--transition-interactive);
+}
+.control-check input:checked + .checkmark {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.control-check input:checked + .checkmark svg {
+  opacity: 1;
+  transform: scale(1);
+}
+.control-check input:focus-visible + .checkmark {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.control-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+.control-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.control-cc-num {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+.control-name {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+}
+.control.done .control-name {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--color-text-faint);
+}
+.control-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  line-height: 1;
+}
+.badge-policy { background: var(--color-warning-highlight); color: var(--color-warning); }
+.badge-technical { background: var(--color-blue-highlight); color: var(--color-blue); }
+.badge-both { background: var(--color-purple-highlight); color: var(--color-purple); }
+.badge-hours {
+  background: var(--color-surface-offset);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.badge-status {
+  padding: var(--space-1) var(--space-2);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge-not-started {
+  background: var(--color-surface-dynamic);
+  color: var(--color-text-faint);
+}
+.badge-done {
+  background: var(--color-success-highlight);
+  color: var(--color-success);
+}
+
+/* Expand toggle */
+.control-expand-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-interactive), background var(--transition-interactive);
+  cursor: pointer;
+  white-space: nowrap;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+}
+.control-expand-btn:hover {
+  color: var(--color-text-muted);
+  background: var(--color-surface-offset);
+}
+.control-expand-btn:active {
+  background: var(--color-surface-offset-2);
+}
+.control-expand-btn svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.control.expanded .control-expand-btn svg {
+  transform: rotate(180deg);
+}
+
+/* Control Detail */
+.control-detail {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.control.expanded .control-detail {
+  max-height: 800px;
+}
+.control-detail-inner {
+  padding: 0 var(--space-4) var(--space-4);
+  padding-left: calc(22px + var(--space-3) + var(--space-4));
+  display: grid;
+  gap: var(--space-3);
+}
+@media (max-width: 600px) {
+  .control-detail-inner { padding-left: var(--space-4); }
+}
+.detail-block {}
+.detail-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+.detail-text {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+/* ===== REFERENCE PANELS ===== */
+.reference-section {
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+.reference-section-title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+.ref-tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--color-divider);
+  margin-bottom: var(--space-5);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.ref-tab {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition-interactive), border-color var(--transition-interactive);
+  cursor: pointer;
+  position: relative;
+  top: 1px;
+}
+.ref-tab:hover { color: var(--color-text); }
+.ref-tab:active { background: var(--color-surface-offset); border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+.ref-tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+.ref-panel {
+  display: none;
+}
+.ref-panel.active { display: block; }
+
+/* Panel A: Platform */
+.platform-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
+  gap: var(--space-4);
+}
+.platform-card {
+  background: var(--color-surface);
+  border: 1px solid oklch(from var(--color-text) l c h / 0.06);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+.platform-card-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+.platform-card-value {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: var(--space-1);
+}
+.platform-card-sub {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+.platform-card.highlight {
+  border-color: oklch(from var(--color-primary) l c h / 0.2);
+  background: color-mix(in oklch, var(--color-primary) 4%, var(--color-surface));
+}
+
+/* Panel B: Language table */
+.lang-table {
+  width: 100%;
+  font-size: var(--text-sm);
+  overflow-x: auto;
+}
+.lang-table table {
+  min-width: 500px;
+}
+.lang-table th {
+  text-align: left;
+  font-weight: 600;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 2px solid var(--color-divider);
+}
+.lang-table td {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-divider);
+  vertical-align: top;
+}
+.lang-table .say-this {
+  color: var(--color-success);
+  font-weight: 500;
+}
+.lang-table .not-this {
+  color: var(--color-error);
+  font-weight: 400;
+  text-decoration: line-through;
+  text-decoration-color: oklch(from var(--color-error) l c h / 0.4);
+}
+
+/* Panel C: Priority Actions */
+.priority-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.priority-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid oklch(from var(--color-text) l c h / 0.06);
+  border-radius: var(--radius-md);
+}
+.priority-num {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.priority-text {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+.priority-note {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  border-top: 1px solid var(--color-divider);
+  padding-top: var(--space-6);
+  margin-top: var(--space-8);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+}
+
+/* ===== SKIP LINK ===== */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  z-index: 1000;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* ===== ANIMATIONS ===== */
+@supports (animation-timeline: scroll()) {
+  .fade-in {
+    opacity: 0;
+    animation: reveal-fade linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+  @keyframes reveal-fade { to { opacity: 1; } }
+}
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <div class="dashboard">
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+      <div class="header-left">
+        <h1 class="header-title">SOC 2 Type 1 Tracker</h1>
+        <p class="header-subtitle">ShrinkMyStack — Security TSC</p>
+      </div>
+      <div class="header-right">
+        <div class="progress-ring-wrap">
+          <div class="progress-ring-container">
+            <svg viewBox="0 0 56 56">
+              <circle class="progress-ring-bg" cx="28" cy="28" r="22"/>
+              <circle class="progress-ring-fill" id="progressRing" cx="28" cy="28" r="22"
+                stroke-dasharray="138.23"
+                stroke-dashoffset="138.23"/>
+            </svg>
+            <span class="progress-ring-text" id="progressRingText">0%</span>
+          </div>
+          <span class="progress-ring-label" id="progressRingLabel">0 of 33</span>
+        </div>
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===== KPI CARDS ===== -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-label">Total Controls</span>
+        <span class="kpi-value">33</span>
+        <span class="kpi-sub">Security TSC</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Completed</span>
+        <span class="kpi-value" id="kpiCompleted">0</span>
+        <span class="kpi-sub" id="kpiCompletedSub">0% addressed</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Hours Remaining</span>
+        <span class="kpi-value" id="kpiHours">213</span>
+        <span class="kpi-sub">of 213 total</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Budget</span>
+        <span class="kpi-value">$8.5–10.5K</span>
+        <span class="kpi-sub">Platform + Auditor</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Target</span>
+        <span class="kpi-value">6–10 wks</span>
+        <span class="kpi-sub">End-to-end</span>
+      </div>
+    </div>
+
+    <!-- ===== MAIN: CONTROL GROUPS ===== -->
+    <main id="main">
+      <div class="controls-section">
+        <h2 class="controls-section-title">Common Criteria Controls</h2>
+        <div id="controlGroups"></div>
+      </div>
+
+      <!-- ===== REFERENCE PANELS ===== -->
+      <section class="reference-section">
+        <h2 class="reference-section-title">Quick Reference</h2>
+        <div class="ref-tabs" role="tablist">
+          <button class="ref-tab active" role="tab" aria-selected="true" data-tab="platform">Platform</button>
+          <button class="ref-tab" role="tab" aria-selected="false" data-tab="language">Language Guide</button>
+          <button class="ref-tab" role="tab" aria-selected="false" data-tab="priorities">This Week</button>
+        </div>
+
+        <!-- Panel A: Platform Recommendation -->
+        <div class="ref-panel active" id="panel-platform" role="tabpanel">
+          <div class="platform-grid">
+            <div class="platform-card highlight">
+              <div class="platform-card-label">Recommended Platform</div>
+              <div class="platform-card-value">Sprinto</div>
+              <div class="platform-card-sub">$3,500–$4,500 with 60% startup discount (Year 1). Automated evidence collection, policy templates, continuous monitoring.</div>
+            </div>
+            <div class="platform-card">
+              <div class="platform-card-label">Auditor</div>
+              <div class="platform-card-value">Johanson Group</div>
+              <div class="platform-card-sub">$5,000–$6,000 for Type 1 audit. Established, SOC 2-focused firm.</div>
+            </div>
+            <div class="platform-card">
+              <div class="platform-card-label">Total Budget</div>
+              <div class="platform-card-value">$8,500–$10,500</div>
+              <div class="platform-card-sub">Platform + Auditor combined. Timeline: 6–10 weeks end-to-end.</div>
+            </div>
+            <div class="platform-card">
+              <div class="platform-card-label">Alternative</div>
+              <div class="platform-card-value">LowerPlane</div>
+              <div class="platform-card-sub">$4,995 all-in. Simpler option if budget is tight.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel B: Language Guide -->
+        <div class="ref-panel" id="panel-language" role="tabpanel">
+          <div class="lang-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Stage</th>
+                  <th>Say This</th>
+                  <th>Not This</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Before starting</td>
+                  <td class="say-this">"We follow security best practices"</td>
+                  <td class="not-this">"We are SOC 2 compliant"</td>
+                </tr>
+                <tr>
+                  <td>In process</td>
+                  <td class="say-this">"We are pursuing SOC 2 Type 1"</td>
+                  <td class="not-this">"We have SOC 2"</td>
+                </tr>
+                <tr>
+                  <td>Type 1 received</td>
+                  <td class="say-this">"We have our SOC 2 Type 1 report"</td>
+                  <td class="not-this">"We are SOC 2 certified"</td>
+                </tr>
+                <tr>
+                  <td>Type 2 received</td>
+                  <td class="say-this">"We are SOC 2 Type 2 attested"</td>
+                  <td class="not-this">"We are SOC 2 certified"</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel C: This Week's Priority Actions -->
+        <div class="ref-panel" id="panel-priorities" role="tabpanel">
+          <ol class="priority-list" role="list">
+            <li class="priority-item">
+              <span class="priority-num">1</span>
+              <div>
+                <div class="priority-text">Enable MFA on AWS root account</div>
+                <div class="priority-note">~5 min · Highest-impact security fix</div>
+              </div>
+            </li>
+            <li class="priority-item">
+              <span class="priority-num">2</span>
+              <div>
+                <div class="priority-text">Ask Sprinto for startup discount (60% Year 1)</div>
+                <div class="priority-note">Email sales@sprinto.com or fill out form</div>
+              </div>
+            </li>
+            <li class="priority-item">
+              <span class="priority-num">3</span>
+              <div>
+                <div class="priority-text">Email Johanson Group for Type 1 scoping call</div>
+                <div class="priority-note">Confirm scope: Security TSC only</div>
+              </div>
+            </li>
+            <li class="priority-item">
+              <span class="priority-num">4</span>
+              <div>
+                <div class="priority-text">Enforce 2FA on GitHub org-wide</div>
+                <div class="priority-note">Settings → Authentication → Require 2FA</div>
+              </div>
+            </li>
+            <li class="priority-item">
+              <span class="priority-num">5</span>
+              <div>
+                <div class="priority-text">Enforce 2-Step Verification in Google Workspace</div>
+                <div class="priority-note">Admin Console → Security → 2-Step Verification → Enforce</div>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <span>Prepared for ShrinkMyStack</span>
+      <span>Security TSC Only</span>
+      <span>Type 1 (Point-in-Time)</span>
+      <span id="footerDate"></span>
+    </footer>
+  </div>
+
+<script>
+// ===== DATA =====
+const CONTROLS = [
+  {
+    group: "CC1", groupName: "Control Environment", totalHours: 16,
+    controls: [
+      { id: "CC1.1", name: "Integrity & Ethics", type: "Policy", hours: 4,
+        requirement: "Written Code of Conduct; leadership tone on ethics; signed acknowledgments from all staff.",
+        current: "No formal Code of Conduct exists. No signed employee acknowledgments. Ethics expectations are informal/verbal only.",
+        action: "Draft Code of Conduct (1\u20132 pages). Have all team members sign. Include in onboarding checklist. Annual re-acknowledgment." },
+      { id: "CC1.2", name: "Board/Leadership Oversight", type: "Policy", hours: 3,
+        requirement: "Oversight body reviews security program; documented meeting minutes.",
+        current: "No formal oversight meetings documented. Founders discuss security ad hoc but no meeting minutes.",
+        action: "Schedule quarterly 30-min security review meeting. Document agenda and minutes. Founders sign off on security posture." },
+      { id: "CC1.3", name: "Org Structure & Reporting", type: "Policy", hours: 2,
+        requirement: "Documented org chart with reporting lines; defined security responsibilities; escalation path.",
+        current: "No formal org chart or RACI. Team is small but roles/responsibilities for security are not documented.",
+        action: "Create org chart (5 people). Write RACI for security. Define who employees report security concerns to." },
+      { id: "CC1.4", name: "Competence & Training", type: "Policy", hours: 5,
+        requirement: "Job descriptions with security competencies; annual security awareness training; training records.",
+        current: "No formal job descriptions. No security awareness training conducted. No training records.",
+        action: "Write basic job descriptions. Run security awareness training (free SANS or KnowBe4). Record completion." },
+      { id: "CC1.5", name: "Accountability", type: "Policy", hours: 2,
+        requirement: "Security responsibilities in performance reviews; documented consequences for violations.",
+        current: "No formal performance review process. Offer letters do not reference security compliance.",
+        action: "Add security clause to offer letters/handbook. Document disciplinary procedure for policy violations." }
+    ]
+  },
+  {
+    group: "CC2", groupName: "Communication & Information", totalHours: 19,
+    controls: [
+      { id: "CC2.1", name: "Quality Information & Asset Inventory", type: "Both", hours: 8,
+        requirement: "Asset inventory; data flow diagram; logging enabled; threat intel feeds.",
+        current: "PARTIAL \u2014 AWS services are known. No formal asset inventory or data flow diagram. CloudTrail status unknown.",
+        action: "Create asset inventory spreadsheet. Draw data flow diagram. Enable CloudTrail. Subscribe to AWS security bulletins." },
+      { id: "CC2.2", name: "Internal Communication", type: "Policy", hours: 6,
+        requirement: "InfoSec policy distributed to all; security training records; incident reporting channel.",
+        current: "No written InfoSec policy. No security training. No dedicated security reporting channel.",
+        action: "Write InfoSec policy. Distribute and get acknowledgments. Set up security@shrinkmystack.com. Run training." },
+      { id: "CC2.3", name: "External Communication", type: "Policy", hours: 5,
+        requirement: "Privacy policy; terms of service; public security contact; breach notification procedure.",
+        current: "PARTIAL \u2014 May have basic privacy policy/ToS. No public security contact. No breach notification procedure.",
+        action: "Review/update privacy policy and ToS. Add security contact to website. Write breach notification procedure." }
+    ]
+  },
+  {
+    group: "CC3", groupName: "Risk Assessment", totalHours: 17,
+    controls: [
+      { id: "CC3.1", name: "Specify Objectives", type: "Policy", hours: 4,
+        requirement: "System description document; defined security objectives; risk tolerance levels.",
+        current: "No formal system description. Security objectives not articulated in writing.",
+        action: "Write system description. Define security objectives and risk tolerance." },
+      { id: "CC3.2", name: "Identify & Analyze Risks", type: "Policy", hours: 8,
+        requirement: "Formal risk register; annual review; vendor risk included (2022 requirement).",
+        current: "No formal risk assessment. No risk register. Vendor risks not evaluated.",
+        action: "Create risk register spreadsheet. Include vendor risks. Review annually." },
+      { id: "CC3.3", name: "Fraud Risk", type: "Policy", hours: 3,
+        requirement: "Fraud risk section in risk register; insider threat controls; compensating controls documented.",
+        current: "No fraud risk assessment. Segregation-of-duties risk not documented.",
+        action: "Add fraud risk section to risk register. Document compensating controls." },
+      { id: "CC3.4", name: "Assess Changes", type: "Policy", hours: 2,
+        requirement: "Risk impact checkpoint in change management; risk register updated after major changes.",
+        current: "No formal change-risk assessment process.",
+        action: "Add risk impact question to change management. Update risk register after major changes." }
+    ]
+  },
+  {
+    group: "CC4", groupName: "Monitoring Activities", totalHours: 13,
+    controls: [
+      { id: "CC4.1", name: "Ongoing Evaluations", type: "Both", hours: 10,
+        requirement: "Quarterly access reviews; annual vuln scan/pen test; automated security monitoring; annual policy review.",
+        current: "No quarterly access reviews. No vulnerability scanning. No pen testing. No policy review cycle.",
+        action: "Schedule quarterly access reviews. Set up vulnerability scanning. Plan annual pen test. Calendar annual policy review." },
+      { id: "CC4.2", name: "Communicate Deficiencies", type: "Policy", hours: 3,
+        requirement: "Deficiency tracking log; remediation evidence; leadership review.",
+        current: "No deficiency tracking process. Issues from code audit tracked informally.",
+        action: "Create deficiency tracker. Log findings from code audit. Track remediation. Report in quarterly review." }
+    ]
+  },
+  {
+    group: "CC5", groupName: "Control Activities", totalHours: 38,
+    controls: [
+      { id: "CC5.1", name: "Select & Develop Controls", type: "Both", hours: 6,
+        requirement: "Control matrix mapping risks to controls; compensating controls documented.",
+        current: "No formal control matrix. Controls exist but not mapped to risks.",
+        action: "Build control matrix. Document compensating controls for segregation-of-duties gaps." },
+      { id: "CC5.2", name: "Technology Controls (ITGCs)", type: "Technical", hours: 12,
+        requirement: "Cloud config standards (CIS benchmarks); MFA enforced; patch management; secure SDLC.",
+        current: "PARTIAL \u2014 Some AWS config. MFA status unknown. Patch management informal. SDLC not documented.",
+        action: "Enable MFA everywhere. Apply CIS AWS benchmarks. Document patch management. Write SDLC process." },
+      { id: "CC5.3", name: "Policies & Procedures", type: "Policy", hours: 20,
+        requirement: "Complete policy library (8\u201310 policies); versioned; annually reviewed; employee acknowledged.",
+        current: "No formal policy library exists.",
+        action: "Write full policy library: InfoSec, Access Control, Incident Response, Change Mgmt, Vendor Mgmt, Risk Assessment, Data Classification, BCP/DR, Password/Auth, Acceptable Use." }
+    ]
+  },
+  {
+    group: "CC6", groupName: "Logical & Physical Access", totalHours: 47,
+    controls: [
+      { id: "CC6.1", name: "Logical Access Security", type: "Both", hours: 10,
+        requirement: "MFA everywhere; unique accounts; encryption at rest/transit; asset inventory; secrets manager; network architecture doc.",
+        current: "PARTIAL \u2014 Encryption available but must verify. MFA not enforced everywhere. No secrets manager. No network arch doc.",
+        action: "Enable MFA on AWS root + all IAM. Enforce 2FA on GitHub, Google Workspace, Netlify. Verify encryption. Use AWS Secrets Manager. Draw network architecture." },
+      { id: "CC6.2", name: "User Provisioning & Deprovisioning", type: "Both", hours: 6,
+        requirement: "Onboarding checklist; offboarding checklist revoking access within 24hrs; quarterly access reviews.",
+        current: "No formal onboarding/offboarding checklists. No quarterly access reviews.",
+        action: "Create onboarding checklist (all 5 systems). Create offboarding checklist. Set up quarterly access reviews." },
+      { id: "CC6.3", name: "Least Privilege & RBAC", type: "Both", hours: 8,
+        requirement: "IAM roles defined; RBAC; quarterly role reviews; role-permission matrix.",
+        current: "PARTIAL \u2014 AWS IAM exists but may be overly broad. No documented role-permission matrix.",
+        action: "Audit AWS IAM \u2014 remove wildcards, create named roles. Document role-permission matrix." },
+      { id: "CC6.4", name: "Physical Access", type: "Both", hours: 4,
+        requirement: "Cloud provider SOC 2 reviewed annually; hardware inventory; laptop encryption.",
+        current: "PARTIAL \u2014 Providers handle physical security. No vendor SOC 2 reports collected. No hardware inventory.",
+        action: "Download AWS SOC 2 via Artifact. Request Railway/Netlify reports. Create hardware inventory. Enable FileVault/BitLocker." },
+      { id: "CC6.5", name: "Decommissioning & Disposal", type: "Both", hours: 3,
+        requirement: "Asset decommission log; secure data destruction; laptop return/wipe on departure.",
+        current: "No asset decommissioning process. No data destruction procedures.",
+        action: "Write asset disposal procedure. Document cloud resource deletion. Create laptop return/wipe checklist." },
+      { id: "CC6.6", name: "Boundary Protection", type: "Technical", hours: 6,
+        requirement: "Firewall/security group rules; WAF; intrusion detection (GuardDuty); network architecture.",
+        current: "PARTIAL \u2014 AWS security groups exist but may be permissive. GuardDuty not confirmed. No firewall review process.",
+        action: "Audit AWS security groups. Enable GuardDuty. Enable Railway Private Networking. Document network perimeter." },
+      { id: "CC6.7", name: "Data in Transit", type: "Both", hours: 4,
+        requirement: "HTTPS/TLS everywhere (1.2+); HSTS; encrypted internal communication; mobile device policy.",
+        current: "PARTIAL \u2014 Netlify auto-HTTPS. Railway TLS default. Need to verify HSTS and internal encryption.",
+        action: "Verify TLS 1.2+ everywhere. Enable HSTS. Verify Railway Private Networking TLS. Write data handling policy." },
+      { id: "CC6.8", name: "Malware Prevention", type: "Technical", hours: 6,
+        requirement: "Endpoint protection (EDR); dependency scanning in CI/CD; phishing awareness training.",
+        current: "No endpoint protection. Dependabot may be enabled. No phishing training.",
+        action: "Deploy endpoint protection. Enable Dependabot + secret scanning. Run phishing awareness training." }
+    ]
+  },
+  {
+    group: "CC7", groupName: "System Operations", totalHours: 41,
+    controls: [
+      { id: "CC7.1", name: "Config & Vulnerability Monitoring", type: "Technical", hours: 8,
+        requirement: "Config standards (CIS benchmarks); AWS Config; vulnerability scans quarterly; patch management SLAs.",
+        current: "No config standards. AWS Config not confirmed. No vulnerability scanning. Patch management informal.",
+        action: "Enable AWS Config with SOC 2 pack. Enable Security Hub. Run AWS Inspector. Define patch SLAs." },
+      { id: "CC7.2", name: "Anomaly Detection", type: "Technical", hours: 10,
+        requirement: "Centralized logging/SIEM; alerting rules; log retention (1yr+).",
+        current: "Logging minimal. No SIEM. No alerting. Log retention undefined.",
+        action: "Enable CloudTrail + CloudWatch. Set up log aggregation. Configure alerts. Set 1-year retention." },
+      { id: "CC7.3", name: "Security Event Evaluation", type: "Both", hours: 3,
+        requirement: "Incident triage procedure; severity classification; privacy impact assessment (2022).",
+        current: "No incident triage procedure. No severity classification.",
+        action: "Add triage section to Incident Response Plan. Include privacy impact assessment. Define severity levels." },
+      { id: "CC7.4", name: "Incident Response", type: "Both", hours: 12,
+        requirement: "IRP; named roles; playbooks; communication templates; annual tabletop exercise.",
+        current: "No Incident Response Plan. No named roles. No playbooks.",
+        action: "Write IRP with roles, playbooks for top 3 scenarios, customer notification templates. Schedule tabletop." },
+      { id: "CC7.5", name: "Incident Recovery", type: "Both", hours: 8,
+        requirement: "Tested backups with RTO/RPO; recovery runbooks; annual DR test.",
+        current: "PARTIAL \u2014 Railway handles some backups. AWS backups need verification. No RTO/RPO. No runbooks.",
+        action: "Document RTO/RPO. Verify backups. Write recovery runbooks. Plan annual DR test." }
+    ]
+  },
+  {
+    group: "CC8", groupName: "Change Management", totalHours: 8,
+    controls: [
+      { id: "CC8.1", name: "Manage System Changes", type: "Both", hours: 8,
+        requirement: "PR reviews required; CI/CD; branch protection; env separation; IaC; patch management (2022).",
+        current: "PARTIAL \u2014 GitHub PRs likely in use. Branch protection unknown. CI/CD unclear. Env separation unclear.",
+        action: "Configure branch protection on main. Document CI/CD. Verify env separation on Railway. Enable Dependabot. Write change management policy." }
+    ]
+  },
+  {
+    group: "CC9", groupName: "Risk Mitigation", totalHours: 14,
+    controls: [
+      { id: "CC9.1", name: "Business Disruption Risk", type: "Both", hours: 8,
+        requirement: "BCP; DRP; RTO/RPO; annual BCP test; customer outage communication plan.",
+        current: "No BCP or DRP. RTO/RPO not defined. No outage communication plan.",
+        action: "Write combined BCP/DRP. Define RTO/RPO. Document failover. Draft outage notification templates. Schedule tabletop." },
+      { id: "CC9.2", name: "Vendor & Partner Risk", type: "Policy", hours: 6,
+        requirement: "Vendor register; vendor SOC 2 reports collected; annual review; DPAs signed.",
+        current: "No vendor register. No vendor SOC 2 reports collected. No DPAs signed.",
+        action: "Create vendor register. Collect SOC 2 reports. Sign DPAs. Document annual review process." }
+    ]
+  }
+];
+
+const TOTAL_HOURS = 213;
+const TOTAL_CONTROLS = 33;
+
+// ===== STATE =====
+let controlState = {};
+CONTROLS.forEach(g => g.controls.forEach(c => { controlState[c.id] = false; }));
+let expandedControls = {};
+let openGroups = { 'CC1': true };
+
+// ===== RENDER =====
+function getCompleted() {
+  return Object.values(controlState).filter(Boolean).length;
+}
+function getCompletedHours() {
+  let h = 0;
+  CONTROLS.forEach(g => g.controls.forEach(c => { if (controlState[c.id]) h += c.hours; }));
+  return h;
+}
+function getGroupCompleted(group) {
+  return group.controls.filter(c => controlState[c.id]).length;
+}
+
+function animateValue(el, start, end, duration) {
+  if (start === end) { el.textContent = end; return; }
+  const startTime = performance.now();
+  function update(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (end - start) * eased);
+    el.textContent = current;
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+function updateKPIs() {
+  const completed = getCompleted();
+  const completedHours = getCompletedHours();
+  const remaining = TOTAL_HOURS - completedHours;
+  const pct = Math.round((completed / TOTAL_CONTROLS) * 100);
+
+  // KPI cards
+  const kpiCompEl = document.getElementById('kpiCompleted');
+  const prevCompleted = parseInt(kpiCompEl.textContent) || 0;
+  animateValue(kpiCompEl, prevCompleted, completed, 400);
+  document.getElementById('kpiCompletedSub').textContent = pct + '% addressed';
+
+  const kpiHoursEl = document.getElementById('kpiHours');
+  const prevHours = parseInt(kpiHoursEl.textContent) || TOTAL_HOURS;
+  animateValue(kpiHoursEl, prevHours, remaining, 400);
+
+  // Progress ring
+  const circumference = 2 * Math.PI * 22;
+  const offset = circumference - (completed / TOTAL_CONTROLS) * circumference;
+  document.getElementById('progressRing').style.strokeDashoffset = offset;
+  document.getElementById('progressRingText').textContent = pct + '%';
+  document.getElementById('progressRingLabel').textContent = completed + ' of 33';
+
+  // Group progress bars
+  CONTROLS.forEach(g => {
+    const gc = getGroupCompleted(g);
+    const bar = document.querySelector(`[data-group-bar="${g.group}"]`);
+    const label = document.querySelector(`[data-group-count="${g.group}"]`);
+    if (bar) bar.style.width = (gc / g.controls.length * 100) + '%';
+    if (label) label.textContent = gc + ' of ' + g.controls.length;
+  });
+}
+
+let _saveTimeout = null;
+function saveState() {
+  // Write to localStorage immediately (offline fallback)
+  localStorage.setItem('soc2-control-state', JSON.stringify(controlState));
+  localStorage.setItem('soc2-open-groups', JSON.stringify(openGroups));
+  // Debounce API save (300ms)
+  clearTimeout(_saveTimeout);
+  _saveTimeout = setTimeout(() => {
+    fetch('/api/soc2/state', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ controlState, openGroups })
+    }).catch(() => { /* offline, localStorage has it */ });
+  }, 300);
+}
+
+async function loadState() {
+  // Try server first
+  try {
+    const res = await fetch('/api/soc2/state');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.controlState && Object.keys(data.controlState).length) {
+        Object.keys(data.controlState).forEach(k => { if (k in controlState) controlState[k] = data.controlState[k]; });
+      }
+      if (data.openGroups && Object.keys(data.openGroups).length) {
+        openGroups = data.openGroups;
+      }
+      // Sync to localStorage
+      localStorage.setItem('soc2-control-state', JSON.stringify(controlState));
+      localStorage.setItem('soc2-open-groups', JSON.stringify(openGroups));
+      return;
+    }
+  } catch (e) { /* server unavailable, fall through to localStorage */ }
+  // Fallback: localStorage
+  try {
+    const saved = localStorage.getItem('soc2-control-state');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      Object.keys(parsed).forEach(k => { if (k in controlState) controlState[k] = parsed[k]; });
+    }
+    const savedGroups = localStorage.getItem('soc2-open-groups');
+    if (savedGroups) openGroups = JSON.parse(savedGroups);
+  } catch (e) { /* ignore corrupt data */ }
+}
+
+function toggleControl(id) {
+  controlState[id] = !controlState[id];
+  const el = document.querySelector(`[data-control="${id}"]`);
+  if (el) {
+    el.classList.toggle('done', controlState[id]);
+    const statusBadge = el.querySelector('.badge-status');
+    if (statusBadge) {
+      if (controlState[id]) {
+        statusBadge.className = 'badge badge-status badge-done';
+        statusBadge.textContent = 'Done';
+      } else {
+        statusBadge.className = 'badge badge-status badge-not-started';
+        statusBadge.textContent = 'Not Started';
+      }
+    }
+  }
+  saveState();
+  updateKPIs();
+}
+
+function toggleExpand(id) {
+  expandedControls[id] = !expandedControls[id];
+  const el = document.querySelector(`[data-control="${id}"]`);
+  if (el) el.classList.toggle('expanded', expandedControls[id]);
+}
+
+function toggleGroup(group) {
+  openGroups[group] = !openGroups[group];
+  const el = document.querySelector(`[data-group="${group}"]`);
+  if (el) el.classList.toggle('open', openGroups[group]);
+  saveState();
+}
+
+function renderGroups() {
+  const container = document.getElementById('controlGroups');
+  let html = '';
+
+  CONTROLS.forEach(g => {
+    const gc = getGroupCompleted(g);
+    const isOpen = !!openGroups[g.group];
+
+    html += `<div class="group ${isOpen ? 'open' : ''}" data-group="${g.group}">`;
+    html += `<div class="group-header" onclick="toggleGroup('${g.group}')" role="button" tabindex="0" aria-expanded="${isOpen}" aria-label="Toggle ${g.group}: ${g.groupName}">`;
+    html += `<div class="group-title-row">`;
+    html += `<span class="group-cc">${g.group}</span>`;
+    html += `<span class="group-name">${g.groupName}</span>`;
+    html += `</div>`;
+    html += `<div class="group-meta">`;
+    html += `<span class="group-meta-item" data-group-count="${g.group}">${gc} of ${g.controls.length}</span>`;
+    html += `<div class="group-progress-bar"><div class="group-progress-fill" data-group-bar="${g.group}" style="width: ${gc / g.controls.length * 100}%"></div></div>`;
+    html += `<span class="group-meta-item">${g.totalHours} hrs</span>`;
+    html += `</div>`;
+    html += `<div class="group-chevron"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>`;
+    html += `</div>`;
+
+    html += `<div class="group-body"><div class="group-body-inner">`;
+
+    g.controls.forEach(c => {
+      const isDone = controlState[c.id];
+      const isExpanded = expandedControls[c.id] || false;
+      const typeBadge = c.type === 'Policy' ? 'badge-policy' : c.type === 'Technical' ? 'badge-technical' : 'badge-both';
+
+      html += `<div class="control ${isDone ? 'done' : ''} ${isExpanded ? 'expanded' : ''}" data-control="${c.id}">`;
+      html += `<div class="control-main">`;
+
+      // Checkbox
+      html += `<label class="control-check"><input type="checkbox" ${isDone ? 'checked' : ''} onchange="toggleControl('${c.id}')" aria-label="Mark ${c.id} ${c.name} as complete"><span class="checkmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12l5 5L20 7"/></svg></span></label>`;
+
+      // Info
+      html += `<div class="control-info">`;
+      html += `<div class="control-title-row">`;
+      html += `<span class="control-cc-num">${c.id}</span>`;
+      html += `<span class="control-name">${c.name}</span>`;
+      html += `</div>`;
+      html += `</div>`;
+
+      // Right side badges
+      html += `<div class="control-right">`;
+      html += `<span class="badge ${typeBadge}">${c.type}</span>`;
+      html += `<span class="badge badge-hours">${c.hours} hrs</span>`;
+      html += `<span class="badge badge-status ${isDone ? 'badge-done' : 'badge-not-started'}">${isDone ? 'Done' : 'Not Started'}</span>`;
+      html += `<button class="control-expand-btn" onclick="event.stopPropagation(); toggleExpand('${c.id}')" aria-label="Toggle details for ${c.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>`;
+      html += `</div>`;
+
+      html += `</div>`; // control-main
+
+      // Detail
+      html += `<div class="control-detail"><div class="control-detail-inner">`;
+      html += `<div class="detail-block"><div class="detail-label">Requirement</div><div class="detail-text">${c.requirement}</div></div>`;
+      html += `<div class="detail-block"><div class="detail-label">Current State</div><div class="detail-text">${c.current}</div></div>`;
+      html += `<div class="detail-block"><div class="detail-label">Action Needed</div><div class="detail-text">${c.action}</div></div>`;
+      html += `</div></div>`;
+
+      html += `</div>`; // control
+    });
+
+    html += `</div></div>`; // group-body
+    html += `</div>`; // group
+  });
+
+  container.innerHTML = html;
+}
+
+// ===== TABS =====
+function initTabs() {
+  document.querySelectorAll('.ref-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.ref-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+      document.querySelectorAll('.ref-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+}
+
+// ===== THEME =====
+function initTheme() {
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const root = document.documentElement;
+  let theme = localStorage.getItem('soc2-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  root.setAttribute('data-theme', theme);
+
+  if (toggle) {
+    // Set initial icon
+    if (theme === 'dark') {
+      toggle.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+    }
+    toggle.addEventListener('click', () => {
+      theme = theme === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', theme);
+      localStorage.setItem('soc2-theme', theme);
+      toggle.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
+      toggle.innerHTML = theme === 'dark'
+        ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+        : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    });
+  }
+}
+
+// ===== KEYBOARD =====
+function initKeyboard() {
+  document.addEventListener('keydown', (e) => {
+    if (e.target.classList.contains('group-header') && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      e.target.click();
+    }
+  });
+}
+
+// ===== INIT =====
+async function init() {
+  await loadState();
+  renderGroups();
+  updateKPIs();
+  initTabs();
+  initTheme();
+  initKeyboard();
+  document.getElementById('footerDate').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+<script src="/nav.js"></script>
+</body>
+</html>
