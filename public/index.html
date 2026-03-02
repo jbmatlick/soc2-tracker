@@ -1220,12 +1220,41 @@ function updateKPIs() {
   });
 }
 
+let _saveTimeout = null;
 function saveState() {
+  // Write to localStorage immediately (offline fallback)
   localStorage.setItem('soc2-control-state', JSON.stringify(controlState));
   localStorage.setItem('soc2-open-groups', JSON.stringify(openGroups));
+  // Debounce API save (300ms)
+  clearTimeout(_saveTimeout);
+  _saveTimeout = setTimeout(() => {
+    fetch('/api/state', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ controlState, openGroups })
+    }).catch(() => { /* offline, localStorage has it */ });
+  }, 300);
 }
 
-function loadState() {
+async function loadState() {
+  // Try server first
+  try {
+    const res = await fetch('/api/state');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.controlState && Object.keys(data.controlState).length) {
+        Object.keys(data.controlState).forEach(k => { if (k in controlState) controlState[k] = data.controlState[k]; });
+      }
+      if (data.openGroups && Object.keys(data.openGroups).length) {
+        openGroups = data.openGroups;
+      }
+      // Sync to localStorage
+      localStorage.setItem('soc2-control-state', JSON.stringify(controlState));
+      localStorage.setItem('soc2-open-groups', JSON.stringify(openGroups));
+      return;
+    }
+  } catch (e) { /* server unavailable, fall through to localStorage */ }
+  // Fallback: localStorage
   try {
     const saved = localStorage.getItem('soc2-control-state');
     if (saved) {
@@ -1388,8 +1417,8 @@ function initKeyboard() {
 }
 
 // ===== INIT =====
-function init() {
-  loadState();
+async function init() {
+  await loadState();
   renderGroups();
   updateKPIs();
   initTabs();
