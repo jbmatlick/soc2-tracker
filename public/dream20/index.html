@@ -12,7 +12,9 @@
     * { box-sizing: border-box; }
     :root { --teal: #01696f; --teal-light: #e6f4f4; }
     body { margin: 0; font-family: 'Inter', sans-serif; background: #fff; color: #1a1a1a; line-height: 1.5; }
+    
     .page-wrapper { display: flex; min-height: 100vh; padding-top: 48px; }
+    
     .side-nav {
       width: 220px; position: fixed; left: 0; top: 48px; bottom: 0;
       background: #fafafa; border-right: 1px solid #e5e5e5; overflow-y: auto;
@@ -25,17 +27,22 @@
     }
     .side-nav a:hover { background: #f0f0f0; color: var(--teal); }
     .side-nav a.active { background: var(--teal-light); color: var(--teal); border-left-color: var(--teal); font-weight: 500; }
+    
     .nav-toggle { display: none; position: fixed; left: 12px; top: 60px; z-index: 200; background: var(--teal); color: #fff; border: none; padding: 8px 12px; border-radius: 4px; font-size: 13px; cursor: pointer; }
+    
     .main-content { margin-left: 220px; flex: 1; max-width: 900px; padding: 32px 40px; }
+    
     .page-header { margin-bottom: 32px; }
     .page-header h1 { font-size: 28px; font-weight: 700; margin: 0 0 8px; letter-spacing: -0.3px; }
     .page-header p { font-size: 14px; color: #666; margin: 0; }
+    
     .summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 48px; }
     .summary-card { background: #fafafa; border: 1px solid #e5e5e5; border-radius: 8px; padding: 20px; }
     .summary-card h3 { font-size: 13px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 12px; }
     .summary-card ul { margin: 0; padding-left: 18px; font-size: 13px; color: #444; }
     .summary-card li { margin-bottom: 4px; }
     .summary-card .highlight { color: var(--teal); font-weight: 600; }
+    
     .company-section { margin-bottom: 64px; padding-top: 16px; }
     .company-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e5e5e5; }
     .company-header h2 { font-size: 22px; font-weight: 700; margin: 0; letter-spacing: -0.2px; }
@@ -43,26 +50,32 @@
     .status-public { background: #e6f0ff; color: #0066cc; }
     .status-private { background: #f0f0f0; color: #666; }
     .status-ipo { background: #fff3e0; color: #e65100; }
+    
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
     .stat-card { background: #fafafa; border: 1px solid #e5e5e5; border-radius: 6px; padding: 16px; text-align: center; }
     .stat-label { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
     .stat-value { font-size: 15px; font-weight: 600; color: #1a1a1a; }
+    
     .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 24px; }
     .data-table th { text-align: left; padding: 10px 12px; background: #f5f5f5; font-weight: 600; color: #444; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #ddd; }
     .data-table td { padding: 10px 12px; border-bottom: 1px solid #eee; color: #333; }
     .data-table tr:hover { background: #fafafa; }
+    
     .badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
     .badge-high { background: #e6f5e6; color: #2e7d32; }
     .badge-medium { background: #fff8e1; color: #f57c00; }
     .badge-low { background: #ffebee; color: #c62828; }
+    
     .content-block { margin-bottom: 24px; }
     .content-block h4 { font-size: 13px; font-weight: 600; color: #444; margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.5px; }
     .content-block ul { margin: 0; padding-left: 18px; font-size: 13px; color: #444; }
     .content-block li { margin-bottom: 6px; }
+    
     .signals-box { background: var(--teal-light); border-left: 4px solid var(--teal); padding: 16px 20px; border-radius: 0 6px 6px 0; }
     .signals-box h4 { font-size: 12px; font-weight: 700; color: var(--teal); margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.5px; }
     .signals-box ul { margin: 0; padding-left: 18px; font-size: 13px; color: #333; }
     .signals-box li { margin-bottom: 6px; }
+    
     @media (max-width: 768px) {
       .nav-toggle { display: block; }
       .side-nav { transform: translateX(-100%); transition: transform 0.2s; }
@@ -74,90 +87,91 @@
   </style>
 </head>
 <body>
-  <script src="../nav.js"></script>
-  <button class="nav-toggle" onclick="document.querySelector('.side-nav').classList.toggle('open')">&#9776; Companies</button>
+  <button class="nav-toggle" onclick="document.querySelector('.side-nav').classList.toggle('open')">☰ Companies</button>
+  
   <div class="page-wrapper">
     <nav class="side-nav">
       <div class="side-nav-header">Dream 20 Companies</div>
-      <a href="#braze" data-section="braze">Braze</a>
-      <a href="#webflow" data-section="webflow">Webflow</a>
-      <a href="#calendly" data-section="calendly">Calendly</a>
-      <a href="#lattice" data-section="lattice">Lattice</a>
-      <a href="#navan" data-section="navan">Navan</a>
-      <a href="#ramp" data-section="ramp">Ramp</a>
-      <a href="#vanta" data-section="vanta">Vanta</a>
-      <a href="#notion" data-section="notion">Notion</a>
-      <a href="#figma" data-section="figma">Figma</a>
-      <a href="#gusto" data-section="gusto">Gusto</a>
-      <a href="#drata" data-section="drata">Drata</a>
-      <a href="#deel" data-section="deel">Deel</a>
-      <a href="#clipboard" data-section="clipboard">Clipboard Health</a>
-      <a href="#cribl" data-section="cribl">Cribl</a>
-      <a href="#contentful" data-section="contentful">Contentful</a>
-      <a href="#samsara" data-section="samsara">Samsara</a>
-      <a href="#ironclad" data-section="ironclad">Ironclad</a>
-      <a href="#gong" data-section="gong">Gong</a>
-      <a href="#attentive" data-section="attentive">Attentive</a>
-      <a href="#highspot" data-section="highspot">Highspot</a>
+      <a href="#braze">Braze</a>
+      <a href="#webflow">Webflow</a>
+      <a href="#calendly">Calendly</a>
+      <a href="#lattice">Lattice</a>
+      <a href="#navan">Navan</a>
+      <a href="#ramp">Ramp</a>
+      <a href="#vanta">Vanta</a>
+      <a href="#notion">Notion</a>
+      <a href="#figma">Figma</a>
+      <a href="#gusto">Gusto</a>
+      <a href="#drata">Drata</a>
+      <a href="#deel">Deel</a>
+      <a href="#clipboard">Clipboard Health</a>
+      <a href="#cribl">Cribl</a>
+      <a href="#contentful">Contentful</a>
+      <a href="#samsara">Samsara</a>
+      <a href="#ironclad">Ironclad</a>
+      <a href="#gong">Gong</a>
+      <a href="#attentive">Attentive</a>
+      <a href="#highspot">Highspot</a>
     </nav>
+    
     <main class="main-content">
       <div class="page-header">
-        <h1>Dream 20 &#8212; Technographic Intelligence</h1>
+        <h1>Dream 20 — Technographic Intelligence</h1>
         <p>Generated: March 2, 2026 | Sources: Himalayas.app, Tracxn, Crunchbase, PitchBook, SaaStr, Reuters, Forbes, TechCrunch</p>
       </div>
+      
       <div class="summary-grid">
         <div class="summary-card">
           <h3>Stack Consolidation Opportunities</h3>
           <ul>
-            <li><span class="highlight">Ramp</span> &#8212; Dual data warehouses</li>
-            <li><span class="highlight">Samsara</span> &#8212; Triple CI/CD, 111 tools</li>
-            <li><span class="highlight">Gusto</span> &#8212; Triple analytics</li>
-            <li><span class="highlight">Vanta</span> &#8212; Triple analytics</li>
-            <li><span class="highlight">Ironclad</span> &#8212; Triple config mgmt</li>
-            <li><span class="highlight">Deel</span> &#8212; Triple ETL tools</li>
-            <li><span class="highlight">Calendly</span> &#8212; Dual CI/CD</li>
-            <li><span class="highlight">Webflow</span> &#8212; Triple config mgmt</li>
+            <li><span class="highlight">Ramp</span> — Dual data warehouses</li>
+            <li><span class="highlight">Samsara</span> — Triple CI/CD, 111 tools</li>
+            <li><span class="highlight">Gusto</span> — Triple analytics</li>
+            <li><span class="highlight">Vanta</span> — Triple analytics</li>
+            <li><span class="highlight">Ironclad</span> — Triple config mgmt</li>
+            <li><span class="highlight">Deel</span> — Triple ETL tools</li>
+            <li><span class="highlight">Calendly</span> — Dual CI/CD</li>
+            <li><span class="highlight">Webflow</span> — Triple config mgmt</li>
           </ul>
         </div>
         <div class="summary-card">
           <h3>IPO-Track Companies</h3>
           <ul>
-            <li><span class="highlight">Notion</span> &#8212; $11B valuation, IPO prep</li>
-            <li><span class="highlight">Gong</span> &#8212; $300M+ ARR, IPO signals</li>
-            <li><span class="highlight">Gusto</span> &#8212; $9.3B tender offer</li>
-            <li><span class="highlight">Ironclad</span> &#8212; IPO "on the horizon"</li>
+            <li><span class="highlight">Notion</span> — $11B valuation, IPO prep</li>
+            <li><span class="highlight">Gong</span> — $300M+ ARR, IPO signals</li>
+            <li><span class="highlight">Gusto</span> — $9.3B tender offer</li>
+            <li><span class="highlight">Ironclad</span> — IPO "on the horizon"</li>
           </ul>
         </div>
         <div class="summary-card">
           <h3>Largest Stacks</h3>
           <ul>
-            <li><span class="highlight">Samsara</span> &#8212; 111 tools</li>
-            <li><span class="highlight">Calendly</span> &#8212; 83 tools</li>
-            <li><span class="highlight">Ironclad</span> &#8212; 76 tools</li>
+            <li><span class="highlight">Samsara</span> — 111 tools</li>
+            <li><span class="highlight">Calendly</span> — 83 tools</li>
+            <li><span class="highlight">Ironclad</span> — 76 tools</li>
           </ul>
         </div>
         <div class="summary-card">
           <h3>Already Public</h3>
           <ul>
-            <li><span class="highlight">Braze</span> &#8212; NASDAQ: BRZE</li>
-            <li><span class="highlight">Samsara</span> &#8212; NYSE: IOT</li>
-            <li><span class="highlight">Figma</span> &#8212; IPO July 2025</li>
-            <li><span class="highlight">Navan</span> &#8212; IPO October 2025</li>
+            <li><span class="highlight">Braze</span> — NASDAQ: BRZE</li>
+            <li><span class="highlight">Samsara</span> — NYSE: IOT</li>
+            <li><span class="highlight">Figma</span> — IPO July 2025</li>
+            <li><span class="highlight">Navan</span> — IPO October 2025</li>
           </ul>
         </div>
       </div>
 
-      <!-- Braze -->
       <section class="company-section" id="braze">
         <div class="company-header">
           <h2>Braze</h2>
-          <span class="status-badge status-public">NASDAQ: BRZE</span>
+          <span class="status-badge status-public">PUBLIC</span>
         </div>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">NASDAQ: BRZE</div></div>
-          <div class="stat-card"><div class="stat-label">Market Cap</div><div class="stat-value">$2.1–4.0B</div></div>
-          <div class="stat-card"><div class="stat-label">TTM Revenue</div><div class="stat-value">$693M</div></div>
-          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$180M</div></div>
+          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Public (NASDAQ: BRZE), IPO Nov 2021</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">~$2.1B–$4.0B (fluctuating, Feb 2026: ~$2.14B per PitchBook; Dec 2025: ~$3.99B per public.com)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$693M (as of Oct 2025) — [PitchBook](https://pitchbook.com/profiles/company/53939-98)</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">N/A</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -172,21 +186,19 @@
             <tr><td>Docker</td><td>Containers</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Terraform</td><td>IaC</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Helm</td><td>K8s Packaging</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Ansible / Chef</td><td>Config Mgmt</td><td><span class="badge badge-high">HIGH</span></td></tr>
+            <tr><td>Ansible</td><td>Config Mgmt</td><td><span class="badge badge-high">HIGH</span></td></tr>
+            <tr><td>Chef</td><td>Config Mgmt</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>MongoDB</td><td>Database</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Redis</td><td>Cache/DB</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Sidekiq</td><td>Job Queue</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Optimizely</td><td>A/B Testing</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Figma</td><td>Design</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Jira</td><td>Project Mgmt</td><td><span class="badge badge-high">HIGH</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Bill Magnuson (Co-founder)</li>
-            <li><strong>CFO:</strong> Isabelle Winkles</li>
-            <li><strong>CTO:</strong> Jon Hyman (Co-founder)</li>
+            <li>**CEO:** Bill Magnuson (Co-founder)</li>
+            <li>**CFO:** Isabelle Winkles</li>
+            <li>**CTO:** Jon Hyman (Co-founder)</li>
           </ul>
         </div>
         <div class="content-block">
@@ -194,7 +206,7 @@
           <ul>
             <li>Public company; steady revenue growth ~20% YoY</li>
             <li>Expanding AI/ML capabilities for customer engagement</li>
-            <li>MarTech ecosystem thought leadership</li>
+            <li>MarTech ecosystem thought leadership ([Braze 2025 MarTech article](https://www.braze.com/resources/articles/tech-ecosystems-martech-stacks-overview))</li>
           </ul>
         </div>
         <div class="signals-box">
@@ -207,17 +219,17 @@
         </div>
       </section>
 
-      <!-- Webflow -->
+
       <section class="company-section" id="webflow">
         <div class="company-header">
           <h2>Webflow</h2>
-          <span class="status-badge status-private">Private</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$4.0B</div></div>
-          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$213M (2024)</div></div>
-          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$336M</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$4B (Series C, 2022)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$213M (2024 est.) — [TapTwice](https://taptwicedigital.com/stats/webflow)</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">~$336M</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -229,7 +241,7 @@
             <tr><td>R Language</td><td>Data Science</td><td><span class="badge badge-medium">MEDIUM</span></td></tr>
             <tr><td>ExpressJS</td><td>Backend</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>GraphQL</td><td>API</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Flow</td><td>Dev Tools</td><td><span class="badge badge-high">HIGH</span></td></tr>
+            <tr><td>Flow (type checker)</td><td>Dev Tools</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>SQL</td><td>Query</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>GitHub</td><td>VCS</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Kubernetes</td><td>Orchestration</td><td><span class="badge badge-high">HIGH</span></td></tr>
@@ -242,8 +254,9 @@
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Vlad Magdalin (Co-founder)</li>
-            <li><strong>CTO:</strong> Bryant Chou (Co-founder)</li>
+            <li>**CEO:** Vlad Magdalin (Co-founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** Bryant Chou (Co-founder)</li>
           </ul>
         </div>
         <div class="content-block">
@@ -264,16 +277,16 @@
         </div>
       </section>
 
-      <!-- Calendly -->
+
       <section class="company-section" id="calendly">
         <div class="company-header">
           <h2>Calendly</h2>
-          <span class="status-badge status-private">Private</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$3.0B</div></div>
-          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$270M+ (2024)</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$3B (2021 Series B led by OpenView)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">~$270M+ (2024 est.) — [StartupGTM](https://startupgtm.substack.com/p/calendly-growth-story-a-viral-product)</div></div>
           <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$350M+</div></div>
         </div>
         <table class="data-table">
@@ -290,19 +303,18 @@
             <tr><td>Selenium / WebdriverIO</td><td>Testing</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Kubernetes</td><td>Orchestration</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Jenkins</td><td>CI/CD</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Buildkite</td><td>CI/CD</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Webpack / Parcel</td><td>Bundling</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Docker</td><td>Containers</td><td><span class="badge badge-high">HIGH</span></td></tr>
+            <tr><td>Buildkite</td><td>CI/CD</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Amazon EC2 / AWS</td><td>Cloud</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Apache Spark</td><td>Data</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Amazon S3</td><td>Storage</td><td><span class="badge badge-high">HIGH</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Tope Awotona (Founder)</li>
-            <li><strong>CTO:</strong> James Weng</li>
+            <li>**CEO:** Tope Awotona (Founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** James Weng</li>
           </ul>
         </div>
         <div class="content-block">
@@ -319,21 +331,20 @@
             <li>Polyglot backend (Python/Flask, Java, Go, Scala) — complex microservices</li>
             <li>Jenkins + Buildkite for CI/CD — dual pipeline, possible consolidation</li>
             <li>AWS-native with Spark for analytics</li>
-            <li><strong>83 tools tracked</strong> — large stack</li>
           </ul>
         </div>
       </section>
 
-      <!-- Lattice -->
+
       <section class="company-section" id="lattice">
         <div class="company-header">
           <h2>Lattice</h2>
-          <span class="status-badge status-private">Private</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$3.0B</div></div>
-          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$127.1M (2024)</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$3B (Series F, Jan 2022) — [GetLatka](https://getlatka.com/companies/lattice)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$127.1M (2024) — GetLatka</div></div>
           <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$323.6M</div></div>
         </div>
         <table class="data-table">
@@ -357,7 +368,9 @@
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Jack Altman (Co-founder)</li>
+            <li>**CEO:** Jack Altman (Co-founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** Not publicly confirmed</li>
           </ul>
         </div>
         <div class="content-block">
@@ -378,17 +391,17 @@
         </div>
       </section>
 
-      <!-- Navan -->
+
       <section class="company-section" id="navan">
         <div class="company-header">
           <h2>Navan</h2>
-          <span class="status-badge status-public">Public (Oct 2025)</span>
+          <span class="status-badge status-public">PUBLIC</span>
         </div>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Public (Oct 2025)</div></div>
-          <div class="stat-card"><div class="stat-label">IPO Valuation</div><div class="stat-value">$6.45B</div></div>
-          <div class="stat-card"><div class="stat-label">IPO Raised</div><div class="stat-value">$923.1M</div></div>
-          <div class="stat-card"><div class="stat-label">Pre-IPO Funding</div><div class="stat-value">$1.9B+</div></div>
+          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Public (IPO Oct 2025, raised $923.1M) — [CB Insights](https://www.cbinsights.com/company/tripactions/financials)</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$6.45B at IPO — [Reuters](https://www.reuters.com/business/travel-tech-firm-navan-aims-raise-up-960-million-us-ipo-2025-10-10/)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">N/A</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$1.9B+</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -401,8 +414,8 @@
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Ariel Cohen (Co-founder)</li>
-            <li><strong>CFO/CTO:</strong> Ilan Twig (Co-founder)</li>
+            <li>**CEO:** Ariel Cohen (Co-founder)</li>
+            <li>**CFO:** Ilan Twig (Co-founder, also CTO)</li>
           </ul>
         </div>
         <div class="content-block">
@@ -423,17 +436,17 @@
         </div>
       </section>
 
-      <!-- Ramp -->
+
       <section class="company-section" id="ramp">
         <div class="company-header">
           <h2>Ramp</h2>
-          <span class="status-badge status-private">Private</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$32B</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$32B (Nov 2025, $300M round led by Lightspeed) — [TechStartups](https://techstartups.com/2025/11/17/ramp-hits-32b-valuation-with-new-300m-funding-round-as-investors-double-down-on-autonomous-finance/)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">N/A</div></div>
           <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$1.6B+</div></div>
-          <div class="stat-card"><div class="stat-label">Open Jobs</div><div class="stat-value">36</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -448,32 +461,25 @@
             <tr><td>Terraform</td><td>IaC</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Amazon ECS</td><td>Orchestration</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Dagster</td><td>Data Orchestration</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>GCP</td><td>Cloud</td><td><span class="badge badge-high">HIGH</span></td></tr>
+            <tr><td>Google Cloud Platform</td><td>Cloud</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>AWS</td><td>Cloud</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Retool</td><td>Internal Tools</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Amazon Redshift</td><td>Data Warehouse</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Snowflake</td><td>Data Warehouse</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>dbt</td><td>Data Transform</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>PostgreSQL</td><td>Database</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Redis</td><td>Cache</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>RabbitMQ</td><td>Message Queue</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Celery</td><td>Task Queue</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>SQLAlchemy</td><td>ORM</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Amazon Aurora</td><td>Database</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Airflow</td><td>Data Pipeline</td><td><span class="badge badge-high">HIGH</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Eric Glyman (Co-founder)</li>
-            <li><strong>CTO:</strong> Karim Atiyeh (Co-founder)</li>
+            <li>**CEO:** Eric Glyman (Co-founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** Karim Atiyeh (Co-founder)</li>
           </ul>
         </div>
         <div class="content-block">
           <h4>Recent News</h4>
           <ul>
-            <li>Hit $32B valuation Nov 2025 — 'autonomous finance' positioning</li>
+            <li>Hit $32B valuation Nov 2025 — "autonomous finance" positioning</li>
             <li>36 open remote jobs — aggressive hiring</li>
             <li>Multi-cloud strategy (GCP + AWS)</li>
           </ul>
@@ -481,26 +487,26 @@
         <div class="signals-box">
           <h4>Technographic Signals</h4>
           <ul>
-            <li><strong>Dual data warehouse</strong> (Redshift + Snowflake) — notable redundancy, consolidation opportunity</li>
+            <li>**Dual data warehouse** (Redshift + Snowflake) — notable redundancy, consolidation opportunity</li>
             <li>Elixir backend = high-concurrency architecture (unusual choice)</li>
             <li>Dagster + Airflow both present — data pipeline tool overlap</li>
             <li>Retool for internal tools — signal of build vs buy pragmatism</li>
-            <li><strong>56 tools tracked</strong> — large, complex stack</li>
+            <li>**56 tools tracked** — large, complex stack</li>
           </ul>
         </div>
       </section>
 
-      <!-- Vanta -->
+
       <section class="company-section" id="vanta">
         <div class="company-header">
           <h2>Vanta</h2>
-          <span class="status-badge status-private">Private</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$4.15B</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$4.15B (Series D, Jul 2025, $150M led by Wellington) — [Reuters](https://www.reuters.com/business/wellington-led-funding-boosts-vantas-valuation-by-69-year-2025-07-23/)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">N/A</div></div>
           <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$504M</div></div>
-          <div class="stat-card"><div class="stat-label">Customers</div><div class="stat-value">12,000+</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -510,7 +516,7 @@
             <tr><td>Go</td><td>Language</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>React</td><td>Frontend</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>styled-components</td><td>CSS-in-JS</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Lodash / Moment.js</td><td>Libraries</td><td><span class="badge badge-medium">MEDIUM</span></td></tr>
+            <tr><td>Lodash / Underscore / Moment.js</td><td>Libraries</td><td><span class="badge badge-medium">MEDIUM</span></td></tr>
             <tr><td>Amazon EC2 / AWS</td><td>Cloud</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>NGINX</td><td>Web Server</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Amazon S3</td><td>Storage</td><td><span class="badge badge-high">HIGH</span></td></tr>
@@ -520,23 +526,23 @@
             <tr><td>Netlify</td><td>Hosting</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Clearbit</td><td>Enrichment</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Google Tag Manager</td><td>Analytics</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Heap</td><td>Analytics</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Google Analytics</td><td>Analytics</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Detectify</td><td>Security</td><td><span class="badge badge-high">HIGH</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Christina Cacioppo (Founder)</li>
+            <li>**CEO:** Christina Cacioppo (Founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** Not publicly confirmed</li>
           </ul>
         </div>
         <div class="content-block">
           <h4>Recent News</h4>
           <ul>
             <li>$4.15B valuation (69% increase from prior year)</li>
-            <li>'Didn't need the cash' — raised for strategic reasons</li>
+            <li>"Didn't need the cash" — raised for strategic reasons</li>
             <li>40 open remote jobs, 1,000+ employees</li>
+            <li>Competitor Drata crossed $100M ARR — [Forbes](https://www.forbes.com/sites/phoebeliu/2025/07/23/christina-cacioppos-startup-vanta-raised-new-funds-at-a-4-billion-valuation-despite-not-needing-the-money/)</li>
           </ul>
         </div>
         <div class="signals-box">
@@ -544,24 +550,24 @@
           <ul>
             <li>Node.js + Go backend — modern dual-language approach</li>
             <li>MongoDB primary DB — NoSQL-first</li>
-            <li><strong>Triple analytics stack</strong> (Heap + GA + GTM) — potential consolidation</li>
+            <li>**Triple analytics stack** (Heap + GA + GTM) — potential consolidation</li>
             <li>Uses Webflow for marketing site + Netlify — no-code marketing stack</li>
             <li>Clearbit for data enrichment — sales/marketing tool signal</li>
           </ul>
         </div>
       </section>
 
-      <!-- Notion -->
+
       <section class="company-section" id="notion">
         <div class="company-header">
           <h2>Notion</h2>
           <span class="status-badge status-ipo">IPO-Track</span>
         </div>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">IPO Expected</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$11B</div></div>
-          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">~$600M (2025)</div></div>
-          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$343M</div></div>
+          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private (IPO expected)</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$11B (employee share sale, Dec 2025) — [SaaStr](https://www.saastr.com/notion-and-growing-into-your-10b-valuation-a-masterclass-in-patience/)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">~$600M (2025), up from $400M (2024), $250M (2023)</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$343M (Sequoia, Index Ventures, Coatue)</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -581,23 +587,22 @@
             <tr><td>Apache Spark / Flink</td><td>Data Processing</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Amazon S3</td><td>Storage</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>dbt</td><td>Data Transform</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>PostgreSQL</td><td>Database</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Memcached</td><td>Cache</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Hadoop / Kafka</td><td>Data Pipeline</td><td><span class="badge badge-high">HIGH</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Ivan Zhao (Founder) — no VCs on board</li>
+            <li>**CEO:** Ivan Zhao (Founder) — no VCs on board</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** Not publicly confirmed</li>
           </ul>
         </div>
         <div class="content-block">
           <h4>Recent News</h4>
           <ul>
             <li>Revenue grew ~20x from 2021 ($31M) to 2025 ($600M)</li>
-            <li>AI agents launched — 'AI teammate' positioning</li>
-            <li>Employee share sale at $11B</li>
+            <li>AI agents launched — "AI teammate" positioning</li>
+            <li>Employee share sale at $11B (only 10% above 2021 valuation)</li>
             <li>IPO preparation (added financial auditor to board 2022)</li>
           </ul>
         </div>
@@ -607,22 +612,22 @@
             <li>Heavy big data stack (Spark, Flink, Hadoop, Kafka) — data-intensive backend</li>
             <li>PostgreSQL + Memcached primary data layer</li>
             <li>dbt for data transformation — modern data stack</li>
-            <li><strong>64 tools tracked</strong> — large stack</li>
+            <li>**64 tools tracked** — large stack for a company that famously had <10 employees for years</li>
           </ul>
         </div>
       </section>
 
-      <!-- Figma -->
+
       <section class="company-section" id="figma">
         <div class="company-header">
           <h2>Figma</h2>
-          <span class="status-badge status-public">Public (Jul 2025)</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Public (Jul 2025)</div></div>
-          <div class="stat-card"><div class="stat-label">IPO Valuation</div><div class="stat-value">$19B</div></div>
-          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$749M (2024)</div></div>
-          <div class="stat-card"><div class="stat-label">Pre-IPO Funding</div><div class="stat-value">$333M</div></div>
+          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Public (IPO Jul 2025)</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$19B fully-diluted at IPO, briefly $47B market cap on day 1 — [SaaStr](https://www.saastr.com/notion-and-growing-into-your-10b-valuation-a-masterclass-in-patience/)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$749M (2024), $600M (2023), $400M (2022)</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$333M</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -642,15 +647,14 @@
             <tr><td>Android Jetpack</td><td>Android UI</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Bitbucket</td><td>VCS</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Jenkins</td><td>CI/CD</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Xcode / RubyMine / Atom</td><td>IDEs</td><td><span class="badge badge-medium">MEDIUM</span></td></tr>
-            <tr><td>Amazon EC2 / AWS</td><td>Cloud</td><td><span class="badge badge-high">HIGH</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Dylan Field (Co-founder)</li>
-            <li><strong>CTO:</strong> Evan Wallace (Co-founder)</li>
+            <li>**CEO:** Dylan Field (Co-founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** Evan Wallace (Co-founder)</li>
           </ul>
         </div>
         <div class="content-block">
@@ -658,14 +662,14 @@
           <ul>
             <li>IPO'd Jul 2025 at $85/share</li>
             <li>Post-Adobe acquisition block, went independent</li>
-            <li><strong>61 tools tracked</strong> — polyglot engineering organization</li>
+            <li>**61 tools tracked** — polyglot engineering organization</li>
           </ul>
         </div>
         <div class="signals-box">
           <h4>Technographic Signals</h4>
           <ul>
             <li>C++/Rust for rendering engine — performance-critical, native code</li>
-            <li><strong>7+ programming languages</strong> — extremely polyglot</li>
+            <li>**7+ programming languages** — extremely polyglot</li>
             <li>Bitbucket (not GitHub) for version control — unusual for modern startups</li>
             <li>Electron for desktop — cross-platform approach</li>
             <li>Ruby/Sinatra backend components alongside Go — legacy + modern</li>
@@ -673,17 +677,17 @@
         </div>
       </section>
 
-      <!-- Gusto -->
+
       <section class="company-section" id="gusto">
         <div class="company-header">
           <h2>Gusto</h2>
           <span class="status-badge status-ipo">IPO-Track</span>
         </div>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">IPO Expected</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$9.3B</div></div>
+          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private (IPO expected)</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$9.3B (tender offer, Jun/Jul 2025, led by Ontario Teachers') — [EquityZen](https://equityzen.com/company/gusto/)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">N/A</div></div>
           <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$746M+</div></div>
-          <div class="stat-card"><div class="stat-label">Employees</div><div class="stat-value">2,800+</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -700,17 +704,17 @@
             <tr><td>React</td><td>Frontend</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Kubernetes</td><td>Orchestration</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Terraform</td><td>IaC</td><td><span class="badge badge-high">HIGH</span></td></tr>
+            <tr><td>Apex</td><td>Hosting</td><td><span class="badge badge-medium">MEDIUM</span></td></tr>
             <tr><td>NGINX</td><td>Web Server</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Apache Spark / Hadoop</td><td>Data Processing</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>GA / Mixpanel / Amplitude</td><td>Analytics</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Bugsnag</td><td>Error Monitoring</td><td><span class="badge badge-high">HIGH</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Josh Reeves (Co-founder)</li>
-            <li><strong>CTO:</strong> Edward Kim (Co-founder)</li>
+            <li>**CEO:** Josh Reeves (Co-founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** Edward Kim (Co-founder)</li>
           </ul>
         </div>
         <div class="content-block">
@@ -725,7 +729,7 @@
           <h4>Technographic Signals</h4>
           <ul>
             <li>Ruby on Rails monolith — classic startup architecture, likely undergoing modernization</li>
-            <li><strong>Triple analytics</strong> (GA + Mixpanel + Amplitude) — significant overlap, consolidation target</li>
+            <li>**Triple analytics** (GA + Mixpanel + Amplitude) — significant overlap, consolidation target</li>
             <li>Kubernetes + Terraform = cloud-native ops</li>
             <li>PHP presence suggests legacy components</li>
             <li>Bugsnag for monitoring — could be consolidated with observability stack</li>
@@ -733,34 +737,35 @@
         </div>
       </section>
 
-      <!-- Drata -->
+
       <section class="company-section" id="drata">
         <div class="company-header">
           <h2>Drata</h2>
-          <span class="status-badge status-private">Private</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">~$2B+</div></div>
-          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$328M</div></div>
-          <div class="stat-card"><div class="stat-label">Employees</div><div class="stat-value">201-500</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">~$2B+ (estimated, crossed $100M ARR in 2025)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">N/A</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$328M (Series C, Dec 2022, led by GGV Capital)</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
           <tbody>
-            <tr><td>(Tech stack not publicly listed)</td><td>—</td><td><span class="badge badge-low">LOW</span></td></tr>
+            <tr><td>*Tech stack not publicly listed on Himalayas*</td><td>—</td><td><span class="badge badge-—">—</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Adam Markowitz (Founder)</li>
+            <li>**CEO:** Adam Markowitz</li>
+            <li>**CFO:** Not publicly confirmed</li>
           </ul>
         </div>
         <div class="content-block">
           <h4>Recent News</h4>
           <ul>
-            <li>Crossed $100M ARR (2025)</li>
+            <li>Crossed $100M ARR (2025) — [Forbes via Vanta article](https://www.forbes.com/sites/phoebeliu/2025/07/23/christina-cacioppos-startup-vanta-raised-new-funds-at-a-4-billion-valuation-despite-not-needing-the-money/)</li>
             <li>Competing directly with Vanta in compliance automation</li>
             <li>201-500 employees</li>
           </ul>
@@ -775,17 +780,17 @@
         </div>
       </section>
 
-      <!-- Deel -->
+
       <section class="company-section" id="deel">
         <div class="company-header">
           <h2>Deel</h2>
-          <span class="status-badge status-private">Private</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$17.3B</div></div>
-          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">~$1.2B ARR</div></div>
-          <div class="stat-card"><div class="stat-label">Customers</div><div class="stat-value">37,000+</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$17.3B (Series E, Oct 2025, $300M led by Ribbit Capital + a16z) — [Reuters](https://www.reuters.com/business/payroll-platform-deel-valued-173-billion-latest-funding-round-2025-10-16/)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$100M/month (Sep 2025), ~$1.2B ARR — [BusinessWire](https://www.businesswire.com/news/home/20251016949787/en/Deel-Secures-$300-Million-in-Series-E-Funding)</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">N/A</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -799,22 +804,20 @@
             <tr><td>Varnish</td><td>Caching</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>NGINX</td><td>Web Server</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>axios</td><td>HTTP Client</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Lodash / Moment.js</td><td>Libraries</td><td><span class="badge badge-medium">MEDIUM</span></td></tr>
+            <tr><td>Lodash / Underscore / Moment.js</td><td>Libraries</td><td><span class="badge badge-medium">MEDIUM</span></td></tr>
             <tr><td>Snowflake</td><td>Data Warehouse</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Stitch / Fivetran</td><td>ETL</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Apache Spark</td><td>Data Processing</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>AWS Glue</td><td>ETL</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Amazon S3</td><td>Storage</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>dbt</td><td>Data Transform</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Airflow</td><td>Data Pipeline</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Amazon Route 53</td><td>DNS</td><td><span class="badge badge-high">HIGH</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Alex Bouaziz (Co-founder)</li>
-            <li><strong>CTO:</strong> Maor Sadra</li>
+            <li>**CEO:** Alex Bouaziz (Co-founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** Maor Sadra</li>
           </ul>
         </div>
         <div class="content-block">
@@ -829,25 +832,26 @@
         <div class="signals-box">
           <h4>Technographic Signals</h4>
           <ul>
-            <li><strong>Triple ETL tools</strong> (Stitch + Fivetran + AWS Glue) — significant overlap, consolidation target</li>
+            <li>**Dual ETL tools** (Stitch + Fivetran + AWS Glue) — significant overlap, consolidation target</li>
             <li>Modern data stack (Snowflake + dbt + Airflow)</li>
             <li>Varnish caching layer — performance optimization</li>
-            <li><strong>51 tools tracked</strong> — complex stack for a payroll/HR company</li>
+            <li>**51 tools tracked** — complex stack for a payroll/HR company</li>
+            <li>TypeScript-first frontend</li>
           </ul>
         </div>
       </section>
 
-      <!-- Clipboard Health -->
+
       <section class="company-section" id="clipboard">
         <div class="company-header">
           <h2>Clipboard Health</h2>
-          <span class="status-badge status-private">Private</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$1.3B</div></div>
-          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$90M</div></div>
-          <div class="stat-card"><div class="stat-label">Profitable</div><div class="stat-value">Yes</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$1.3B (2022, Series C) — [BusinessWire](https://www.businesswire.com/news/home/20220414005913/en/Clipboard-Health-Secures-Total-of-%2480M-in-Funding-Reaching-%241.3B-Valuation)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">N/A</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$90M (from IVP, Sequoia Capital)</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -868,7 +872,8 @@
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Wei Deng (Co-founder)</li>
+            <li>**CEO:** Wei Deng (Co-founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
           </ul>
         </div>
         <div class="content-block">
@@ -877,6 +882,7 @@
             <li>8 open remote jobs</li>
             <li>Known for extreme operational efficiency (profitable on modest funding)</li>
             <li>Healthcare staffing marketplace expanding</li>
+            <li>48 tools tracked</li>
           </ul>
         </div>
         <div class="signals-box">
@@ -886,34 +892,36 @@
             <li>Next.js + Express.js — modern Node-based full stack</li>
             <li>PHP legacy presence</li>
             <li>Jenkins CI/CD — could modernize to GitHub Actions</li>
-            <li><strong>Lean but effective stack</strong> — matches their efficiency-focused culture</li>
+            <li>**Lean but effective stack** — matches their efficiency-focused culture</li>
           </ul>
         </div>
       </section>
 
-      <!-- Cribl -->
+
       <section class="company-section" id="cribl">
         <div class="company-header">
           <h2>Cribl</h2>
-          <span class="status-badge status-private">Private</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$3.5B</div></div>
-          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">~$400M+</div></div>
-          <div class="stat-card"><div class="stat-label">Employees</div><div class="stat-value">201-500</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$3.5B (Aug 2024, Series D $150M led by Tiger Global) — [Tracxn](https://tracxn.com/d/companies/cribl/__7Pv_fYEa46f2NeM0yrFfv8V30Rx_NJjmIsj2CoarL5I/funding-and-investors)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">N/A</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">~$400M+ (IVP, CRV, Redpoint, Sequoia, Greylock)</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
           <tbody>
+            <tr><td>*Tech stack not publicly listed on Himalayas*</td><td>—</td><td><span class="badge badge-—">—</span></td></tr>
             <tr><td>Node.js / JavaScript</td><td>Core Platform</td><td><span class="badge badge-high">HIGH</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Clint Sharp (Co-founder)</li>
-            <li><strong>CTO:</strong> Ledion Bitincka (Co-founder)</li>
+            <li>**CEO:** Clint Sharp (Co-founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** Ledion Bitincka (Co-founder)</li>
           </ul>
         </div>
         <div class="content-block">
@@ -922,6 +930,7 @@
             <li>64 open remote jobs — rapid hiring</li>
             <li>Launched Cribl Search product</li>
             <li>Data observability/SIEM alternative positioning</li>
+            <li>Founded 2017, growing fast in observability space</li>
           </ul>
         </div>
         <div class="signals-box">
@@ -930,26 +939,27 @@
             <li>Product focuses on data routing/processing (log management, observability)</li>
             <li>Node.js-based product platform</li>
             <li>Competing with Splunk, Datadog — may use own product internally</li>
-            <li>Heavy enterprise sales focus</li>
+            <li>Heavy enterprise sales focus (sales roles in France, Nordics, LATAM)</li>
           </ul>
         </div>
       </section>
 
-      <!-- Contentful -->
+
       <section class="company-section" id="contentful">
         <div class="company-header">
           <h2>Contentful</h2>
-          <span class="status-badge status-private">Private</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$3B</div></div>
-          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$333M</div></div>
-          <div class="stat-card"><div class="stat-label">Employees</div><div class="stat-value">201-500</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$3B (Series F, Jun 2022) — [Tracxn](https://tracxn.com/d/companies/contentful/__u47BkcTe7gsCs5sTIt0pnl0Y5ayRFcHmSzTW9wad5ps)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">N/A</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$333M (Sapphire Ventures, Benchmark, Balderton Capital)</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
           <tbody>
+            <tr><td>*Tech stack not publicly listed on Himalayas*</td><td>—</td><td><span class="badge badge-—">—</span></td></tr>
             <tr><td>Node.js / JavaScript</td><td>Core Platform</td><td><span class="badge badge-medium">MEDIUM</span></td></tr>
             <tr><td>GraphQL</td><td>API</td><td><span class="badge badge-medium">MEDIUM</span></td></tr>
           </tbody>
@@ -957,8 +967,9 @@
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Karthik Rau (appointed CEO)</li>
-            <li><strong>Co-founders:</strong> Sascha Konietzke, Paolo Negri</li>
+            <li>**CEO:** Karthik Rau (not co-founder; appointed CEO)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**Co-founders:** Sascha Konietzke, Paolo Negri</li>
           </ul>
         </div>
         <div class="content-block">
@@ -979,17 +990,17 @@
         </div>
       </section>
 
-      <!-- Samsara -->
+
       <section class="company-section" id="samsara">
         <div class="company-header">
           <h2>Samsara</h2>
-          <span class="status-badge status-public">NYSE: IOT</span>
+          <span class="status-badge status-public">PUBLIC</span>
         </div>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">NYSE: IOT</div></div>
-          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$1.2B (FY2025)</div></div>
-          <div class="stat-card"><div class="stat-label">ARR</div><div class="stat-value">$1.35B</div></div>
-          <div class="stat-card"><div class="stat-label">Growth</div><div class="stat-value">35% YoY</div></div>
+          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Public (NYSE: IOT), IPO Dec 2021</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">N/A</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$1.2B (FY2025), $1.35B ARR — [StockTitan](https://www.stocktitan.net/financials/IOT/)</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">N/A</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -1009,16 +1020,14 @@
             <tr><td>Docker</td><td>Containers</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Jest / Cypress / Enzyme / pytest</td><td>Testing</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Webpack / rollup</td><td>Bundling</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>ESLint / Prettier</td><td>Code Quality</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Babel</td><td>Transpiler</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>AWS Amplify</td><td>Cloud</td><td><span class="badge badge-high">HIGH</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Sanjit Biswas (Co-founder)</li>
-            <li><strong>CFO:</strong> Dominic Phillips</li>
+            <li>**CEO:** Sanjit Biswas (Co-founder)</li>
+            <li>**CFO:** Dominic Phillips</li>
+            <li>**CTO:** Not publicly confirmed</li>
           </ul>
         </div>
         <div class="content-block">
@@ -1027,31 +1036,31 @@
             <li>$1.35B ARR, 35% growth</li>
             <li>Record free cash flow margin</li>
             <li>5 open remote jobs (lean hiring)</li>
-            <li><strong>111 tools tracked</strong> — largest stack in Dream 20</li>
+            <li>**111 tools tracked** — largest stack in Dream 20</li>
           </ul>
         </div>
         <div class="signals-box">
           <h4>Technographic Signals</h4>
           <ul>
-            <li><strong>Triple CI/CD</strong> (Jenkins + Buildkite + GitHub Actions) — significant overlap</li>
+            <li>**Triple CI/CD** (Jenkins + Buildkite + GitHub Actions) — significant overlap</li>
             <li>FreeRTOS for IoT firmware — hardware+software company</li>
             <li>React Native for mobile apps</li>
             <li>C/C++ for embedded systems alongside JavaScript/TypeScript for web</li>
-            <li><strong>111 tools</strong> — most complex stack in this list, consolidation opportunity</li>
+            <li>**111 tools** — most complex stack in this list, consolidation opportunity</li>
           </ul>
         </div>
       </section>
 
-      <!-- Ironclad -->
+
       <section class="company-section" id="ironclad">
         <div class="company-header">
           <h2>Ironclad</h2>
           <span class="status-badge status-ipo">IPO-Track</span>
         </div>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">IPO Expected</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$3.2B</div></div>
-          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$139.9M (2024)</div></div>
+          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$3.2B (Series E, Jan 2022, $150M) — [Forbes](https://www.forbes.com/sites/kenrickcai/2022/01/18/ironclad-series-e-3-billion-valuation/)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$139.9M (2024), crossed $100M ARR in 2024 — [GetLatka](https://getlatka.com/companies/ironclad), [Sacra](https://sacra.com/c/ironclad/)</div></div>
           <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$333M</div></div>
         </div>
         <table class="data-table">
@@ -1065,20 +1074,21 @@
             <tr><td>Rust</td><td>Systems</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>R Language</td><td>Data Science</td><td><span class="badge badge-medium">MEDIUM</span></td></tr>
             <tr><td>GraphQL</td><td>API</td><td><span class="badge badge-high">HIGH</span></td></tr>
+            <tr><td>ES6</td><td>Language</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Selenium</td><td>Testing</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>GitHub</td><td>VCS</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Kubernetes</td><td>Orchestration</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>CircleCI</td><td>CI/CD</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Terraform</td><td>IaC</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>Babel / Webpack</td><td>Build</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Ansible / Chef / Puppet</td><td>Config Mgmt</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Docker</td><td>Containers</td><td><span class="badge badge-high">HIGH</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Jason Boehmig (Co-founder)</li>
+            <li>**CEO:** Jason Boehmig (Co-founder)</li>
+            <li>**CFO:** Hired ~2022 (per Forbes, not named publicly)</li>
+            <li>**COO:** Hired ~2022</li>
           </ul>
         </div>
         <div class="content-block">
@@ -1087,14 +1097,14 @@
             <li>Crossed $100M ARR milestone (2024)</li>
             <li>AI contract lifecycle management push</li>
             <li>16 open remote jobs</li>
-            <li><strong>76 tools tracked</strong></li>
-            <li>IPO 'on the horizon' per CEO</li>
+            <li>**76 tools tracked**</li>
+            <li>IPO "on the horizon" per CEO</li>
           </ul>
         </div>
         <div class="signals-box">
           <h4>Technographic Signals</h4>
           <ul>
-            <li><strong>Triple config management</strong> (Ansible + Chef + Puppet) — major consolidation opportunity</li>
+            <li>**Triple config management** (Ansible + Chef + Puppet) — major consolidation opportunity</li>
             <li>Polyglot: Node.js + Python + Java + Go + Rust — 5 backend languages</li>
             <li>CircleCI CI/CD — single pipeline</li>
             <li>Kubernetes + Terraform + Docker = cloud-native</li>
@@ -1103,21 +1113,22 @@
         </div>
       </section>
 
-      <!-- Gong -->
+
       <section class="company-section" id="gong">
         <div class="company-header">
           <h2>Gong</h2>
           <span class="status-badge status-ipo">IPO-Track</span>
         </div>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">IPO Expected</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$7.25B→$4.5B</div></div>
-          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$332.3M (2024)</div></div>
+          <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$7.25B (Series E, Jun 2021, $250M led by Franklin Templeton) — [Gong.io](https://www.gong.io/press/gong-raises-250-million-in-series-e-funding-at-7-25-billion-valuation)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">$332.3M (2024), $300M+ ARR (Mar 2025) — [TechCrunch](https://techcrunch.com/2025/03/05/revenue-prediction-startup-gong-surpasses-300m-arr-indicating-potential-ipo-path/), [GetLatka](https://getlatka.com/companies/gong)</div></div>
           <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$584M</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
           <tbody>
+            <tr><td>*Himalayas page matched wrong "Gong" (gong.pl)*</td><td>—</td><td><span class="badge badge-—">—</span></td></tr>
             <tr><td>AI/ML pipeline</td><td>Core Product</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>AWS</td><td>Cloud</td><td><span class="badge badge-medium">MEDIUM</span></td></tr>
           </tbody>
@@ -1125,8 +1136,9 @@
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Amit Bendov (Co-founder)</li>
-            <li><strong>CTO:</strong> Eilon Reshef (Co-founder)</li>
+            <li>**CEO:** Amit Bendov (Co-founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** Eilon Reshef (Co-founder)</li>
           </ul>
         </div>
         <div class="content-block">
@@ -1148,17 +1160,17 @@
         </div>
       </section>
 
-      <!-- Attentive -->
+
       <section class="company-section" id="attentive">
         <div class="company-header">
           <h2>Attentive</h2>
-          <span class="status-badge status-private">Private</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$2.2B</div></div>
-          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">~$1.03B</div></div>
-          <div class="stat-card"><div class="stat-label">Customers</div><div class="stat-value">4,000+</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$2.2B (unicorn) — [Tracxn](https://tracxn.com/d/companies/attentive-mobile/__Bm1bmB7yNvRxyFFWGPXRjgSFWmwN7XLJlUkjLgEMd70/funding-and-investors)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">N/A</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">~$1.03B — [TexAu](https://www.texau.com/profiles/attentive-mobile)</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -1178,14 +1190,14 @@
             <tr><td>Shopify</td><td>Integration</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>PyTorch</td><td>ML/AI</td><td><span class="badge badge-high">HIGH</span></td></tr>
             <tr><td>scikit-learn</td><td>ML</td><td><span class="badge badge-high">HIGH</span></td></tr>
-            <tr><td>Salesforce</td><td>CRM</td><td><span class="badge badge-high">HIGH</span></td></tr>
           </tbody>
         </table>
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Brian Long (Co-founder)</li>
-            <li><strong>CTO:</strong> Andrew Jones (Co-founder)</li>
+            <li>**CEO:** Brian Long (Co-founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** Andrew Jones (Co-founder)</li>
           </ul>
         </div>
         <div class="content-block">
@@ -1199,26 +1211,27 @@
         <div class="signals-box">
           <h4>Technographic Signals</h4>
           <ul>
-            <li><strong>Java-first backend</strong> — enterprise-grade</li>
-            <li><strong>Heavy ML stack</strong> (PyTorch + XGBoost + scikit-learn) — AI-driven messaging optimization</li>
+            <li>**Java-first backend** — enterprise-grade</li>
+            <li>**Heavy ML stack** (PyTorch + XGBoost + scikit-learn) — AI-driven messaging optimization</li>
             <li>Istio service mesh + Kubernetes — mature microservices</li>
             <li>Argo for GitOps — modern deployment pipeline</li>
             <li>gRPC for internal services — performance-optimized</li>
+            <li>Salesforce integration — CRM dependency</li>
           </ul>
         </div>
       </section>
 
-      <!-- Highspot -->
+
       <section class="company-section" id="highspot">
         <div class="company-header">
           <h2>Highspot</h2>
-          <span class="status-badge status-private">Private</span>
+          <span class="status-badge status-private">PRIVATE</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Private</div></div>
-          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$3.5B</div></div>
-          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">~$450M (2024)</div></div>
-          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$654M</div></div>
+          <div class="stat-card"><div class="stat-label">Valuation</div><div class="stat-value">$3.5B (Series F, Jan 2022, $248M) — [GetLatka](https://getlatka.com/companies/highspot)</div></div>
+          <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">~$450M (2024) — GetLatka</div></div>
+          <div class="stat-card"><div class="stat-label">Total Funding</div><div class="stat-value">$654M over 8 rounds — [Tracxn](https://tracxn.com/d/companies/highspot/__PPhZESHiCoCqgJDNeNITX1Z5cVnKG57SVmeRGUsNPHU/funding-and-investors)</div></div>
         </div>
         <table class="data-table">
           <thead><tr><th>Tool</th><th>Category</th><th>Confidence</th></tr></thead>
@@ -1239,8 +1252,9 @@
         <div class="content-block">
           <h4>Key Executives</h4>
           <ul>
-            <li><strong>CEO:</strong> Robert Wahbe (Co-founder)</li>
-            <li><strong>CTO:</strong> Oliver Sharp (Co-founder)</li>
+            <li>**CEO:** Robert Wahbe (Co-founder)</li>
+            <li>**CFO:** Not publicly confirmed</li>
+            <li>**CTO:** Oliver Sharp (Co-founder)</li>
           </ul>
         </div>
         <div class="content-block">
@@ -1254,31 +1268,48 @@
         <div class="signals-box">
           <h4>Technographic Signals</h4>
           <ul>
-            <li><strong>CoffeeScript + ActionScript present</strong> — significant legacy code signal</li>
+            <li>**CoffeeScript + ActionScript present** — significant legacy code signal</li>
             <li>jQuery frontend — not modernized to React/Vue</li>
             <li>Only 14 tools tracked — either very lean or limited public data</li>
             <li>Cloudflare for CDN/security — standard</li>
-            <li><strong>Legacy modernization opportunity</strong> — strongest legacy signals in Dream 20</li>
+            <li>**Legacy modernization opportunity** — strongest legacy signals in Dream 20</li>
           </ul>
         </div>
       </section>
 
     </main>
   </div>
+
   <script>
     // IntersectionObserver for active nav highlighting
     const sections = document.querySelectorAll('.company-section');
-    const navLinks = document.querySelectorAll('.side-nav a');
+    const navLinks = document.querySelectorAll('.side-nav a[href^="#"]');
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: '-50% 0px -50% 0px',
+      threshold: 0
+    };
+    
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           navLinks.forEach(link => link.classList.remove('active'));
-          const active = document.querySelector('.side-nav a[data-section="' + entry.target.id + '"]');
-          if (active) active.classList.add('active');
+          const activeLink = document.querySelector(`.side-nav a[href="#${entry.target.id}"]`);
+          if (activeLink) activeLink.classList.add('active');
         }
       });
-    }, { rootMargin: '-20% 0px -70% 0px' });
-    sections.forEach(s => observer.observe(s));
+    }, observerOptions);
+    
+    sections.forEach(section => observer.observe(section));
+    
+    // Close mobile nav on link click
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelector('.side-nav').classList.remove('open');
+      });
+    });
   </script>
+  <script src="/nav.js"></script>
 </body>
 </html>
