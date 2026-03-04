@@ -16,7 +16,7 @@
         </div>
         <div class="nav-dd">
           <button class="nav-dd-btn">Research ▾</button>
-          <div class="nav-dd-menu"><a href="/rpe/">RPE Report</a></div>
+          <div class="nav-dd-menu"><a href="/rpe/">RPE Report</a><a href="/pricing/">Pricing Strategy</a></div>
         </div>
       </div>
     </div>
