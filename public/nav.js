@@ -7,16 +7,19 @@
       <a href="/" style="color:#fff;text-decoration:none;font-weight:700;font-size:15px;letter-spacing:-0.3px;">ChatB2B</a>
       <div style="display:flex;gap:24px;position:relative;" id="nav-links">
         <div class="nav-dd">
-          <button class="nav-dd-btn">Compliance ▾</button>
-          <div class="nav-dd-menu"><a href="/soc2/">SOC 2 Tracker</a></div>
-        </div>
-        <div class="nav-dd">
           <button class="nav-dd-btn">GTM ▾</button>
-          <div class="nav-dd-menu"><a href="/icp/">Account Universe</a><a href="/dream20/">Dream 20</a><a href="/surveys/">Surveys</a></div>
+          <div class="nav-dd-menu">
+            <a href="/icp/">ICP & Account Universe</a>
+            <a href="/dream20/">Dream 20</a>
+            <a href="/surveys/">Survey Results</a>
+          </div>
         </div>
         <div class="nav-dd">
           <button class="nav-dd-btn">Research ▾</button>
-          <div class="nav-dd-menu"><a href="/rpe/">RPE Report</a><a href="/pricing/">Pricing Strategy</a></div>
+          <div class="nav-dd-menu">
+            <a href="/rpe/">RPE Report</a>
+            <a href="/pricing/">Pricing Strategy</a>
+          </div>
         </div>
       </div>
     </div>
@@ -33,17 +36,18 @@
       background: none; border: none; color: #ccc; font: inherit; font-size: 13px;
       cursor: pointer; padding: 4px 0; font-weight: 500;
     }
-    .nav-dd-btn:hover { color: #01696f; }
+    .nav-dd-btn:hover { color: #3b82f6; }
     .nav-dd-menu {
       display: none; position: absolute; top: 100%; right: 0;
-      background: #2a2a2a; border: 1px solid #333; min-width: 160px;
-      padding: 4px 0; margin-top: 8px;
+      background: #2a2a2a; border: 1px solid #333; min-width: 180px;
+      padding: 4px 0; margin-top: 8px; border-radius: 6px;
     }
     .nav-dd:hover .nav-dd-menu { display: block; }
     .nav-dd-menu a {
-      display: block; padding: 8px 16px; color: #ccc; text-decoration: none; font-size: 13px;
+      display: block; padding: 10px 16px; color: #ccc; text-decoration: none; font-size: 13px;
+      transition: all 0.15s;
     }
-    .nav-dd-menu a:hover { background: #333; color: #01696f; }
+    .nav-dd-menu a:hover { background: #333; color: #3b82f6; }
   `;
 
   document.head.appendChild(style);
