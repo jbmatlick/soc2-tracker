@@ -16,21 +16,21 @@
   --font-body: 'Inter', system-ui, sans-serif;
 
   /* Custom dark palette */
-  --color-bg:             #0d1117;
-  --color-surface:        #161b22;
-  --color-surface-2:      #1c2128;
-  --color-surface-offset: #1a1f27;
-  --color-border:         #30363d;
-  --color-divider:        #21262d;
+  --color-bg:             #ffffff;
+  --color-surface:        #f7f7f7;
+  --color-surface-2:      #fafafa;
+  --color-surface-offset: #f0f0f0;
+  --color-border:         #e5e5e5;
+  --color-divider:        #e5e5e5;
 
-  --color-text:           #e6edf3;
-  --color-text-muted:     #8b949e;
-  --color-text-faint:     #484f58;
+  --color-text:           #1a1a1a;
+  --color-text-muted:     #666666;
+  --color-text-faint:     #999999;
 
   --color-primary:        #01696f;
-  --color-primary-bright: #14b8a6;
-  --color-primary-dim:    #0a3d40;
-  --color-primary-hover:  #017a80;
+  --color-primary-bright: #0d9488;
+  --color-primary-dim:    rgba(1,105,111,0.1);
+  --color-primary-hover:  #005f63;
 
   --color-accent-warm:    #f59e0b;
   --color-accent-blue:    #3b82f6;
@@ -186,7 +186,7 @@ h1, h2, h3, h4 { text-wrap: balance; line-height: 1.2; }
 }
 .nav-item:hover {
   color: var(--color-text);
-  background: rgba(255,255,255,0.04);
+  background: rgba(0,0,0,0.03);
 }
 .nav-item.active {
   color: var(--color-primary-bright);
@@ -382,8 +382,8 @@ table th {
 }
 
 table tr:last-child td { border-bottom: none; }
-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
-table tr:hover td { background: rgba(255,255,255,0.04); }
+table tr:nth-child(even) td { background: rgba(0,0,0,0.02); }
+table tr:hover td { background: rgba(0,0,0,0.03); }
 
 td.num { font-variant-numeric: tabular-nums lining-nums; text-align: right; }
 th.num { text-align: right; }
@@ -401,8 +401,8 @@ th.num { text-align: right; }
 .badge.green { background: rgba(34,197,94,0.15); color: #4ade80; }
 .badge.red   { background: rgba(239,68,68,0.15);  color: #f87171; }
 .badge.yellow{ background: rgba(245,158,11,0.15); color: #fbbf24; }
-.badge.teal  { background: rgba(20,184,166,0.15); color: #2dd4bf; }
-.badge.gray  { background: rgba(139,148,158,0.15); color: #8b949e; }
+.badge.teal  { background: rgba(1,105,111,0.15); color: #01696f; }
+.badge.gray  { background: rgba(102,102,102,0.15); color: #666666; }
 
 /* ============================================================
    PRICING CARDS
@@ -509,7 +509,7 @@ th.num { text-align: right; }
 
 .scenario-btn:hover:not(.active) {
   color: var(--color-text);
-  background: rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.04);
 }
 
 /* ============================================================
@@ -673,7 +673,7 @@ th.num { text-align: right; }
 /* ============================================================
    UNIT ECONOMICS TABLE HIGHLIGHT
    ============================================================ */
-.highlight-row td { background: rgba(20,184,166,0.06) !important; }
+.highlight-row td { background: rgba(1,105,111,0.08) !important; }
 .highlight-row td:first-child { border-left: 2px solid var(--color-primary-bright); }
 
 /* ============================================================
@@ -746,7 +746,7 @@ th.num { text-align: right; }
 }
 
 .insight-box {
-  background: rgba(20,184,166,0.06);
+  background: rgba(1,105,111,0.08);
   border: 1px solid rgba(20,184,166,0.2);
   border-radius: var(--radius-md);
   padding: var(--space-4) var(--space-5);
@@ -2169,21 +2169,21 @@ th.num { text-align: right; }
 /* ============================================================
    CHART.JS DEFAULTS
    ============================================================ */
-Chart.defaults.color = '#8b949e';
-Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
+Chart.defaults.color = '#666666';
+Chart.defaults.borderColor = 'rgba(229,229,229,0.8)';
 Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
 Chart.defaults.font.size = 11;
 Chart.defaults.plugins.legend.labels.boxWidth = 12;
 Chart.defaults.plugins.legend.labels.padding = 16;
 Chart.defaults.animation = false;
 
-const TEAL     = '#14b8a6';
-const TEAL_DIM = 'rgba(20,184,166,0.15)';
+const TEAL     = '#01696f';
+const TEAL_DIM = 'rgba(1,105,111,0.15)';
 const GOLD     = '#f59e0b';
 const GOLD_DIM = 'rgba(245,158,11,0.15)';
 const BLUE     = '#3b82f6';
 const BLUE_DIM = 'rgba(59,130,246,0.15)';
-const GRAY     = '#484f58';
+const GRAY     = '#999999';
 const SURFACE  = '#161b22';
 
 /* ============================================================
@@ -2317,7 +2317,7 @@ document.addEventListener('DOMContentLoaded', function() {
       datasets: [
         { label: 'StackMap™', data: [12.5, 140, 700], backgroundColor: 'rgba(59,130,246,0.6)', borderColor: BLUE, borderWidth: 1, borderRadius: 3 },
         { label: 'StackBench™', data: [17.5, 200, 1000], backgroundColor: 'rgba(245,158,11,0.6)', borderColor: GOLD, borderWidth: 1, borderRadius: 3 },
-        { label: 'TechGraph™', data: [0, 50, 550], backgroundColor: 'rgba(139,148,158,0.5)', borderColor: '#8b949e', borderWidth: 1, borderRadius: 3 },
+        { label: 'TechGraph™', data: [0, 50, 550], backgroundColor: 'rgba(102,102,102,0.3)', borderColor: '#666666', borderWidth: 1, borderRadius: 3 },
         { label: 'RenewalRadar™', data: [0, 100, 1250], backgroundColor: TEAL_DIM, borderColor: TEAL, borderWidth: 1.5, borderRadius: 3 }
       ]
     },
@@ -2345,7 +2345,7 @@ document.addEventListener('DOMContentLoaded', function() {
       datasets: [
         { label: 'Optimistic', data: viabilityData.optimistic, borderColor: GOLD, backgroundColor: GOLD_DIM, fill: false, borderWidth: 2, pointRadius: 0, tension: 0.3 },
         { label: 'Base Case', data: viabilityData.base, borderColor: TEAL, backgroundColor: TEAL_DIM, fill: false, borderWidth: 2, pointRadius: 0, tension: 0.3 },
-        { label: 'Conservative', data: viabilityData.conservative, borderColor: '#484f58', backgroundColor: 'rgba(72,79,88,0.1)', fill: false, borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Conservative', data: viabilityData.conservative, borderColor: '#999999', backgroundColor: 'rgba(153,153,153,0.1)', fill: false, borderWidth: 2, pointRadius: 0, tension: 0.3 },
         { label: 'Viability Threshold (2,500)', data: Array(24).fill(2500), borderColor: 'rgba(239,68,68,0.6)', borderDash: [6,4], fill: false, borderWidth: 1.5, pointRadius: 0 }
       ]
     },

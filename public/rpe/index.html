@@ -11,17 +11,17 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #0d1117;
-  --surface: #161b22;
-  --surface-hover: #1c2129;
-  --border: #30363d;
-  --text-primary: #e6edf3;
-  --text-muted: #8b949e;
-  --text-faint: #484f58;
-  --daas: #58a6ff;
-  --saas: #3fb950;
-  --ai: #d2a8ff;
-  --sig: #f0883e;
+  --bg: #ffffff;
+  --surface: #f7f7f7;
+  --surface-hover: #f0f0f0;
+  --border: #e5e5e5;
+  --text-primary: #1a1a1a;
+  --text-muted: #666666;
+  --text-faint: #999999;
+  --daas: #0969da;
+  --saas: #1a7f37;
+  --ai: #8250df;
+  --sig: #d1650e;
   --danger: #f85149;
   --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
@@ -37,7 +37,7 @@ body {
 /* === NAV === */
 .nav {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(13,17,23,0.92);
+  background: rgba(255,255,255,0.95);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   padding: 0 24px;
@@ -128,7 +128,7 @@ th {
 th:hover { color: var(--text-primary); }
 th .sort-arrow { font-size: 10px; margin-left: 4px; opacity: 0.5; }
 th.sorted .sort-arrow { opacity: 1; }
-td { padding: 8px 12px; border-bottom: 1px solid rgba(48,54,61,0.5); white-space: nowrap; }
+td { padding: 8px 12px; border-bottom: 1px solid rgba(229,229,229,0.6); white-space: nowrap; }
 tr:hover td { background: var(--surface-hover); }
 .cohort-badge {
   display: inline-block; padding: 2px 8px; border-radius: 4px;
@@ -618,8 +618,8 @@ const COLORS_ALPHA = { DaaS: 'rgba(88,166,255,0.7)', SaaS: 'rgba(63,185,80,0.7)'
 const COLORS_BG = { DaaS: 'rgba(88,166,255,0.15)', SaaS: 'rgba(63,185,80,0.15)', 'AI-First': 'rgba(210,168,255,0.15)' };
 
 // Global Chart.js defaults
-Chart.defaults.color = '#8b949e';
-Chart.defaults.borderColor = 'rgba(48,54,61,0.6)';
+Chart.defaults.color = '#666666';
+Chart.defaults.borderColor = 'rgba(229,229,229,0.8)';
 Chart.defaults.font.family = "'Inter', sans-serif";
 Chart.defaults.font.size = 12;
 Chart.defaults.plugins.legend.display = false;
@@ -690,7 +690,7 @@ function buildChartA() {
       scales: {
         x: {
           ticks: { callback: v => fmtK(v) },
-          grid: { color: 'rgba(48,54,61,0.4)' }
+          grid: { color: '#e5e5e5' }
         },
         y: {
           ticks: { font: { size: 11 } },
@@ -799,7 +799,7 @@ function buildChartB() {
         x: { grid: { display: false } },
         y: {
           ticks: { callback: v => fmtK(v) },
-          grid: { color: 'rgba(48,54,61,0.4)' }
+          grid: { color: '#e5e5e5' }
         }
       }
     }
@@ -850,13 +850,13 @@ function buildChartC() {
         x: {
           title: { display: true, text: 'Gross Margin (%)', color: '#8b949e' },
           ticks: { callback: v => v + '%' },
-          grid: { color: 'rgba(48,54,61,0.4)' },
+          grid: { color: '#e5e5e5' },
           min: -60, // Clip extreme outliers (SERV is -492%)
         },
         y: {
           title: { display: true, text: 'Revenue Per Employee', color: '#8b949e' },
           ticks: { callback: v => fmtK(v) },
-          grid: { color: 'rgba(48,54,61,0.4)' }
+          grid: { color: '#e5e5e5' }
         }
       }
     }
@@ -902,7 +902,7 @@ function buildChartD() {
         x: { grid: { display: false } },
         y: {
           ticks: { callback: v => fmtK(v) },
-          grid: { color: 'rgba(48,54,61,0.4)' }
+          grid: { color: '#e5e5e5' }
         }
       }
     }
@@ -944,7 +944,7 @@ function buildChartE() {
         x: { grid: { display: false } },
         y: {
           ticks: { callback: v => fmtK(v) },
-          grid: { color: 'rgba(48,54,61,0.4)' },
+          grid: { color: '#e5e5e5' },
           beginAtZero: true
         }
       }
