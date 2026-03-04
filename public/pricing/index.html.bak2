@@ -1,0 +1,2503 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShrinkMyStack — Pricing & DaaS Monetization Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Custom dark palette */
+  --color-bg:             #ffffff;
+  --color-surface:        #f7f7f7;
+  --color-surface-2:      #fafafa;
+  --color-surface-offset: #f0f0f0;
+  --color-border:         #e5e5e5;
+  --color-divider:        #e5e5e5;
+
+  --color-text:           #1a1a1a;
+  --color-text-muted:     #666666;
+  --color-text-faint:     #999999;
+
+  --color-primary:        #01696f;
+  --color-primary-bright: #0d9488;
+  --color-primary-dim:    rgba(1,105,111,0.1);
+  --color-primary-hover:  #005f63;
+
+  --color-accent-warm:    #f59e0b;
+  --color-accent-blue:    #3b82f6;
+  --color-success:        #22c55e;
+  --color-warning:        #f59e0b;
+  --color-error:          #ef4444;
+
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  --text-xs:   clamp(0.7rem,  0.65rem + 0.25vw, 0.8rem);
+  --text-sm:   clamp(0.8rem,  0.75rem + 0.25vw, 0.875rem);
+  --text-base: clamp(0.875rem,0.8rem  + 0.35vw, 1rem);
+  --text-lg:   clamp(1rem,    0.9rem  + 0.5vw,  1.25rem);
+  --text-xl:   clamp(1.25rem, 1rem    + 1vw,    1.75rem);
+  --text-2xl:  clamp(1.5rem,  1.1rem  + 1.5vw,  2.25rem);
+  --text-3xl:  clamp(2rem,    1.2rem  + 2.5vw,  3rem);
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --sidebar-width: 220px;
+  --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  background: var(--color-bg);
+  min-height: 100dvh;
+  line-height: 1.6;
+}
+img, svg { display: block; max-width: 100%; }
+button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+table { border-collapse: collapse; width: 100%; }
+p, li { max-width: 72ch; text-wrap: pretty; }
+h1, h2, h3, h4 { text-wrap: balance; line-height: 1.2; }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: 100dvh;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100dvh;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  padding: var(--space-6) var(--space-5);
+  border-bottom: 1px solid var(--color-divider);
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.brand-logo svg { flex-shrink: 0; }
+
+.brand-name {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.brand-subtitle {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.sidebar-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.sidebar-meta span {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+}
+
+.sidebar-nav {
+  padding: var(--space-4) 0;
+  flex: 1;
+}
+
+.nav-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: var(--space-4) var(--space-5) var(--space-2);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+.nav-item:hover {
+  color: var(--color-text);
+  background: rgba(255,255,255,0.04);
+}
+.nav-item.active {
+  color: var(--color-primary-bright);
+  border-left-color: var(--color-primary-bright);
+  background: rgba(20, 184, 166, 0.07);
+}
+.nav-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-faint);
+  width: 18px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.nav-item.active .nav-num { color: var(--color-primary-bright); }
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.main {
+  margin-left: var(--sidebar-width);
+  min-width: 0;
+}
+
+.section {
+  padding: var(--space-16) var(--space-12);
+  border-bottom: 1px solid var(--color-divider);
+  max-width: 1100px;
+}
+
+.section:last-child { border-bottom: none; }
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.section-num {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-primary-bright);
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.section-tag {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-3);
+}
+
+.section-subtitle {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-8);
+  max-width: 65ch;
+}
+
+/* ============================================================
+   KPI CARDS
+   ============================================================ */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.kpi-grid.cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.kpi-grid.cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.kpi-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+}
+
+.kpi-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.kpi-value {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.02em;
+}
+
+.kpi-value.teal { color: var(--color-primary-bright); }
+.kpi-value.gold { color: var(--color-accent-warm); }
+.kpi-value.blue { color: var(--color-accent-blue); }
+
+.kpi-meta {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
+
+/* ============================================================
+   CHART CONTAINERS
+   ============================================================ */
+.chart-container {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.chart-header {
+  margin-bottom: var(--space-5);
+}
+
+.chart-title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+}
+
+.chart-caption {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.chart-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  margin-bottom: var(--space-6);
+}
+
+table th, table td {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-xs);
+  text-align: left;
+  border-bottom: 1px solid var(--color-divider);
+  font-variant-numeric: tabular-nums;
+}
+
+table th {
+  background: var(--color-primary-dim);
+  color: var(--color-primary-bright);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+table tr:last-child td { border-bottom: none; }
+table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+table tr:hover td { background: rgba(255,255,255,0.04); }
+
+td.num { font-variant-numeric: tabular-nums lining-nums; text-align: right; }
+th.num { text-align: right; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.badge.green { background: rgba(34,197,94,0.15); color: #4ade80; }
+.badge.red   { background: rgba(239,68,68,0.15);  color: #f87171; }
+.badge.yellow{ background: rgba(245,158,11,0.15); color: #fbbf24; }
+.badge.teal  { background: rgba(20,184,166,0.15); color: #2dd4bf; }
+.badge.gray  { background: rgba(139,148,158,0.15); color: #8b949e; }
+
+/* ============================================================
+   PRICING CARDS
+   ============================================================ */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.pricing-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-card.featured {
+  border-color: var(--color-primary-bright);
+  background: linear-gradient(180deg, rgba(20,184,166,0.06) 0%, var(--color-surface) 100%);
+}
+
+.pricing-tier {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.pricing-tier.teal { color: var(--color-primary-bright); }
+
+.pricing-price {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.pricing-cadence {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  margin-bottom: var(--space-5);
+}
+
+.pricing-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.pricing-features li {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+.pricing-features li::before {
+  content: "—";
+  color: var(--color-primary-bright);
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* ============================================================
+   SCENARIO SELECTOR
+   ============================================================ */
+.scenario-selector {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  background: var(--color-surface-2, var(--color-surface));
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  width: fit-content;
+  border: 1px solid var(--color-border);
+}
+
+.scenario-btn {
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: all var(--transition);
+  letter-spacing: 0.02em;
+}
+
+.scenario-btn.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.scenario-btn:hover:not(.active) {
+  color: var(--color-text);
+  background: rgba(255,255,255,0.06);
+}
+
+/* ============================================================
+   TIMELINE / PHASE
+   ============================================================ */
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.phase-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.phase-num {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-primary-bright);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+}
+
+.phase-title {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+}
+
+.phase-period {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.phase-objectives {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.phase-objectives li {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  display: flex;
+  gap: var(--space-2);
+  max-width: 100%;
+}
+
+.phase-objectives li::before {
+  content: "›";
+  color: var(--color-primary-bright);
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+/* ============================================================
+   KILL CONDITIONS
+   ============================================================ */
+.kill-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.kill-section-title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-text-faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-divider);
+  margin-bottom: var(--space-3);
+}
+
+.kill-row {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 2fr;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  align-items: start;
+}
+
+.kill-row:hover { border-color: rgba(255,255,255,0.12); }
+
+.kill-label { font-size: var(--text-xs); color: var(--color-text-muted); }
+.kill-value { font-size: var(--text-xs); font-weight: 600; color: var(--color-text); }
+.kill-deadline { font-size: var(--text-xs); color: var(--color-accent-warm); font-weight: 600; }
+.kill-action { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+/* ============================================================
+   FUNDRAISING
+   ============================================================ */
+.fund-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.fund-box {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.fund-box.highlight {
+  border-color: var(--color-primary);
+  background: linear-gradient(135deg, rgba(1,105,111,0.1), var(--color-surface));
+}
+
+/* ============================================================
+   EXECUTIVE SUMMARY — THESIS CARDS
+   ============================================================ */
+.thesis-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.thesis-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.thesis-icon {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-3);
+  display: block;
+}
+
+.thesis-card-title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+
+.thesis-card-body {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.65;
+}
+
+/* ============================================================
+   UNIT ECONOMICS TABLE HIGHLIGHT
+   ============================================================ */
+.highlight-row td { background: rgba(20,184,166,0.06) !important; }
+.highlight-row td:first-child { border-left: 2px solid var(--color-primary-bright); }
+
+/* ============================================================
+   PRODUCT CARDS
+   ============================================================ */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.product-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.product-name {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-primary-bright);
+  margin-bottom: var(--space-2);
+}
+
+.product-desc {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+  line-height: 1.65;
+}
+
+.product-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.product-stat { text-align: center; }
+.product-stat-val {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+.product-stat-val.zero { color: var(--color-text-faint); }
+.product-stat-label {
+  font-size: 10px;
+  color: var(--color-text-faint);
+  margin-top: 2px;
+}
+
+/* ============================================================
+   DIVIDER / HELPER
+   ============================================================ */
+.row-divider {
+  border: none;
+  border-top: 1px solid var(--color-divider);
+  margin: var(--space-8) 0;
+}
+
+.label-block {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-faint);
+  margin-bottom: var(--space-3);
+}
+
+.insight-box {
+  background: rgba(20,184,166,0.06);
+  border: 1px solid rgba(20,184,166,0.2);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.insight-box p {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.insight-box strong { color: var(--color-primary-bright); }
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+@media (max-width: 900px) {
+  :root { --sidebar-width: 0px; }
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  .section { padding: var(--space-10) var(--space-6); }
+  .chart-grid-2 { grid-template-columns: 1fr; }
+  .phase-grid { grid-template-columns: 1fr; }
+  .fund-grid { grid-template-columns: 1fr; }
+  .product-grid { grid-template-columns: 1fr; }
+  .thesis-grid { grid-template-columns: 1fr; }
+  .kill-row { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .kpi-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .pricing-grid { grid-template-columns: 1fr 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body style="padding-top:48px;">
+
+<!-- SIDEBAR -->
+<nav class="sidebar" aria-label="Report navigation">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-label="ShrinkMyStack logo">
+        <rect width="28" height="28" rx="6" fill="#01696f"/>
+        <path d="M7 14 L14 7 L21 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M9 18 L14 13 L19 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.6"/>
+        <path d="M11 22 L14 19 L17 22" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.3"/>
+      </svg>
+      <div>
+        <div class="brand-name">ShrinkMyStack</div>
+        <div class="brand-subtitle">Strategy Report</div>
+      </div>
+    </div>
+    <div class="sidebar-meta">
+      <span>March 3, 2026 · v1.0</span>
+      <span>Confidential — Board Use Only</span>
+    </div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-label">Sections</div>
+    <a href="#exec-summary" class="nav-item active"><span class="nav-num">01</span> Executive Summary</a>
+    <a href="#competitive" class="nav-item"><span class="nav-num">02</span> SaaS Landscape</a>
+    <a href="#daas-market" class="nav-item"><span class="nav-num">03</span> DaaS Opportunity</a>
+    <a href="#pricing" class="nav-item"><span class="nav-num">04</span> Pricing Architecture</a>
+    <a href="#daas-products" class="nav-item"><span class="nav-num">05</span> DaaS Product Suite</a>
+    <a href="#financial" class="nav-item"><span class="nav-num">06</span> Financial Model</a>
+    <a href="#gtm" class="nav-item"><span class="nav-num">07</span> Go-to-Market</a>
+    <a href="#kill" class="nav-item"><span class="nav-num">08</span> Kill Conditions</a>
+    <a href="#fundraising" class="nav-item"><span class="nav-num">09</span> Fundraising</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ============================================================
+     01. EXECUTIVE SUMMARY
+     ============================================================ -->
+<section class="section" id="exec-summary">
+  <div class="section-eyebrow">
+    <span class="section-num">01</span>
+    <span class="section-tag">Overview</span>
+  </div>
+  <h1 class="section-title">The Dual-Revenue Thesis</h1>
+  <p class="section-subtitle">ShrinkMyStack enters the SaaS management market at $29/mo — a price point no competitor occupies — and builds a proprietary data asset that becomes a second, higher-margin revenue stream.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Entry Price</div>
+      <div class="kpi-value teal">$29<span style="font-size: var(--text-sm); font-weight: 500; color: var(--color-text-muted)">/mo</span></div>
+      <div class="kpi-meta">3× cheaper than nearest competitor</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Market Gap</div>
+      <div class="kpi-value">$0–$75</div>
+      <div class="kpi-meta">Genuinely unoccupied segment</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Seed Ask</div>
+      <div class="kpi-value gold">$2.5–3.5M</div>
+      <div class="kpi-meta">$10M–$15M pre-money</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">DaaS Viable</div>
+      <div class="kpi-value teal">Mo. 13</div>
+      <div class="kpi-meta">Base case (2,662 contributors)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Month 24 ARR (Base)</div>
+      <div class="kpi-value blue">$2.7M</div>
+      <div class="kpi-meta">SaaS · 87% of total</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">DaaS at 10K users</div>
+      <div class="kpi-value gold">$1.7–5.3M</div>
+      <div class="kpi-meta">Annual revenue potential</div>
+    </div>
+  </div>
+
+  <div class="thesis-grid">
+    <div class="thesis-card">
+      <span class="thesis-icon">◆</span>
+      <div class="thesis-card-title">SaaS Revenue — The Foundation</div>
+      <p class="thesis-card-body">$29/mo Pro tier targets the 5–200 employee company that has never heard of Zylo or Torii. No per-employee pricing, no sales call required, free permanent audit. 3× cheaper than Cledara Basic ($75/mo) — the current market floor.</p>
+    </div>
+    <div class="thesis-card">
+      <span class="thesis-icon">◈</span>
+      <div class="thesis-card-title">Data Asset — The Moat</div>
+      <p class="thesis-card-body">Every paid user contributes anonymous SaaS stack metadata (50–60% opt-in). At 2,500+ contributors, this becomes a licensable data product — renewal timing, stack composition, adoption trends — sold to intent data platforms and ABM vendors.</p>
+    </div>
+    <div class="thesis-card">
+      <span class="thesis-icon">◉</span>
+      <div class="thesis-card-title">The Flywheel</div>
+      <p class="thesis-card-body">More users → better benchmarking data → higher opt-in rates → more DaaS revenue → fund more user acquisition. Erik Matlick built Bombora from 0 to 2,500 contributing sites in Year 1. He's doing it again with a SaaS product as the data collection layer.</p>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <p><strong>The dual-revenue thesis in three sentences:</strong> ShrinkMyStack's $29/mo pricing creates a defensible SaaS business in a market white space that no incumbent is positioned to match (they'd have to cut prices 60–70%). Every paid user who opts in (projected 50–60%) generates proprietary SaaS stack metadata that becomes a licensable data product at Month 13 in the base case, commanding $25K–$100K annual contracts from intent data platforms, ABM vendors, and PE firms. The DaaS layer adds $1.7M–$5.3M ARR at 10,000 paid users — but only if we execute the privacy-first, incentive-driven opt-in model correctly, keeping the data play as the business model, never the brand promise.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     02. SAAS COMPETITIVE LANDSCAPE
+     ============================================================ -->
+<section class="section" id="competitive">
+  <div class="section-eyebrow">
+    <span class="section-num">02</span>
+    <span class="section-tag">Competitive Analysis</span>
+  </div>
+  <h2 class="section-title">SaaS Management Landscape</h2>
+  <p class="section-subtitle">13 competitors mapped. The $0–$75/mo segment is genuinely unoccupied by any credible SaaS management tool.</p>
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="chart-title">Competitive Pricing Landscape — Monthly Entry Price</div>
+      <div class="chart-caption">The $29/mo ShrinkMyStack Pro tier has no direct competitors. Nearest credible competitor is Cledara at $75/mo.</div>
+    </div>
+    <div class="chart-wrap" style="height: 380px;">
+      <canvas id="competitorChart"></canvas>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Competitor</th>
+          <th>Entry Price</th>
+          <th>Model</th>
+          <th>Target</th>
+          <th>Free Tier?</th>
+          <th>Pricing Public?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight-row">
+          <td><strong style="color: var(--color-primary-bright)">ShrinkMyStack Pro</strong></td>
+          <td><strong style="color: var(--color-primary-bright)">$29/mo</strong></td>
+          <td>Flat rate</td>
+          <td>5–200 employees</td>
+          <td><span class="badge green">Yes — full audit</span></td>
+          <td><span class="badge green">Yes</span></td>
+        </tr>
+        <tr>
+          <td>BetterCloud Discover</td>
+          <td>$3/user/mo</td>
+          <td>Per user</td>
+          <td>SMB–Enterprise</td>
+          <td><span class="badge yellow">Limited $0 tier</span></td>
+          <td><span class="badge yellow">Partial</span></td>
+        </tr>
+        <tr>
+          <td>Cledara Basic</td>
+          <td>$75/mo</td>
+          <td>Flat rate</td>
+          <td>SMB / Growth</td>
+          <td><span class="badge red">Trial only</span></td>
+          <td><span class="badge green">Yes</span></td>
+        </tr>
+        <tr>
+          <td>Substly</td>
+          <td>$95/mo</td>
+          <td>Flat rate</td>
+          <td>SMB</td>
+          <td><span class="badge red">Trial only</span></td>
+          <td><span class="badge green">Yes</span></td>
+        </tr>
+        <tr>
+          <td>Torii Basic</td>
+          <td>$2.50/emp/mo (~$250 min)</td>
+          <td>Per employee</td>
+          <td>SMB–Enterprise</td>
+          <td><span class="badge red">Trial only</span></td>
+          <td><span class="badge yellow">Partial</span></td>
+        </tr>
+        <tr>
+          <td>Sastrify</td>
+          <td>€12,500/yr (~$13.5K)</td>
+          <td>Modular annual</td>
+          <td>Mid-market+</td>
+          <td><span class="badge red">None</span></td>
+          <td><span class="badge green">Yes</span></td>
+        </tr>
+        <tr>
+          <td>Spendflo Starter</td>
+          <td>$18,000/yr</td>
+          <td>Annual</td>
+          <td>Mid-market+</td>
+          <td><span class="badge yellow">Lead gen only</span></td>
+          <td><span class="badge yellow">Partial</span></td>
+        </tr>
+        <tr>
+          <td>Vendr Pricing Agent</td>
+          <td>$200/user/mo</td>
+          <td>Per user</td>
+          <td>Startup–Enterprise</td>
+          <td><span class="badge red">Discontinued</span></td>
+          <td><span class="badge yellow">Partial</span></td>
+        </tr>
+        <tr>
+          <td>Zluri</td>
+          <td>~$4–8/user/mo (est.)</td>
+          <td>Per user</td>
+          <td>Mid-market+</td>
+          <td><span class="badge red">Trial only</span></td>
+          <td><span class="badge red">No — sales only</span></td>
+        </tr>
+        <tr>
+          <td>Zylo</td>
+          <td>~$35K–$45K/yr (est.)</td>
+          <td>Custom</td>
+          <td>Mid-market+</td>
+          <td><span class="badge red">None</span></td>
+          <td><span class="badge red">No — sales only</span></td>
+        </tr>
+        <tr>
+          <td>Productiv</td>
+          <td>Undisclosed</td>
+          <td>Custom enterprise</td>
+          <td>Enterprise</td>
+          <td><span class="badge red">Trial only</span></td>
+          <td><span class="badge red">No — sales only</span></td>
+        </tr>
+        <tr>
+          <td>Blissfully</td>
+          <td>N/A (acquired)</td>
+          <td>—</td>
+          <td>Mid-market</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Cleanshelf</td>
+          <td>N/A (acquired)</td>
+          <td>—</td>
+          <td>Enterprise</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight-box">
+    <p>At <strong>50 employees</strong>, ShrinkMyStack costs $288–$348/year. Cledara: $900/year. BetterCloud (Discover): $1,800/year. Torii: $1,500/year. The nearest self-serve competitor is 3× more expensive. The pricing gap at $29/mo is not incremental positioning — it is a <strong>market-creation decision</strong> targeting the segment that has never heard of any of these tools.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     03. DaaS MARKET OPPORTUNITY
+     ============================================================ -->
+<section class="section" id="daas-market">
+  <div class="section-eyebrow">
+    <span class="section-num">03</span>
+    <span class="section-tag">Market Analysis</span>
+  </div>
+  <h2 class="section-title">DaaS Market Opportunity</h2>
+  <p class="section-subtitle">The B2B intent data market is $1.5–2.5B and growing 10–17% CAGR. No one owns the SaaS install base + renewal timing signal — it's a whitespace.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Intent Data Market</div>
+      <div class="kpi-value teal">$1.5–2.5B</div>
+      <div class="kpi-meta">2025 · 10–17% CAGR</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Renewal Data Premium</div>
+      <div class="kpi-value gold">10–20×</div>
+      <div class="kpi-meta">vs. topic-level intent</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Bombora (comp) ACV</div>
+      <div class="kpi-value">$25K–300K</div>
+      <div class="kpi-meta">Per data buyer annually</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">DaaS Gross Margin</div>
+      <div class="kpi-value teal">70–80%</div>
+      <div class="kpi-meta">vs. 82–85% SaaS</div>
+    </div>
+  </div>
+
+  <div class="chart-grid-2">
+    <div class="chart-container" style="margin-bottom: 0;">
+      <div class="chart-header">
+        <div class="chart-title">Intent Data CPM by Signal Type</div>
+        <div class="chart-caption">Renewal timing (deterministic) commands 10–20× premium over generic topic intent</div>
+      </div>
+      <div class="chart-wrap" style="height: 280px;">
+        <canvas id="cpmChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-container" style="margin-bottom: 0;">
+      <div class="chart-header">
+        <div class="chart-title">Provider Annual Contract Values</div>
+        <div class="chart-caption">Niche install base data commands $25K–$75K; renewal timing $50K–$150K</div>
+      </div>
+      <div class="chart-wrap" style="height: 280px;">
+        <canvas id="providerChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <hr class="row-divider">
+
+  <div class="label-block">Renewal Timing Signal — Why It Commands a Premium</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Signal Type</th>
+          <th>Nature</th>
+          <th>ACV Range</th>
+          <th>Key Provider</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Topic-Level Intent</td>
+          <td>Probabilistic — company <em>might</em> be in-market</td>
+          <td>$25K–$100K/yr</td>
+          <td>Bombora</td>
+        </tr>
+        <tr>
+          <td>Contact-Level Intent</td>
+          <td>Probabilistic — individual researching</td>
+          <td>$60K–$180K/yr</td>
+          <td>TechTarget Priority Engine</td>
+        </tr>
+        <tr>
+          <td>Install Base Data</td>
+          <td>Deterministic — company <em>uses</em> tool</td>
+          <td>$24K–$150K/yr</td>
+          <td>ZoomInfo, DiscoverOrg</td>
+        </tr>
+        <tr class="highlight-row">
+          <td><strong>Renewal Timing</strong></td>
+          <td><strong>Deterministic — company <em>will</em> evaluate at known date</strong></td>
+          <td><strong>$50K–$200K/yr</strong></td>
+          <td><strong>ShrinkMyStack (RenewalRadar)</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================
+     04. PRICING ARCHITECTURE
+     ============================================================ -->
+<section class="section" id="pricing">
+  <div class="section-eyebrow">
+    <span class="section-num">04</span>
+    <span class="section-tag">Product Strategy</span>
+  </div>
+  <h2 class="section-title">Recommended Pricing Architecture</h2>
+  <p class="section-subtitle">4-tier structure. Flat-rate pricing. No per-employee tax. Full self-serve. Data sharing incentivized, never mandated.</p>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-tier">Free</div>
+      <div class="pricing-price">$0</div>
+      <div class="pricing-cadence">Permanent · 1 user · 25 apps</div>
+      <ul class="pricing-features">
+        <li>One-time SaaS stack audit</li>
+        <li>App discovery (up to 25 apps)</li>
+        <li>Duplicate/overlap detection</li>
+        <li>Spend summary + PDF export</li>
+        <li style="color: var(--color-text-faint);">No monitoring or alerts</li>
+        <li style="color: var(--color-text-faint);">Not eligible for data co-op</li>
+      </ul>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-tier teal">Pro — Core Tier</div>
+      <div class="pricing-price">$29<span style="font-size: var(--text-sm); font-weight: 400; color: var(--color-text-muted)">/mo</span></div>
+      <div class="pricing-cadence">$24/mo annual · $288/yr · 17% off</div>
+      <ul class="pricing-features">
+        <li>Continuous monitoring (150 apps)</li>
+        <li>Renewal calendar + 90/60/30-day alerts</li>
+        <li>Optimization recommendations</li>
+        <li>Basic benchmarking</li>
+        <li>Slack/Teams + QuickBooks/Xero</li>
+        <li>Data sharing: <span style="color: var(--color-primary-bright)">+$5/mo credit + enhanced benchmarks</span></li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-tier">Team</div>
+      <div class="pricing-price">$99<span style="font-size: var(--text-sm); font-weight: 400; color: var(--color-text-muted)">/mo</span></div>
+      <div class="pricing-cadence">$83/mo annual · $996/yr · 16% off · +$15/user</div>
+      <ul class="pricing-features">
+        <li>5 users included</li>
+        <li>Unlimited apps tracked</li>
+        <li>Approval workflows</li>
+        <li>Vendor-level price benchmarks</li>
+        <li>SSO (Okta, Azure AD)</li>
+        <li>Data sharing: <span style="color: var(--color-primary-bright)">+ Vendor Intelligence panel</span></li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-tier">Enterprise</div>
+      <div class="pricing-price">Custom</div>
+      <div class="pricing-cadence">$299+/mo · unlimited users</div>
+      <ul class="pricing-features">
+        <li>API access (read + write)</li>
+        <li>Custom integrations (Workday, SAP)</li>
+        <li>Dedicated CSM + QBRs</li>
+        <li>SOC 2 Type II · SAML SSO</li>
+        <li>99.9% SLA uptime</li>
+        <li>Data sharing: Custom agreements</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="label-block">Unit Economics by Tier</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="num">Free</th>
+          <th class="num">Pro ($29/mo)</th>
+          <th class="num">Pro Annual ($24/mo)</th>
+          <th class="num">Team ($99/mo)</th>
+          <th class="num">Team Annual ($83/mo)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ARPU/mo</td>
+          <td class="num">$0</td>
+          <td class="num">$29</td>
+          <td class="num">$24</td>
+          <td class="num">$129*</td>
+          <td class="num">$108*</td>
+        </tr>
+        <tr>
+          <td>Avg. Lifetime</td>
+          <td class="num">1 audit</td>
+          <td class="num">14–20 mo</td>
+          <td class="num">12 mo (committed)</td>
+          <td class="num">24–33 mo</td>
+          <td class="num">12 mo (committed)</td>
+        </tr>
+        <tr>
+          <td>Gross LTV</td>
+          <td class="num">$0</td>
+          <td class="num">$406–$580</td>
+          <td class="num">$288</td>
+          <td class="num">$3,096–$4,257</td>
+          <td class="num">$1,296</td>
+        </tr>
+        <tr>
+          <td>CAC</td>
+          <td class="num">$2–$5</td>
+          <td class="num">$85–$100</td>
+          <td class="num">$85–$100</td>
+          <td class="num">$120–$180</td>
+          <td class="num">$120–$180</td>
+        </tr>
+        <tr class="highlight-row">
+          <td><strong>LTV:CAC</strong></td>
+          <td class="num">—</td>
+          <td class="num"><strong>3.4×–5.7×</strong></td>
+          <td class="num"><strong>2.4×–2.8×</strong></td>
+          <td class="num"><strong>14.5×–29.8×</strong></td>
+          <td class="num"><strong>6.1×–9.1×</strong></td>
+        </tr>
+        <tr>
+          <td>Payback Period</td>
+          <td class="num">—</td>
+          <td class="num">3–4 months</td>
+          <td class="num">0 (prepaid)</td>
+          <td class="num">1–2 months</td>
+          <td class="num">0 (prepaid)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size: var(--text-xs); color: var(--color-text-faint); margin-bottom: var(--space-6);">*Team ARPU includes average of 1.5 additional users beyond the 5 included ($129 = $99 + $15×2)</p>
+
+  <div class="label-block">Data Sharing Opt-In Design</div>
+  <div class="insight-box">
+    <p>Survey data mandates privacy-first messaging (Cohen's d=1.46 — one of the largest effect sizes in B2B research). Data sharing scores 3.5/5.0 (moderate positive); metadata retention scores below 3.0 (net negative). The co-op messaging framing incurs a <strong>−0.51 trust penalty</strong>. Design principle: data sharing is a background feature with an incentive layer, never the headline. Pro data sharers receive <strong>$5/mo credit + enhanced benchmarks</strong>; Team sharers unlock the <strong>Vendor Intelligence panel</strong> — aggregate renewal timing and negotiation leverage data.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     05. DaaS PRODUCT SUITE
+     ============================================================ -->
+<section class="section" id="daas-products">
+  <div class="section-eyebrow">
+    <span class="section-num">05</span>
+    <span class="section-tag">Product Strategy</span>
+  </div>
+  <h2 class="section-title">DaaS Product Suite</h2>
+  <p class="section-subtitle">Four data products sequenced by data availability. StackMap launches first (lowest threshold). RenewalRadar last (highest value, highest bar).</p>
+
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-name">StackMap™ — Phase 1 (Mo. 6–12)</div>
+      <p class="product-desc">Co-occurrence database revealing which SaaS tools are commonly used together, segmented by company size, industry, and growth stage. Lowest data threshold — works from point-in-time snapshots. Doubles as content marketing.</p>
+      <div style="margin-bottom: var(--space-3);">
+        <span class="badge teal">Viable @ 500 users</span>
+        <span class="badge yellow" style="margin-left: var(--space-2);">250 contributors needed</span>
+      </div>
+      <div class="product-stats">
+        <div class="product-stat">
+          <div class="product-stat-val">$5–20K</div>
+          <div class="product-stat-label">500 paid users</div>
+        </div>
+        <div class="product-stat">
+          <div class="product-stat-val">$80–200K</div>
+          <div class="product-stat-label">2K paid users</div>
+        </div>
+        <div class="product-stat">
+          <div class="product-stat-val">$400K–1M</div>
+          <div class="product-stat-label">10K paid users</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-name">StackBench™ — Phase 2 (Mo. 12–18)</div>
+      <p class="product-desc">Anonymized benchmarking data on SaaS spending patterns: price per seat by vendor, utilization rates, contract terms, and spend-by-category. Requires ~1,000 contributors; category-level aggregation is viable before per-vendor depth.</p>
+      <div style="margin-bottom: var(--space-3);">
+        <span class="badge yellow">Viable @ 2,000 users</span>
+        <span class="badge gray" style="margin-left: var(--space-2);">1,100 contributors needed</span>
+      </div>
+      <div class="product-stats">
+        <div class="product-stat">
+          <div class="product-stat-val zero">$10–25K</div>
+          <div class="product-stat-label">500 paid users</div>
+        </div>
+        <div class="product-stat">
+          <div class="product-stat-val">$100–300K</div>
+          <div class="product-stat-label">2K paid users</div>
+        </div>
+        <div class="product-stat">
+          <div class="product-stat-val">$500K–1.5M</div>
+          <div class="product-stat-label">10K paid users</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-name">TechGraph™ — Phase 3 (Mo. 18–24)</div>
+      <p class="product-desc">Longitudinal dataset tracking technology adoption and churn patterns — which tools are being adopted, which replaced, and migration paths between them. Requires TIME more than volume: 12+ months of observation from 2,000+ users.</p>
+      <div style="margin-bottom: var(--space-3);">
+        <span class="badge gray">Viable @ 10,000 users + 12 mo data</span>
+      </div>
+      <div class="product-stats">
+        <div class="product-stat">
+          <div class="product-stat-val zero">$0</div>
+          <div class="product-stat-label">500 paid users</div>
+        </div>
+        <div class="product-stat">
+          <div class="product-stat-val">$25–75K</div>
+          <div class="product-stat-label">2K paid users</div>
+        </div>
+        <div class="product-stat">
+          <div class="product-stat-val">$300–800K</div>
+          <div class="product-stat-label">10K paid users</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-name">RenewalRadar™ — Phase 4 (Mo. 24+)</div>
+      <p class="product-desc">Structured database of SaaS vendor contract renewal windows by buyer company, vendor, and quarter. The highest-value signal (deterministic trigger vs. probabilistic intent). Commands 10–20× premium over topic-level intent data. Highest threshold.</p>
+      <div style="margin-bottom: var(--space-3);">
+        <span class="badge red">Requires 5,000+ users</span>
+        <span class="badge red" style="margin-left: var(--space-2);">2,900 contributors</span>
+      </div>
+      <div class="product-stats">
+        <div class="product-stat">
+          <div class="product-stat-val zero">$0</div>
+          <div class="product-stat-label">500 paid users</div>
+        </div>
+        <div class="product-stat">
+          <div class="product-stat-val">$50–150K</div>
+          <div class="product-stat-label">2K paid users</div>
+        </div>
+        <div class="product-stat">
+          <div class="product-stat-val">$500K–2M</div>
+          <div class="product-stat-label">10K paid users</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="chart-title">DaaS Revenue Potential by Product & User Scale (Annual)</div>
+      <div class="chart-caption">Midpoint of range for each scenario. StackMap viable first; RenewalRadar highest ceiling.</div>
+    </div>
+    <div class="chart-wrap" style="height: 320px;">
+      <canvas id="daasRevenueChart"></canvas>
+    </div>
+  </div>
+
+  <div class="label-block">Launch Sequencing Timeline</div>
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="chart-title">DaaS Viability — When Each Scenario Crosses the 2,500-Contributor Threshold</div>
+      <div class="chart-caption">Viability threshold based on Bombora benchmark (~2,500 contributing sources at profitability)</div>
+    </div>
+    <div class="chart-wrap" style="height: 280px;">
+      <canvas id="viabilityChart"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     06. FINANCIAL MODEL
+     ============================================================ -->
+<section class="section" id="financial">
+  <div class="section-eyebrow">
+    <span class="section-num">06</span>
+    <span class="section-tag">24-Month Financial Model</span>
+  </div>
+  <h2 class="section-title">Financial Projections</h2>
+  <p class="section-subtitle">Month-by-month model across three scenarios. All numbers from the financial model — no estimates. Select scenario to update charts.</p>
+
+  <div class="scenario-selector" id="scenarioSelector">
+    <button class="scenario-btn active" data-scenario="base">Base Case</button>
+    <button class="scenario-btn" data-scenario="conservative">Conservative</button>
+    <button class="scenario-btn" data-scenario="optimistic">Optimistic</button>
+  </div>
+
+  <!-- Summary KPIs that update with scenario -->
+  <div class="kpi-grid" id="scenarioKpis">
+    <div class="kpi-card">
+      <div class="kpi-label">Month 24 Total Users</div>
+      <div class="kpi-value teal" id="kpi-users">23,535</div>
+      <div class="kpi-meta" id="kpi-users-meta">5,535 paid</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Month 24 SaaS MRR</div>
+      <div class="kpi-value" id="kpi-mrr">$221.7K</div>
+      <div class="kpi-meta" id="kpi-arr">$2.7M ARR</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Month 24 DaaS MRR</div>
+      <div class="kpi-value gold" id="kpi-daas">$33.3K</div>
+      <div class="kpi-meta" id="kpi-daas-buyers">10 data buyers</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">DaaS Viability</div>
+      <div class="kpi-value teal" id="kpi-viable">Month 13</div>
+      <div class="kpi-meta" id="kpi-viable-meta">Mar-27 · 2,662 contributors</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Month 24 Burn Rate</div>
+      <div class="kpi-value" id="kpi-burn">$99.4K</div>
+      <div class="kpi-meta" id="kpi-burn-meta">Monthly net</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Cumulative Revenue</div>
+      <div class="kpi-value blue" id="kpi-cumrev">$1.5M</div>
+      <div class="kpi-meta">24 months total</div>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="chart-title">24-Month SaaS Revenue Trajectory — All Scenarios</div>
+      <div class="chart-caption">Monthly SaaS MRR. Conservative: 5% → 3% churn. Base: same. Optimistic: 8% → conversion rate.</div>
+    </div>
+    <div class="chart-wrap" style="height: 320px;">
+      <canvas id="saasRevenueChart"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-grid-2">
+    <div class="chart-container" style="margin-bottom: 0;">
+      <div class="chart-header">
+        <div class="chart-title">User Growth</div>
+        <div class="chart-caption">Total users (free + paid) — selected scenario</div>
+      </div>
+      <div class="chart-wrap" style="height: 260px;">
+        <canvas id="userGrowthChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-container" style="margin-bottom: 0;">
+      <div class="chart-header">
+        <div class="chart-title">Monthly Burn Rate</div>
+        <div class="chart-caption">Revenue vs. cost — selected scenario</div>
+      </div>
+      <div class="chart-wrap" style="height: 260px;">
+        <canvas id="burnChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-container" style="margin-top: var(--space-6);">
+    <div class="chart-header">
+      <div class="chart-title">Revenue Mix Evolution — Base Case</div>
+      <div class="chart-caption">SaaS vs. DaaS monthly revenue. DaaS activates in Month 13 (Mar-27).</div>
+    </div>
+    <div class="chart-wrap" style="height: 300px;">
+      <canvas id="revenueMixChart"></canvas>
+    </div>
+  </div>
+
+  <hr class="row-divider">
+
+  <div class="label-block">Unit Economics at Key Milestones</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="num">Base Mo. 6</th>
+          <th class="num">Base Mo. 12</th>
+          <th class="num">Base Mo. 18</th>
+          <th class="num">Base Mo. 24</th>
+          <th class="num">Opt. Mo. 24</th>
+          <th class="num">Cons. Mo. 24</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Blended CAC</td>
+          <td class="num">$477</td>
+          <td class="num">$255</td>
+          <td class="num">$200</td>
+          <td class="num">$178</td>
+          <td class="num">$142</td>
+          <td class="num">$229</td>
+        </tr>
+        <tr>
+          <td>Monthly ARPU (paid)</td>
+          <td class="num">$30</td>
+          <td class="num">$34</td>
+          <td class="num">$38</td>
+          <td class="num">$40</td>
+          <td class="num">$44</td>
+          <td class="num">$36</td>
+        </tr>
+        <tr>
+          <td>Monthly Churn Rate</td>
+          <td class="num">5%</td>
+          <td class="num">5%</td>
+          <td class="num">3%</td>
+          <td class="num">3%</td>
+          <td class="num">3%</td>
+          <td class="num">3%</td>
+        </tr>
+        <tr>
+          <td>SaaS LTV</td>
+          <td class="num">$509</td>
+          <td class="num">$584</td>
+          <td class="num">$1.1K</td>
+          <td class="num">$1.1K</td>
+          <td class="num">$1.2K</td>
+          <td class="num">$1.0K</td>
+        </tr>
+        <tr>
+          <td>Combined LTV (incl. DaaS)</td>
+          <td class="num">$509</td>
+          <td class="num">$584</td>
+          <td class="num">$1.3K</td>
+          <td class="num">$1.3K</td>
+          <td class="num">$1.4K</td>
+          <td class="num">$1.2K</td>
+        </tr>
+        <tr class="highlight-row">
+          <td><strong>LTV:CAC Ratio</strong></td>
+          <td class="num"><strong>1.1×</strong></td>
+          <td class="num"><strong>2.3×</strong></td>
+          <td class="num"><strong>6.4×</strong></td>
+          <td class="num"><strong>7.3×</strong></td>
+          <td class="num"><strong>9.9×</strong></td>
+          <td class="num"><strong>5.1×</strong></td>
+        </tr>
+        <tr>
+          <td>Payback Period</td>
+          <td class="num">18.7 mo</td>
+          <td class="num">8.7 mo</td>
+          <td class="num">6.2 mo</td>
+          <td class="num">5.2 mo</td>
+          <td class="num">3.8 mo</td>
+          <td class="num">7.5 mo</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="row-divider">
+
+  <div class="label-block">DaaS Viability Summary</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Opt-in Rate</th>
+          <th class="num">Users Needed</th>
+          <th>Month Achieved</th>
+          <th class="num">Contributors at Mo. 24</th>
+          <th>DaaS Mo. 24 MRR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Conservative</td>
+          <td>50%</td>
+          <td class="num">5,000</td>
+          <td>Month 18 (Aug-27)</td>
+          <td class="num">5,974</td>
+          <td>$10.4K</td>
+        </tr>
+        <tr class="highlight-row">
+          <td><strong>Base</strong></td>
+          <td>55%</td>
+          <td class="num">4,546</td>
+          <td><strong>Month 13 (Mar-27)</strong></td>
+          <td class="num">12,944</td>
+          <td><strong>$33.3K</strong></td>
+        </tr>
+        <tr>
+          <td>Optimistic</td>
+          <td>60%</td>
+          <td class="num">4,167</td>
+          <td>Month 10 (Dec-26)</td>
+          <td class="num">27,329</td>
+          <td>$90.0K</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================
+     07. DaaS GO-TO-MARKET
+     ============================================================ -->
+<section class="section" id="gtm">
+  <div class="section-eyebrow">
+    <span class="section-num">07</span>
+    <span class="section-tag">Strategy</span>
+  </div>
+  <h2 class="section-title">DaaS Go-to-Market</h2>
+  <p class="section-subtitle">Three-phase strategy. Phase 1 is SaaS-only. DaaS is invisible to users until Phase 2. Erik Matlick's network is the single biggest unfair advantage.</p>
+
+  <div class="phase-grid">
+    <div class="phase-card">
+      <div class="phase-num">Phase 1</div>
+      <div class="phase-title">Foundation</div>
+      <div class="phase-period">Mo. 0–6 · Mar–Sep 2026</div>
+      <ul class="phase-objectives">
+        <li>Launch SaaS at $29/mo · Target 500 users</li>
+        <li>Build anonymized telemetry pipeline (Day 1)</li>
+        <li>Implement privacy-first consent (Level 1 + 2)</li>
+        <li>Erik: 10 warm intros to intent data buyers</li>
+        <li>Register on Snowflake + AWS marketplaces</li>
+        <li>Hire Senior Data Engineer (Month 2)</li>
+        <li><strong>Do NOT mention data monetization publicly</strong></li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 2</div>
+      <div class="phase-title">Data Asset Building</div>
+      <div class="phase-period">Mo. 6–18 · Sep 2026–Sep 2027</div>
+      <ul class="phase-objectives">
+        <li>Reach 2,000+ active users</li>
+        <li>Month 9: First Snowflake listing (StackMap v1)</li>
+        <li>Month 10: First AWS Data Exchange listing</li>
+        <li>Month 12: First 3 direct data licensing deals ($25–50K each)</li>
+        <li>Month 14: Renewal Timing Signal beta</li>
+        <li>Month 18: $100K–$300K DaaS ARR target</li>
+        <li>Bombora data exchange conversation (Mo. 8–10)</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 3</div>
+      <div class="phase-title">Scale & Positioning</div>
+      <div class="phase-period">Mo. 18–36 · Sep 2027–Sep 2028</div>
+      <ul class="phase-objectives">
+        <li>5,000+ users · $1M+ DaaS ARR target</li>
+        <li>3 data products live</li>
+        <li>Month 24: 10–15 direct licensing customers</li>
+        <li>Month 24: 20–30 marketplace customers</li>
+        <li>ZoomInfo Operations partnership (Mo. 24–30)</li>
+        <li>Formal Bombora/Informa TechTarget agreement</li>
+        <li>Series A preparation · $8M–$15M raise</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="label-block">Channel Strategy</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th>Revenue Share</th>
+          <th>ACV Range</th>
+          <th>When</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Direct Licensing</td>
+          <td>60–70% of DaaS</td>
+          <td>$25K–$200K/yr</td>
+          <td>Phase 2+</td>
+          <td>Erik's network · enterprise buyer</td>
+        </tr>
+        <tr>
+          <td>Snowflake Marketplace</td>
+          <td>~95% net (no platform fee)</td>
+          <td>$500–$2K/mo</td>
+          <td>Month 9</td>
+          <td>Discovery engine · mid-market</td>
+        </tr>
+        <tr>
+          <td>AWS Data Exchange</td>
+          <td>97% net (3% fulfillment fee)</td>
+          <td>$3K–$6K/yr</td>
+          <td>Month 10</td>
+          <td>$6K/yr per subscriber</td>
+        </tr>
+        <tr>
+          <td>ABM Platforms (reseller)</td>
+          <td>Negotiated rev share</td>
+          <td>Revenue share deal</td>
+          <td>Phase 3</td>
+          <td>6sense, Demandbase, Cognism</td>
+        </tr>
+        <tr>
+          <td>LiveRamp Programmatic</td>
+          <td>$5–$15 CPM</td>
+          <td>~$100K/yr at scale</td>
+          <td>Month 24+</td>
+          <td>Incremental, low-effort</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================
+     08. KILL CONDITIONS
+     ============================================================ -->
+<section class="section" id="kill">
+  <div class="section-eyebrow">
+    <span class="section-num">08</span>
+    <span class="section-tag">Risk Management</span>
+  </div>
+  <h2 class="section-title">Kill Conditions</h2>
+  <p class="section-subtitle">Hard lines with specific numbers and mandatory fallback actions. If triggered, the fallback is not optional.</p>
+
+  <div class="kill-matrix">
+    <div class="kill-section-title">01 — User Acquisition</div>
+
+    <div class="kill-row">
+      <div>
+        <div class="kill-label">Condition</div>
+        <div class="kill-value">Active paying users &lt;50</div>
+      </div>
+      <div>
+        <div class="kill-label">Threshold</div>
+        <div class="kill-value"><span class="badge red">RED</span></div>
+      </div>
+      <div>
+        <div class="kill-label">Deadline</div>
+        <div class="kill-deadline">Month 3 · Jun 2026</div>
+      </div>
+      <div>
+        <div class="kill-label">Fallback</div>
+        <div class="kill-action">Extend free tier. If &lt;100 free users by Month 6, pivot to consulting. DaaS paused indefinitely.</div>
+      </div>
+    </div>
+
+    <div class="kill-row">
+      <div>
+        <div class="kill-label">Condition</div>
+        <div class="kill-value">Active paying users &lt;200</div>
+      </div>
+      <div>
+        <div class="kill-label">Threshold</div>
+        <div class="kill-value"><span class="badge red">RED</span></div>
+      </div>
+      <div>
+        <div class="kill-label">Deadline</div>
+        <div class="kill-deadline">Month 6 · Sep 2026</div>
+      </div>
+      <div>
+        <div class="kill-label">Fallback</div>
+        <div class="kill-action">DaaS formally paused. All data engineering redirects to SaaS. Re-evaluate at Month 9.</div>
+      </div>
+    </div>
+
+    <div class="kill-row">
+      <div>
+        <div class="kill-label">Condition</div>
+        <div class="kill-value">Active paying users &lt;500</div>
+      </div>
+      <div>
+        <div class="kill-label">Threshold</div>
+        <div class="kill-value"><span class="badge red">RED</span></div>
+      </div>
+      <div>
+        <div class="kill-label">Deadline</div>
+        <div class="kill-deadline">Month 12 · Mar 2027</div>
+      </div>
+      <div>
+        <div class="kill-label">Fallback</div>
+        <div class="kill-action">DaaS abandoned this cycle. Raise as pure SaaS. Data infrastructure preserved as latent asset.</div>
+      </div>
+    </div>
+
+    <div class="kill-section-title">02 — Data Sharing Opt-In</div>
+
+    <div class="kill-row">
+      <div>
+        <div class="kill-label">Condition</div>
+        <div class="kill-value">Level 1 opt-in &lt;40%</div>
+      </div>
+      <div>
+        <div class="kill-label">Threshold</div>
+        <div class="kill-value"><span class="badge yellow">YELLOW</span></div>
+      </div>
+      <div>
+        <div class="kill-label">Deadline</div>
+        <div class="kill-deadline">Month 6 · Sep 2026</div>
+      </div>
+      <div>
+        <div class="kill-label">Fallback</div>
+        <div class="kill-action">Redesign consent flow. Test 3 variants. If &lt;40% after redesign at Month 9, pivot to Archetype A only.</div>
+      </div>
+    </div>
+
+    <div class="kill-row">
+      <div>
+        <div class="kill-label">Condition</div>
+        <div class="kill-value">Level 2 opt-in &lt;15%</div>
+      </div>
+      <div>
+        <div class="kill-label">Threshold</div>
+        <div class="kill-value"><span class="badge red">RED</span></div>
+      </div>
+      <div>
+        <div class="kill-label">Deadline</div>
+        <div class="kill-deadline">Month 9</div>
+      </div>
+      <div>
+        <div class="kill-label">Fallback</div>
+        <div class="kill-action">Abandon direct data licensing. Fall back to Archetype A: use data internally only, never sold.</div>
+      </div>
+    </div>
+
+    <div class="kill-section-title">03 — Data Quality</div>
+
+    <div class="kill-row">
+      <div>
+        <div class="kill-label">Condition</div>
+        <div class="kill-value">Install base accuracy &lt;80%</div>
+      </div>
+      <div>
+        <div class="kill-label">Threshold</div>
+        <div class="kill-value"><span class="badge red">RED</span></div>
+      </div>
+      <div>
+        <div class="kill-label">Deadline</div>
+        <div class="kill-deadline">Month 9 · before listing</div>
+      </div>
+      <div>
+        <div class="kill-label">Fallback</div>
+        <div class="kill-action">Do NOT list on Snowflake/AWS. Bad data destroys market credibility permanently. 2 more months in quality.</div>
+      </div>
+    </div>
+
+    <div class="kill-row">
+      <div>
+        <div class="kill-label">Condition</div>
+        <div class="kill-value">Renewal timing accuracy &lt;70%</div>
+      </div>
+      <div>
+        <div class="kill-label">Threshold</div>
+        <div class="kill-value"><span class="badge red">RED</span></div>
+      </div>
+      <div>
+        <div class="kill-label">Deadline</div>
+        <div class="kill-deadline">Month 18 · before GA</div>
+      </div>
+      <div>
+        <div class="kill-label">Fallback</div>
+        <div class="kill-action">Do NOT launch RenewalRadar. Sell Install Base Index only. Re-evaluate at 5,000 users.</div>
+      </div>
+    </div>
+
+    <div class="kill-row">
+      <div>
+        <div class="kill-label">Condition</div>
+        <div class="kill-value">Data buyer NPS &lt;6/10</div>
+      </div>
+      <div>
+        <div class="kill-label">Threshold</div>
+        <div class="kill-value"><span class="badge yellow">YELLOW</span></div>
+      </div>
+      <div>
+        <div class="kill-label">Deadline</div>
+        <div class="kill-deadline">Month 15</div>
+      </div>
+      <div>
+        <div class="kill-label">Fallback</div>
+        <div class="kill-action">Pause new customer acquisition. Fix quality with existing 3 customers first. If stays below 6: retreat to Archetype A.</div>
+      </div>
+    </div>
+
+    <div class="kill-section-title">04 — Revenue</div>
+
+    <div class="kill-row">
+      <div>
+        <div class="kill-label">Condition</div>
+        <div class="kill-value">First DaaS contract = $0</div>
+      </div>
+      <div>
+        <div class="kill-label">Threshold</div>
+        <div class="kill-value"><span class="badge red">RED</span></div>
+      </div>
+      <div>
+        <div class="kill-label">Deadline</div>
+        <div class="kill-deadline">Month 14</div>
+      </div>
+      <div>
+        <div class="kill-label">Fallback</div>
+        <div class="kill-action">Erik's network produced no converting leads. Post-mortem: 5 data buyer interviews. No contract by Month 18 = abandon DaaS.</div>
+      </div>
+    </div>
+
+    <div class="kill-row">
+      <div>
+        <div class="kill-label">Condition</div>
+        <div class="kill-value">Total ARR &lt;$100K</div>
+      </div>
+      <div>
+        <div class="kill-label">Threshold</div>
+        <div class="kill-value"><span class="badge red">RED</span></div>
+      </div>
+      <div>
+        <div class="kill-label">Deadline</div>
+        <div class="kill-deadline">Month 18</div>
+      </div>
+      <div>
+        <div class="kill-label">Fallback</div>
+        <div class="kill-action">Business at risk. Bridge raise ($200K–$500K) or begin wind-down. Dual-revenue thesis has failed.</div>
+      </div>
+    </div>
+
+    <div class="kill-section-title">05 — Burn Rate</div>
+
+    <div class="kill-row">
+      <div>
+        <div class="kill-label">Condition</div>
+        <div class="kill-value">Runway &lt;4 months · no traction</div>
+      </div>
+      <div>
+        <div class="kill-label">Threshold</div>
+        <div class="kill-value"><span class="badge red">RED</span></div>
+      </div>
+      <div>
+        <div class="kill-label">Deadline</div>
+        <div class="kill-deadline">Any time</div>
+      </div>
+      <div>
+        <div class="kill-label">Fallback</div>
+        <div class="kill-action">Immediate fundraise trigger. Begin seed conversations within 1 week. If not closeable in 60 days: wind-down.</div>
+      </div>
+    </div>
+
+    <div class="kill-row">
+      <div>
+        <div class="kill-label">Condition</div>
+        <div class="kill-value">Monthly burn &gt;$60K before Month 12</div>
+      </div>
+      <div>
+        <div class="kill-label">Threshold</div>
+        <div class="kill-value"><span class="badge yellow">YELLOW</span></div>
+      </div>
+      <div>
+        <div class="kill-label">Deadline</div>
+        <div class="kill-deadline">Monthly check</div>
+      </div>
+      <div>
+        <div class="kill-label">Fallback</div>
+        <div class="kill-action">Cut immediately. Reduce to 3 people (CEO, CTO, data engineer). Defer all DaaS hires.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     09. FUNDRAISING NARRATIVE
+     ============================================================ -->
+<section class="section" id="fundraising">
+  <div class="section-eyebrow">
+    <span class="section-num">09</span>
+    <span class="section-tag">Investment</span>
+  </div>
+  <h2 class="section-title">Fundraising Narrative</h2>
+  <p class="section-subtitle">$2.5M–$3.5M seed round. The data asset optionality is the valuation premium. Erik Matlick did it at Bombora — he's doing it again.</p>
+
+  <div class="fund-grid">
+    <div class="fund-box highlight">
+      <div class="label-block" style="color: var(--color-primary-bright);">The Ask</div>
+      <div class="kpi-value" style="font-size: var(--text-3xl); margin-bottom: var(--space-2);">$2.5–3.5M</div>
+      <div style="color: var(--color-text-muted); font-size: var(--text-sm); margin-bottom: var(--space-5);">$10M–$15M pre-money valuation</div>
+      <div style="color: var(--color-text-faint); font-size: var(--text-xs); margin-bottom: var(--space-4);">Timing: Conversations Month 5–6 (Aug–Sep 2026) · Close Month 8–10</div>
+      <div class="label-block">Use of Funds</div>
+      <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+        <div style="display: flex; justify-content: space-between; font-size: var(--text-xs);">
+          <span style="color: var(--color-text-muted);">SaaS product development</span>
+          <span style="color: var(--color-text); font-weight: 600; font-variant-numeric: tabular-nums;">30% · $750K–$1.05M</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: var(--text-xs);">
+          <span style="color: var(--color-text-muted);">Data infrastructure + team</span>
+          <span style="color: var(--color-text); font-weight: 600; font-variant-numeric: tabular-nums;">25% · $625K–$875K</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: var(--text-xs);">
+          <span style="color: var(--color-text-muted);">Go-to-market (SaaS + DaaS sales)</span>
+          <span style="color: var(--color-text); font-weight: 600; font-variant-numeric: tabular-nums;">20% · $500K–$700K</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: var(--text-xs);">
+          <span style="color: var(--color-text-muted);">Operating expenses (legal, compliance)</span>
+          <span style="color: var(--color-text); font-weight: 600; font-variant-numeric: tabular-nums;">15% · $375K–$525K</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: var(--text-xs);">
+          <span style="color: var(--color-text-muted);">Buffer · 12-month runway extension</span>
+          <span style="color: var(--color-text); font-weight: 600; font-variant-numeric: tabular-nums;">10% · $250K–$350K</span>
+        </div>
+      </div>
+    </div>
+    <div class="fund-box">
+      <div class="label-block">Milestones the Money Buys (by Month 24)</div>
+      <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
+          <div>
+            <div style="font-size: var(--text-xs); color: var(--color-text-faint); margin-bottom: var(--space-1);">Active Paying Users</div>
+            <div style="font-size: var(--text-lg); font-weight: 700; color: var(--color-primary-bright); font-variant-numeric: tabular-nums;">2,500+</div>
+          </div>
+          <div>
+            <div style="font-size: var(--text-xs); color: var(--color-text-faint); margin-bottom: var(--space-1);">SaaS MRR</div>
+            <div style="font-size: var(--text-lg); font-weight: 700; font-variant-numeric: tabular-nums;">$70K–$100K</div>
+          </div>
+          <div>
+            <div style="font-size: var(--text-xs); color: var(--color-text-faint); margin-bottom: var(--space-1);">DaaS ARR</div>
+            <div style="font-size: var(--text-lg); font-weight: 700; color: var(--color-accent-warm); font-variant-numeric: tabular-nums;">$100K–$200K</div>
+          </div>
+          <div>
+            <div style="font-size: var(--text-xs); color: var(--color-text-faint); margin-bottom: var(--space-1);">Total ARR</div>
+            <div style="font-size: var(--text-lg); font-weight: 700; color: var(--color-accent-blue); font-variant-numeric: tabular-nums;">$1M–$1.4M</div>
+          </div>
+          <div>
+            <div style="font-size: var(--text-xs); color: var(--color-text-faint); margin-bottom: var(--space-1);">Direct Data Customers</div>
+            <div style="font-size: var(--text-lg); font-weight: 700; font-variant-numeric: tabular-nums;">5–10</div>
+          </div>
+          <div>
+            <div style="font-size: var(--text-xs); color: var(--color-text-faint); margin-bottom: var(--space-1);">Install Base Accuracy</div>
+            <div style="font-size: var(--text-lg); font-weight: 700; color: var(--color-success); font-variant-numeric: tabular-nums;">90%+</div>
+          </div>
+        </div>
+        <div style="font-size: var(--text-xs); color: var(--color-text-faint); margin-top: var(--space-2);">
+          Series A readiness: metrics in hand for $8M–$15M raise at $40M–$60M pre-money
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="label-block">Comparable Valuations — Data Asset Premium</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Revenue at Event</th>
+          <th class="num">Multiple / Valuation</th>
+          <th>Data Asset</th>
+          <th>Relevance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Honey (PayPal)</strong></td>
+          <td>~$100M (2018)</td>
+          <td class="num"><strong style="color: var(--color-accent-warm)">40×</strong></td>
+          <td>Shopping intent · 17M users</td>
+          <td>Free consumer tool + data = massive strategic premium</td>
+        </tr>
+        <tr>
+          <td>ZoomInfo</td>
+          <td>$1.25B (FY2025)</td>
+          <td class="num">~7× (was 25×+ at IPO)</td>
+          <td>321M+ B2B profiles · DaaS growing 20%+ YoY</td>
+          <td>Proves data licensing is fastest-growing B2B segment</td>
+        </tr>
+        <tr>
+          <td>Bombora</td>
+          <td>~$30M ARR (2019)</td>
+          <td class="num">$490M combined (Informa TechTarget)</td>
+          <td>9.3B monthly interactions · 5,500+ co-op sites</td>
+          <td>Built by Erik Matlick from zero. Exact same playbook.</td>
+        </tr>
+        <tr>
+          <td>G2 (Series D)</td>
+          <td>~$84M est.</td>
+          <td class="num">$1.1B valuation (~13×)</td>
+          <td>B2B buyer intent data</td>
+          <td>Free review platform + intent data = textbook dual-revenue</td>
+        </tr>
+        <tr class="highlight-row">
+          <td><strong>Blissfully → Vendr</strong></td>
+          <td>Undisclosed (small)</td>
+          <td class="num"><strong style="color: var(--color-primary-bright)">~$100M acquisition</strong></td>
+          <td>SaaS stack data</td>
+          <td>SaaS management tool acquired for strategic data value</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight-box">
+    <p><strong>The valuation framing:</strong> "In the Conservative case, we're a solid SaaS company at $2.3M ARR worth $15M–$23M at 6–10×. In the Base case, the data revenue adds $1.5M and signals a potential Honey/G2-style trajectory worth $30M–$50M at 10–15×. In the Optimistic case, the data asset becomes the valuation driver and we're worth $75M–$120M at 15–20×."</p>
+    <p style="margin-top: var(--space-3);">Erik Matlick built Bombora from zero to $30M ARR and the largest B2B intent data cooperative in the world. He's doing it again — this time with a SaaS product that generates proprietary data no one else can access. <strong>The question isn't whether this data is valuable. It's whether you want to be in the round before the data asset inflects.</strong></p>
+  </div>
+
+  <div class="label-block" style="margin-top: var(--space-8);">Revenue Projections for Pitch Deck</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th class="num">Year 1 SaaS ARR</th>
+          <th class="num">Year 1 DaaS ARR</th>
+          <th class="num">Year 2 Total ARR</th>
+          <th class="num">Year 3 Total ARR</th>
+          <th class="num">DaaS % (Yr 3)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Conservative</td>
+          <td class="num">$174K</td>
+          <td class="num">$25K</td>
+          <td class="num">$750K</td>
+          <td class="num">$2.3M</td>
+          <td class="num">22%</td>
+        </tr>
+        <tr class="highlight-row">
+          <td><strong>Base Case</strong></td>
+          <td class="num">$250K</td>
+          <td class="num">$50K</td>
+          <td class="num">$1.6M</td>
+          <td class="num"><strong>$4.5M</strong></td>
+          <td class="num"><strong>33%</strong></td>
+        </tr>
+        <tr>
+          <td>Optimistic</td>
+          <td class="num">$350K</td>
+          <td class="num">$100K</td>
+          <td class="num">$2.6M</td>
+          <td class="num">$7.5M</td>
+          <td class="num">40%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<script>
+/* ============================================================
+   CHART.JS DEFAULTS
+   ============================================================ */
+Chart.defaults.color = '#8b949e';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
+Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.plugins.legend.labels.boxWidth = 12;
+Chart.defaults.plugins.legend.labels.padding = 16;
+Chart.defaults.animation = false;
+
+const TEAL     = '#14b8a6';
+const TEAL_DIM = 'rgba(20,184,166,0.15)';
+const GOLD     = '#f59e0b';
+const GOLD_DIM = 'rgba(245,158,11,0.15)';
+const BLUE     = '#3b82f6';
+const BLUE_DIM = 'rgba(59,130,246,0.15)';
+const GRAY     = '#484f58';
+const SURFACE  = '#161b22';
+
+/* ============================================================
+   FINANCIAL MODEL DATA
+   ============================================================ */
+const months = ['Mar-26','Apr-26','May-26','Jun-26','Jul-26','Aug-26','Sep-26','Oct-26','Nov-26','Dec-26','Jan-27','Feb-27','Mar-27','Apr-27','May-27','Jun-27','Jul-27','Aug-27','Sep-27','Oct-27','Nov-27','Dec-27','Jan-28','Feb-28'];
+
+const data = {
+  conservative: {
+    label: 'Conservative',
+    totalUsers: [30,69,156,236,356,536,682,867,1101,1393,1762,2227,2619,3077,3609,4228,4948,5789,6546,7394,8346,9413,10607,11949],
+    totalPaid:   [0,2,6,12,22,36,53,74,101,134,175,227,290,363,447,544,657,789,934,1095,1275,1476,1699,1949],
+    saasMrr:     [0,55,165,331,606,992,1500,2200,3000,4100,5400,7100,9300,11800,14800,18200,22200,26900,32100,38100,44800,52200,60600,70100],
+    daasRev:     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2100,2100,4200,6200,6200,8300,10400],
+    totalRevMonth:[0,55,165,331,606,992,1500,2200,3000,4100,5400,7100,9300,11800,14800,18200,22200,28900,34200,42200,51000,58500,69000,80500],
+    totalCost:   [71000,71600,84800,85500,86500,87700,88800,90100,91900,106100,108500,111400,113800,116800,132600,136300,140500,147100,151700,156700,162500,168700,175800,183600],
+    burnRate:    [71000,71600,84600,85100,85900,86700,87300,87900,88800,102000,103000,104300,104600,105000,117800,118200,118400,118100,117500,114500,111500,110200,106900,103100],
+    kpi: { users:'11,949', paidUsers:'1,949 paid', mrr:'$70.1K', arr:'$840.6K ARR', daasMrr:'$10.4K', daasB:'5 data buyers', viable:'Month 18', viableMeta:'Aug-27 · 5,974 contributors', burn:'$103.1K', cumRev:'$466.0K' }
+  },
+  base: {
+    label: 'Base Case',
+    totalUsers: [52,118,269,405,605,900,1170,1514,1953,2512,3228,4143,4841,5641,6556,7604,8804,10180,11730,13503,15532,17850,20502,23535],
+    totalPaid:   [2,7,19,37,63,100,147,206,280,373,492,643,824,1031,1265,1531,1834,2180,2573,3021,3532,4114,4778,5535],
+    saasMrr:     [55,191,519,1000,1800,3000,4500,6500,9200,12400,16700,22100,28800,36700,45800,56300,68500,82500,98500,117000,138200,162400,190100,221700],
+    daasRev:     [0,0,0,0,0,0,0,0,0,0,0,0,6700,6700,10000,13300,13300,16700,20000,23300,23300,26700,30000,33300],
+    totalRevMonth:[55,191,519,1000,1800,3000,4500,6500,9200,12400,16700,22100,35400,43300,55800,69600,81800,99100,118500,140400,161500,189000,220100,255000],
+    totalCost:   [77300,91200,92800,94200,96300,99000,114500,117500,121300,138900,144600,151800,159400,179000,186400,194700,217100,227900,239800,266500,281800,299100,332000,354400],
+    burnRate:    [77200,91000,92300,93200,94500,96000,110000,111000,112200,126500,127900,129700,123900,135700,130600,125000,135300,128700,121200,126100,120300,110100,111900,99400],
+    kpi: { users:'23,535', paidUsers:'5,535 paid', mrr:'$221.7K', arr:'$2.7M ARR', daasMrr:'$33.3K', daasB:'10 data buyers', viable:'Month 13', viableMeta:'Mar-27 · 2,662 contributors', burn:'$99.4K', cumRev:'$1.5M' }
+  },
+  optimistic: {
+    label: 'Optimistic',
+    totalUsers: [86,198,451,719,1136,1783,2309,2971,3801,4843,6153,7803,9298,11034,13050,15394,18118,21287,24281,27632,31383,35581,40281,45549],
+    totalPaid:   [6,20,51,98,171,283,420,590,801,1064,1391,1803,2309,2891,3564,4342,5243,6287,7445,8734,10170,11770,13555,15549],
+    saasMrr:     [162,541,1400,2900,5300,9000,13900,20100,28000,38000,50600,66600,86700,110600,138800,171900,210800,256100,307600,366000,431800,506000,589400,683100],
+    daasRev:     [0,0,0,0,0,0,0,0,0,15000,20000,25000,30000,35000,40000,45000,50000,55000,60000,65000,70000,75000,80000,90000],
+    totalRevMonth:[162,541,1400,2900,5300,9000,13900,20100,28000,53000,70600,91600,116700,145600,178800,216900,260800,311100,367600,431000,501800,581000,669400,773100],
+    totalCost:   [84600,100000,103200,106600,124800,131500,137400,157900,166500,179500,205700,221500,236000,266200,285400,307600,346500,375900,404100,435700,484600,523900,568000,617300],
+    burnRate:    [84500,99500,101800,103700,119500,122500,123500,137800,138600,126500,135100,129900,119300,120600,106600,90700,85800,64800,36500,4800,-17200,-57100,-101400,-155800],
+    kpi: { users:'45,549', paidUsers:'15,549 paid', mrr:'$683.1K', arr:'$8.2M ARR', daasMrr:'$90.0K', daasB:'18 data buyers', viable:'Month 10', viableMeta:'Dec-26 · 2,905 contributors', burn:'-$155.8K', cumRev:'$4.9M' }
+  }
+};
+
+let activeScenario = 'base';
+let userGrowthChart, burnChart;
+
+/* ============================================================
+   INITIALIZE ALL CHARTS ON DOMContentLoaded
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', function() {
+
+  // 1. COMPETITOR PRICING CHART
+  const competitors = ['ShrinkMyStack Pro', 'Cledara Basic', 'Substly', 'Torii Basic (~100 emp)', 'Sastrify (~$1.1K/mo)', 'Spendflo Starter', 'Zluri (est. 100 users)', 'Vendr Pricing Agent (1 user)', 'BetterCloud (50 users)', 'Zylo (~$3.7K/mo)'];
+  const prices      = [29, 75, 95, 250, 1125, 1500, 600, 200, 150, 3700];
+  const barColors   = prices.map((p, i) => i === 0 ? TEAL : 'rgba(139,148,158,0.5)');
+
+  new Chart(document.getElementById('competitorChart'), {
+    type: 'bar',
+    data: {
+      labels: competitors,
+      datasets: [{
+        data: prices,
+        backgroundColor: barColors,
+        borderColor: barColors.map(c => c === TEAL ? TEAL : 'rgba(139,148,158,0.7)'),
+        borderWidth: 1,
+        borderRadius: 3
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: { label: ctx => ` $${ctx.parsed.x.toLocaleString()}/mo` }
+      }},
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => '$' + v.toLocaleString() } },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+
+  // 2. CPM CHART
+  new Chart(document.getElementById('cpmChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Generic B2B\nBehavioral', 'Topic-Level\nIntent', 'Install Base\n(SaaS tools)', 'Contact-Level\nIntent', 'Renewal\nTiming'],
+      datasets: [{
+        data: [2.5, 7.5, 12, 20, 75],
+        backgroundColor: ['rgba(72,79,88,0.6)', 'rgba(72,79,88,0.6)', 'rgba(59,130,246,0.5)', 'rgba(245,158,11,0.5)', TEAL],
+        borderColor: ['rgba(72,79,88,0.8)', 'rgba(72,79,88,0.8)', BLUE, GOLD, TEAL],
+        borderWidth: 1,
+        borderRadius: 3
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` $${ctx.parsed.y} CPM` } } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => '$' + v } }
+      }
+    }
+  });
+
+  // 3. PROVIDER ACV CHART
+  new Chart(document.getElementById('providerChart'), {
+    type: 'bar',
+    data: {
+      labels: ['180byTwo\n(AWS pack)', 'G2 Buyer\nIntent', 'Bombora\n(mid-market)', 'TechTarget\nPriority Engine', 'ShrinkMyStack\nRenewalRadar'],
+      datasets: [
+        { label: 'Min ACV ($K)', data: [30, 22, 50, 60, 50], backgroundColor: 'rgba(59,130,246,0.4)', borderColor: BLUE, borderWidth: 1, borderRadius: 3 },
+        { label: 'Max ACV ($K)', data: [30, 36, 100, 180, 200], backgroundColor: TEAL_DIM, borderColor: TEAL, borderWidth: 1, borderRadius: 3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: ctx => ` $${ctx.parsed.y}K/yr` } } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => '$' + v + 'K' } }
+      }
+    }
+  });
+
+  // 4. DaaS REVENUE BY PRODUCT
+  new Chart(document.getElementById('daasRevenueChart'), {
+    type: 'bar',
+    data: {
+      labels: ['500 Paid Users', '2,000 Paid Users', '10,000 Paid Users'],
+      datasets: [
+        { label: 'StackMap™', data: [12.5, 140, 700], backgroundColor: 'rgba(59,130,246,0.6)', borderColor: BLUE, borderWidth: 1, borderRadius: 3 },
+        { label: 'StackBench™', data: [17.5, 200, 1000], backgroundColor: 'rgba(245,158,11,0.6)', borderColor: GOLD, borderWidth: 1, borderRadius: 3 },
+        { label: 'TechGraph™', data: [0, 50, 550], backgroundColor: 'rgba(139,148,158,0.5)', borderColor: '#8b949e', borderWidth: 1, borderRadius: 3 },
+        { label: 'RenewalRadar™', data: [0, 100, 1250], backgroundColor: TEAL_DIM, borderColor: TEAL, borderWidth: 1.5, borderRadius: 3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: ctx => ` $${ctx.parsed.y}K/yr` } } },
+      scales: {
+        x: { stacked: false, grid: { display: false } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => '$' + v + 'K' } }
+      }
+    }
+  });
+
+  // 5. VIABILITY CHART — Contributing users by month (all 3 scenarios)
+  const viabilityData = {
+    conservative: [15,34,78,118,178,268,341,433,550,696,881,1113,1309,1538,1804,2114,2474,2894,3273,3697,4173,4706,5303,5974],
+    base:         [28,64,147,222,332,495,643,832,1074,1381,1775,2278,2662,3102,3605,4182,4842,5599,6451,7426,8542,9817,11276,12944],
+    optimistic:   [51,118,270,431,681,1069,1385,1782,2280,2905,3691,4681,5578,6620,7830,9236,10870,12772,14568,16579,18829,21348,24168,27329]
+  };
+
+  new Chart(document.getElementById('viabilityChart'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        { label: 'Optimistic', data: viabilityData.optimistic, borderColor: GOLD, backgroundColor: GOLD_DIM, fill: false, borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Base Case', data: viabilityData.base, borderColor: TEAL, backgroundColor: TEAL_DIM, fill: false, borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Conservative', data: viabilityData.conservative, borderColor: '#484f58', backgroundColor: 'rgba(72,79,88,0.1)', fill: false, borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Viability Threshold (2,500)', data: Array(24).fill(2500), borderColor: 'rgba(239,68,68,0.6)', borderDash: [6,4], fill: false, borderWidth: 1.5, pointRadius: 0 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top' } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { maxTicksLimit: 12 } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => v.toLocaleString() } }
+      }
+    }
+  });
+
+  // 6. SaaS REVENUE ALL 3 SCENARIOS
+  new Chart(document.getElementById('saasRevenueChart'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        { label: 'Optimistic', data: data.optimistic.saasMrr, borderColor: GOLD, fill: false, borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Base Case', data: data.base.saasMrr, borderColor: TEAL, fill: false, borderWidth: 2.5, pointRadius: 0, tension: 0.3 },
+        { label: 'Conservative', data: data.conservative.saasMrr, borderColor: GRAY, fill: false, borderWidth: 2, pointRadius: 0, tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top' } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { maxTicksLimit: 12 } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => '$' + (v >= 1000 ? (v/1000).toFixed(0) + 'K' : v) } }
+      }
+    }
+  });
+
+  // 7. USER GROWTH (dynamic — updates with scenario)
+  userGrowthChart = new Chart(document.getElementById('userGrowthChart'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        { label: 'Total Users', data: data.base.totalUsers, borderColor: TEAL, backgroundColor: TEAL_DIM, fill: true, borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Paid Users', data: data.base.totalPaid, borderColor: BLUE, backgroundColor: BLUE_DIM, fill: true, borderWidth: 2, pointRadius: 0, tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top' } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { maxTicksLimit: 8 } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'K' : v } }
+      }
+    }
+  });
+
+  // 8. BURN CHART (dynamic)
+  burnChart = new Chart(document.getElementById('burnChart'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        { label: 'Monthly Revenue', data: data.base.totalRevMonth, borderColor: TEAL, backgroundColor: TEAL_DIM, fill: true, borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Monthly Cost', data: data.base.totalCost, borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.08)', fill: true, borderWidth: 2, pointRadius: 0, tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top' } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { maxTicksLimit: 8 } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => '$' + (v >= 1000 ? (v/1000).toFixed(0) + 'K' : v) } }
+      }
+    }
+  });
+
+  // 9. REVENUE MIX STACKED AREA — Base Case
+  new Chart(document.getElementById('revenueMixChart'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        { label: 'DaaS Revenue', data: data.base.daasRev, borderColor: GOLD, backgroundColor: 'rgba(245,158,11,0.25)', fill: 'origin', borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'SaaS Revenue', data: data.base.saasMrr, borderColor: TEAL, backgroundColor: 'rgba(20,184,166,0.18)', fill: 'origin', borderWidth: 2, pointRadius: 0, tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top' } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { maxTicksLimit: 12 } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => '$' + (v >= 1000 ? (v/1000).toFixed(0) + 'K' : v) } }
+      }
+    }
+  });
+
+  /* ============================================================
+     SCENARIO SELECTOR
+     ============================================================ */
+  document.getElementById('scenarioSelector').addEventListener('click', function(e) {
+    const btn = e.target.closest('.scenario-btn');
+    if (!btn) return;
+    const scenario = btn.dataset.scenario;
+    if (scenario === activeScenario) return;
+    activeScenario = scenario;
+
+    // Update active button
+    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Update KPI values
+    const k = data[scenario].kpi;
+    document.getElementById('kpi-users').textContent = k.users;
+    document.getElementById('kpi-users-meta').textContent = k.paidUsers;
+    document.getElementById('kpi-mrr').textContent = k.mrr;
+    document.getElementById('kpi-arr').textContent = k.arr;
+    document.getElementById('kpi-daas').textContent = k.daasMrr;
+    document.getElementById('kpi-daas-buyers').textContent = k.daasB;
+    document.getElementById('kpi-viable').textContent = k.viable;
+    document.getElementById('kpi-viable-meta').textContent = k.viableMeta;
+    document.getElementById('kpi-burn').textContent = k.burn;
+    document.getElementById('kpi-cumrev').textContent = k.cumRev;
+
+    // Update user growth chart
+    userGrowthChart.data.datasets[0].data = data[scenario].totalUsers;
+    userGrowthChart.data.datasets[1].data = data[scenario].totalPaid;
+    userGrowthChart.update();
+
+    // Update burn chart
+    burnChart.data.datasets[0].data = data[scenario].totalRevMonth;
+    burnChart.data.datasets[1].data = data[scenario].totalCost;
+    burnChart.update();
+  });
+
+  /* ============================================================
+     ACTIVE NAV INDICATOR
+     ============================================================ */
+  const navItems = document.querySelectorAll('.nav-item');
+  const sections = document.querySelectorAll('.section[id]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+
+  sections.forEach(s => observer.observe(s));
+});
+</script>
+<script src="/nav.js"></script>
+</body>
+</html>

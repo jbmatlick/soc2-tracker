@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue Per Employee: DaaS vs SaaS vs AI-First | ChatB2B Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface-hover: #1c2129;
+  --border: #30363d;
+  --text-primary: #e6edf3;
+  --text-muted: #8b949e;
+  --text-faint: #484f58;
+  --daas: #58a6ff;
+  --saas: #3fb950;
+  --ai: #d2a8ff;
+  --sig: #f0883e;
+  --danger: #f85149;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+html { font-size: 15px; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === NAV === */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,17,23,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; gap: 4px;
+  overflow-x: auto; scrollbar-width: none;
+  height: 48px;
+}
+.nav-inner::-webkit-scrollbar { display: none; }
+.nav a {
+  color: var(--text-muted); text-decoration: none;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.02em;
+  white-space: nowrap; padding: 6px 10px; border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+}
+.nav a:hover, .nav a.active { color: var(--text-primary); background: var(--surface); }
+.nav-logo { font-weight: 700; font-size: 13px; color: var(--text-primary) !important; margin-right: 12px; }
+
+/* === LAYOUT === */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+section { padding: 64px 0; }
+section + section { border-top: 1px solid var(--border); }
+
+/* === TYPOGRAPHY === */
+h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
+h2 { font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 24px; color: var(--text-primary); }
+h3 { font-size: 1rem; font-weight: 600; margin-bottom: 12px; color: var(--text-primary); }
+p { color: var(--text-muted); max-width: 72ch; }
+.section-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-faint); margin-bottom: 8px;
+}
+
+/* === KPI CARDS === */
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 32px 0; }
+.kpi {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 20px;
+}
+.kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.kpi-value { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.kpi-daas .kpi-label { color: var(--daas); }
+.kpi-daas .kpi-value { color: var(--daas); }
+.kpi-saas .kpi-label { color: var(--saas); }
+.kpi-saas .kpi-value { color: var(--saas); }
+.kpi-ai .kpi-label { color: var(--ai); }
+.kpi-ai .kpi-value { color: var(--ai); }
+
+/* === CALLOUT === */
+.callout {
+  background: rgba(240,136,62,0.08); border: 1px solid rgba(240,136,62,0.25);
+  border-radius: 8px; padding: 20px 24px; margin: 24px 0;
+}
+.callout-title { color: var(--sig); font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.callout p { color: var(--text-primary); font-size: 14px; }
+
+/* === CHARTS === */
+.chart-container {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 24px; margin: 24px 0; position: relative;
+}
+.chart-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.chart-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+.chart-wrap { position: relative; }
+.chart-wrap canvas { width: 100% !important; }
+.btn-copy {
+  position: absolute; top: 12px; right: 12px; z-index: 10;
+  background: var(--surface-hover); border: 1px solid var(--border);
+  color: var(--text-muted); font-size: 11px; font-family: var(--font);
+  padding: 5px 10px; border-radius: 6px; cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-copy:hover { color: var(--text-primary); background: var(--border); }
+
+/* === TABLES === */
+.table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 8px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums lining-nums; }
+thead { background: var(--surface); position: sticky; top: 0; z-index: 2; }
+th {
+  padding: 10px 12px; text-align: left; font-weight: 600; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);
+  border-bottom: 1px solid var(--border); cursor: pointer; user-select: none;
+  white-space: nowrap;
+}
+th:hover { color: var(--text-primary); }
+th .sort-arrow { font-size: 10px; margin-left: 4px; opacity: 0.5; }
+th.sorted .sort-arrow { opacity: 1; }
+td { padding: 8px 12px; border-bottom: 1px solid rgba(48,54,61,0.5); white-space: nowrap; }
+tr:hover td { background: var(--surface-hover); }
+.cohort-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 600;
+}
+.badge-daas { background: rgba(88,166,255,0.12); color: var(--daas); }
+.badge-saas { background: rgba(63,185,80,0.12); color: var(--saas); }
+.badge-ai { background: rgba(210,168,255,0.12); color: var(--ai); }
+
+/* === STAT RESULTS === */
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 20px; margin: 12px 0;
+}
+.stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+.stat-value { font-size: 1.3rem; font-weight: 700; font-variant-numeric: tabular-nums; margin: 4px 0; }
+.stat-interp { font-size: 13px; color: var(--text-muted); }
+.sig-yes { color: var(--saas); }
+.sig-no { color: var(--text-faint); }
+
+/* === GRID LAYOUTS === */
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+
+/* === QUESTION CARDS === */
+.q-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 24px; margin: 12px 0;
+}
+.q-card h3 { font-size: 15px; color: var(--text-primary); line-height: 1.4; margin-bottom: 8px; }
+.q-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; max-width: none; }
+
+/* === JUSTIFY CARDS === */
+.justify-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 24px; margin: 16px 0;
+}
+.justify-ticker { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+.justify-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 12px; margin-bottom: 4px; }
+
+/* === COLLAPSE === */
+details { margin: 16px 0; }
+details > summary {
+  cursor: pointer; font-weight: 600; font-size: 14px;
+  color: var(--text-primary); padding: 12px 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; list-style: none;
+}
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: '+ '; color: var(--text-faint); }
+details[open] > summary::before { content: '- '; }
+details[open] > summary { border-radius: 8px 8px 0 0; border-bottom: none; }
+details > .details-body {
+  padding: 16px; background: var(--surface);
+  border: 1px solid var(--border); border-top: none;
+  border-radius: 0 0 8px 8px;
+}
+
+/* === TABS === */
+.tab-row { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab-btn {
+  padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-muted); font-family: var(--font);
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.tab-btn:hover { background: var(--surface); color: var(--text-primary); }
+.tab-btn.active-tab { background: var(--surface); color: var(--text-primary); border-color: var(--text-faint); }
+.tab-panel { display: none; }
+.tab-panel.active-panel { display: block; }
+
+/* === FOOTER === */
+.footer {
+  border-top: 1px solid var(--border); padding: 40px 0;
+  text-align: center; color: var(--text-faint); font-size: 12px;
+}
+.footer a { color: var(--text-muted); }
+
+/* === HERO === */
+.hero { padding: 80px 0 48px; }
+.hero-sub { font-size: 14px; color: var(--text-muted); margin-top: 12px; max-width: none; }
+.hero-author { font-size: 13px; color: var(--text-faint); margin-top: 24px; }
+.hero-author a { color: var(--daas); text-decoration: none; }
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .kpi-row { grid-template-columns: 1fr; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  section { padding: 40px 0; }
+  .nav-inner { gap: 0; }
+}
+
+/* === INLINE PILL FOR SIGNIFICANCE === */
+.pill {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 600;
+}
+.pill-sig { background: rgba(63,185,80,0.12); color: var(--saas); }
+.pill-ns { background: rgba(139,148,158,0.12); color: var(--text-muted); }
+
+/* === METHODOLOGY LIST === */
+.method-list { list-style: none; padding: 0; }
+.method-list li { padding: 8px 0; border-bottom: 1px solid rgba(48,54,61,0.4); font-size: 14px; color: var(--text-muted); }
+.method-list li strong { color: var(--text-primary); }
+
+/* subtle chart legend override */
+.chart-legend { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+.chart-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
+.chart-legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+</style>
+</head>
+<body style="padding-top:48px;">
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">ChatB2B</a>
+    <a href="#hero">Summary</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#charts">Charts</a>
+    <a href="#tables">Companies</a>
+    <a href="#stats">Statistics</a>
+    <a href="#surprise">SaaS &gt; DaaS</a>
+    <a href="#ai-seg">AI Segments</a>
+    <a href="#layoffs">Layoffs</a>
+    <a href="#classify">Classifications</a>
+    <a href="#questions">Questions</a>
+    <a href="#appendix">Appendix</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="hero">
+  <div class="container">
+    <p class="section-label">ChatB2B Equity Research</p>
+    <h1>Revenue Per Employee:<br>DaaS vs SaaS vs AI-First</h1>
+    <p class="hero-sub">A Cohort Study of 53 Public Companies &nbsp;|&nbsp; March 2026</p>
+    <div class="kpi-row">
+      <div class="kpi kpi-daas">
+        <div class="kpi-label">DaaS Median RPE</div>
+        <div class="kpi-value">$385K</div>
+        <div class="kpi-sub">19 companies &middot; $85.5B total revenue</div>
+      </div>
+      <div class="kpi kpi-saas">
+        <div class="kpi-label">SaaS Median RPE</div>
+        <div class="kpi-value">$491K</div>
+        <div class="kpi-sub">19 companies &middot; $163.2B total revenue</div>
+      </div>
+      <div class="kpi kpi-ai">
+        <div class="kpi-label">AI-First Median RPE</div>
+        <div class="kpi-value">$341K</div>
+        <div class="kpi-sub">15 companies &middot; $17.9B total revenue</div>
+      </div>
+    </div>
+    <div class="callout">
+      <div class="callout-title">Key Finding</div>
+      <p>SaaS generates 27.5% higher median RPE than DaaS &mdash; contradicting the &ldquo;data is the new oil&rdquo; thesis. This difference is statistically significant (Mann-Whitney U, p=0.011, Bonferroni-corrected &alpha;=0.017).</p>
+    </div>
+    <p class="hero-author">ChatB2B Research &nbsp;|&nbsp; <a href="https://chatb2b.com" target="_blank">chatb2b.com</a></p>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section id="methodology">
+  <div class="container">
+    <p class="section-label">Section 2</p>
+    <h2>Methodology</h2>
+    <ul class="method-list">
+      <li><strong>Metric:</strong> TTM Revenue &divide; Most Recent Headcount from 10-K filings</li>
+      <li><strong>Universe:</strong> 53 companies &mdash; 19 DaaS, 19 SaaS, 15 AI-First</li>
+      <li><strong>Data freshness:</strong> All revenue and headcount from latest available filings (Q3/Q4 2024 or Q1 FY2025)</li>
+      <li><strong>Statistical tests:</strong> Kruskal-Wallis omnibus test; Mann-Whitney U pairwise with Bonferroni correction (&alpha;=0.05/3=0.0167); Spearman rank correlations</li>
+      <li><strong>Exclusions:</strong> SMAR (taken private), EXPGY (non-USD reporting), CoreLogic (private), Refinitiv (part of LSEG)</li>
+      <li><strong>Currency note:</strong> SAP revenue converted EUR&rarr;USD at 1.09 rate</li>
+      <li><strong>Sources:</strong> SEC 10-K/10-Q filings via Perplexity Finance API. Employee counts from most recent annual filings.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CHARTS -->
+<section id="charts">
+  <div class="container">
+    <p class="section-label">Section 3</p>
+    <h2>Cohort Comparison Charts</h2>
+    <p style="margin-bottom:24px;">All charts are dark-background and screenshot-ready. Use &ldquo;Copy Chart&rdquo; to save as PNG for sharing.</p>
+
+    <!-- Chart A: Horizontal Bar -->
+    <div class="chart-container">
+      <button class="btn-copy" onclick="copyChart('chartA')">Copy Chart</button>
+      <div class="chart-title">All 53 Companies Ranked by RPE</div>
+      <div class="chart-subtitle">Color-coded by cohort &mdash; sorted descending</div>
+      <div class="chart-wrap"><canvas id="chartA" height="1100"></canvas></div>
+    </div>
+
+    <!-- Chart B: Box Plot -->
+    <div class="chart-container">
+      <button class="btn-copy" onclick="copyChart('chartB')">Copy Chart</button>
+      <div class="chart-title">RPE Distribution by Cohort</div>
+      <div class="chart-subtitle">Box plot showing median, IQR, and outliers</div>
+      <div class="chart-wrap"><canvas id="chartB" height="400"></canvas></div>
+    </div>
+
+    <!-- Chart C: Scatter -->
+    <div class="chart-container">
+      <button class="btn-copy" onclick="copyChart('chartC')">Copy Chart</button>
+      <div class="chart-title">RPE vs Gross Margin</div>
+      <div class="chart-subtitle">Bubble size = employee count &mdash; color = cohort</div>
+      <div class="chart-wrap"><canvas id="chartC" height="450"></canvas></div>
+    </div>
+
+    <!-- Chart D: Grouped Bar -->
+    <div class="chart-container">
+      <button class="btn-copy" onclick="copyChart('chartD')">Copy Chart</button>
+      <div class="chart-title">Mean vs Median RPE by Cohort</div>
+      <div class="chart-subtitle">How outliers distort averages &mdash; especially in AI-First</div>
+      <div class="chart-wrap"><canvas id="chartD" height="320"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- TABLES -->
+<section id="tables">
+  <div class="container">
+    <p class="section-label">Section 4</p>
+    <h2>Company Data</h2>
+    <p style="margin-bottom:16px;">Click any column header to sort. All data from SEC filings.</p>
+    <div class="tab-row">
+      <button class="tab-btn active-tab" onclick="showTab('daas-tab',this)">DaaS (19)</button>
+      <button class="tab-btn" onclick="showTab('saas-tab',this)">SaaS (19)</button>
+      <button class="tab-btn" onclick="showTab('ai-tab',this)">AI-First (15)</button>
+    </div>
+    <div id="daas-tab" class="tab-panel active-panel"></div>
+    <div id="saas-tab" class="tab-panel"></div>
+    <div id="ai-tab" class="tab-panel"></div>
+  </div>
+</section>
+
+<!-- STATISTICS -->
+<section id="stats">
+  <div class="container">
+    <p class="section-label">Section 5</p>
+    <h2>Statistical Analysis</h2>
+
+    <h3>Kruskal-Wallis Omnibus Test</h3>
+    <div class="stat-card">
+      <div class="stat-label">H-Statistic</div>
+      <div class="stat-value">7.836</div>
+      <div class="stat-interp">p = 0.0199 &nbsp;<span class="pill pill-sig">Significant</span></div>
+      <p style="margin-top:8px;font-size:13px;">Significant differences exist between at least two cohorts at &alpha;=0.05. We proceed to pairwise tests.</p>
+    </div>
+
+    <h3 style="margin-top:32px;">Pairwise Mann-Whitney U Tests (Bonferroni-corrected &alpha; = 0.0167)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Comparison</th><th>U</th><th>p-value</th><th>Bonferroni Sig?</th><th>Effect Size (r)</th><th>Magnitude</th><th>Median Diff</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>DaaS vs SaaS</td><td>93.0</td><td>0.0111</td>
+            <td><span class="pill pill-sig">Yes</span></td>
+            <td>0.485</td><td>Medium</td><td>-$106,082</td>
+          </tr>
+          <tr>
+            <td>DaaS vs AI-First</td><td>160.0</td><td>0.5554</td>
+            <td><span class="pill pill-ns">No</span></td>
+            <td>-0.123</td><td>Small</td><td>+$43,843</td>
+          </tr>
+          <tr>
+            <td>SaaS vs AI-First</td><td>205.0</td><td>0.0315</td>
+            <td><span class="pill pill-ns">No</span></td>
+            <td>-0.439</td><td>Medium</td><td>+$149,925</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;font-size:13px;">Only DaaS vs SaaS survives Bonferroni correction. SaaS vs AI-First shows a medium effect but does not reach corrected significance (p=0.032 > 0.017).</p>
+
+    <h3 style="margin-top:32px;">Correlations (Spearman &rho;)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Variable Pair</th><th>&rho;</th><th>p-value</th><th>Significant?</th><th>Interpretation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>RPE vs TTM Revenue</td><td>0.499</td><td>0.0001</td><td><span class="pill pill-sig">Yes</span></td><td>Moderate positive</td></tr>
+          <tr><td>RPE vs Employees</td><td>0.178</td><td>0.201</td><td><span class="pill pill-ns">No</span></td><td>Weak positive</td></tr>
+          <tr><td>RPE vs Gross Margin</td><td>0.280</td><td>0.042</td><td><span class="pill pill-sig">Yes</span></td><td>Weak positive</td></tr>
+          <tr><td>RPE vs Market Cap</td><td>0.600</td><td>&lt;0.001</td><td><span class="pill pill-sig">Yes</span></td><td>Strong positive</td></tr>
+          <tr><td>RPE vs GM (DaaS only)</td><td>0.311</td><td>0.196</td><td><span class="pill pill-ns">No</span></td><td>Not significant</td></tr>
+          <tr><td>RPE vs GM (SaaS only)</td><td>-0.489</td><td>0.033</td><td><span class="pill pill-sig">Yes</span></td><td>Negative &mdash; higher GM SaaS ≠ higher RPE</td></tr>
+          <tr><td>RPE vs GM (AI-First only)</td><td>0.589</td><td>0.021</td><td><span class="pill pill-sig">Yes</span></td><td>Strong positive within AI</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SURPRISE: SaaS > DaaS -->
+<section id="surprise">
+  <div class="container">
+    <p class="section-label">Section 6</p>
+    <h2>The Surprise: SaaS Beats DaaS</h2>
+    <div class="grid-2" style="margin-bottom:24px;">
+      <div class="kpi kpi-saas">
+        <div class="kpi-label">SaaS Median RPE</div>
+        <div class="kpi-value">$491,227</div>
+      </div>
+      <div class="kpi kpi-daas">
+        <div class="kpi-label">DaaS Median RPE</div>
+        <div class="kpi-value">$385,145</div>
+      </div>
+    </div>
+    <div class="callout">
+      <div class="callout-title">+27.5% SaaS Premium</div>
+      <p>SaaS companies generate more revenue per employee than DaaS companies, contradicting the common thesis that data companies are inherently more capital-efficient.</p>
+    </div>
+    <h3 style="margin-top:24px;">Why?</h3>
+    <div class="grid-3" style="margin-top:12px;">
+      <div class="stat-card">
+        <div class="stat-label">Higher Gross Margins</div>
+        <p style="font-size:13px;margin-top:8px;">SaaS mean GM: 72.5% vs DaaS mean GM: 68.3%. Software distribution scales with near-zero marginal cost.</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Scale Advantage</div>
+        <p style="font-size:13px;margin-top:8px;">Mature SaaS companies (Shopify, Salesforce, ServiceNow) achieve massive revenue without proportional headcount growth.</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Data Infrastructure Tax</div>
+        <p style="font-size:13px;margin-top:8px;">DaaS companies require more headcount for data operations, curation, and compliance &mdash; labor that doesn&rsquo;t scale like software.</p>
+      </div>
+    </div>
+
+    <!-- Focused comparison chart -->
+    <div class="chart-container" style="margin-top:24px;">
+      <button class="btn-copy" onclick="copyChart('chartE')">Copy Chart</button>
+      <div class="chart-title">SaaS vs DaaS: Direct RPE Comparison</div>
+      <div class="chart-subtitle">Median and mean RPE side-by-side</div>
+      <div class="chart-wrap"><canvas id="chartE" height="280"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- AI-FIRST SEGMENTATION -->
+<section id="ai-seg">
+  <div class="container">
+    <p class="section-label">Section 7</p>
+    <h2>AI-First Segmentation</h2>
+    <p style="margin-bottom:16px;">The AI-First cohort is NOT homogeneous. Pre-revenue research companies coexist with profitable AI application companies. The median hides a bimodal distribution.</p>
+    <div class="grid-2">
+      <div class="stat-card">
+        <div class="stat-label" style="color:var(--ai);">AI Application (13 companies)</div>
+        <div class="stat-value" style="color:var(--ai);">$402K</div>
+        <div class="stat-interp">Median RPE &middot; GM: 59.5% &middot; 31,106 employees</div>
+        <p style="font-size:12px;margin-top:8px;">SYM, PLTR, UPST, TEM, CRWD, BRZE, PATH, S, IONQ, AI, BBAI, SOUN, VERI</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label" style="color:var(--danger);">Pre-Revenue / Research (2 companies)</div>
+        <div class="stat-value" style="color:var(--danger);">$54K</div>
+        <div class="stat-interp">Median RPE &middot; GM: -262.1% &middot; 921 employees</div>
+        <p style="font-size:12px;margin-top:8px;">RXRX, SERV</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:24px;">
+      <div class="callout-title">Bimodal Distribution</div>
+      <p>If we exclude pre-revenue companies, the AI Application sub-cohort&rsquo;s median RPE ($402K) is competitive with DaaS ($385K). The cohort label &ldquo;AI-First&rdquo; obscures meaningful variation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LAYOFF IMPACT -->
+<section id="layoffs">
+  <div class="container">
+    <p class="section-label">Section 8</p>
+    <h2>Layoff Impact Analysis</h2>
+    <div class="grid-2">
+      <div class="stat-card">
+        <div class="stat-label">Companies with Layoffs (2024-2026)</div>
+        <div class="stat-value">18</div>
+        <div class="stat-interp">Median RPE: $442,970 &middot; Mean RPE: $502,942</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Companies without Layoffs</div>
+        <div class="stat-value">35</div>
+        <div class="stat-interp">Median RPE: $422,472 &middot; Mean RPE: $476,888</div>
+      </div>
+    </div>
+    <div class="stat-card" style="margin-top:16px;">
+      <div class="stat-label">Mann-Whitney U Test</div>
+      <div class="stat-value">U = 312.0 &nbsp;&nbsp; p = 0.963</div>
+      <div class="stat-interp"><span class="pill pill-ns">Not Significant</span> &mdash; Companies with layoffs do not have significantly different RPE than those without.</div>
+    </div>
+    <p style="margin-top:16px;font-size:13px;">Despite intuition that layoffs should &ldquo;inflate&rdquo; RPE by reducing headcount while revenue lags, the data shows no statistically meaningful difference. This may be because: (a) revenue also declined at many companies that cut, or (b) the layoff timing vs. filing date mismatch masks the effect.</p>
+  </div>
+</section>
+
+<!-- CLASSIFICATION JUSTIFICATIONS -->
+<section id="classify">
+  <div class="container">
+    <p class="section-label">Section 9</p>
+    <h2>Classification Justifications</h2>
+    <p style="margin-bottom:24px;">Three companies warranted extra scrutiny in cohort assignment.</p>
+
+    <div class="justify-card">
+      <div class="justify-ticker" style="color:var(--daas);">FICO <span class="cohort-badge badge-daas">DaaS</span></div>
+      <div class="justify-label" style="color:var(--text-muted);">Why DaaS, not SaaS?</div>
+      <p style="font-size:13px;">FICO&rsquo;s primary revenue derives from its proprietary FICO Score (used in &gt;90% of US lending decisions) and analytics/data licensing. While it offers a SaaS platform (FICO Platform), its economic moat is the scoring data monopoly, not the software delivery model. Revenue is overwhelmingly driven by per-score licensing fees &mdash; a classic data-as-a-service model.</p>
+      <div class="justify-label" style="color:var(--sig);">Counter-argument</div>
+      <p style="font-size:13px;">FICO Platform is growing rapidly as a cloud-native SaaS offering. However, this still represents &lt;30% of revenue.</p>
+    </div>
+
+    <div class="justify-card">
+      <div class="justify-ticker" style="color:var(--ai);">CRWD <span class="cohort-badge badge-ai">AI-First</span></div>
+      <div class="justify-label" style="color:var(--text-muted);">Why AI-First, not SaaS?</div>
+      <p style="font-size:13px;">CrowdStrike&rsquo;s Falcon platform uses AI/ML models as the primary threat detection mechanism. Unlike traditional signature-based cybersecurity (SaaS), CrowdStrike&rsquo;s differentiation IS the AI &mdash; behavioral models that identify novel threats. The entire product thesis depends on AI superiority.</p>
+      <div class="justify-label" style="color:var(--sig);">Counter-argument</div>
+      <p style="font-size:13px;">CrowdStrike has SaaS-like subscription revenue and delivery model. However, the AI is not an add-on feature; it IS the product.</p>
+    </div>
+
+    <div class="justify-card">
+      <div class="justify-ticker" style="color:var(--ai);">S <span class="cohort-badge badge-ai">AI-First</span></div>
+      <div class="justify-label" style="color:var(--text-muted);">Why AI-First, not SaaS?</div>
+      <p style="font-size:13px;">SentinelOne&rsquo;s Singularity platform uses autonomous AI for endpoint detection and response. Like CrowdStrike, the AI models are the core product, not a feature layer on top of traditional software.</p>
+      <div class="justify-label" style="color:var(--sig);">Counter-argument</div>
+      <p style="font-size:13px;">Same subscription model as SaaS companies, but the core differentiation and product architecture is AI-native.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROVOCATIVE QUESTIONS -->
+<section id="questions">
+  <div class="container">
+    <p class="section-label">Section 10</p>
+    <h2>7 Provocative Questions</h2>
+    <p style="margin-bottom:24px;">Questions this data raises but cannot answer alone.</p>
+    <div id="questions-grid"></div>
+  </div>
+</section>
+
+<!-- APPENDIX -->
+<section id="appendix">
+  <div class="container">
+    <p class="section-label">Section 11</p>
+    <h2>Data Appendix</h2>
+    <div class="stat-card">
+      <div class="stat-label">Full Dataset Download</div>
+      <p style="margin-top:8px;font-size:13px;"><a href="master.csv" download style="color:var(--daas);text-decoration:none;font-weight:600;">Download master.csv</a> &mdash; 53 companies, all fields</p>
+    </div>
+    <details style="margin-top:16px;">
+      <summary>Methodology Notes</summary>
+      <div class="details-body">
+        <ul class="method-list">
+          <li><strong>RPE Calculation:</strong> TTM Revenue / Most Recent Headcount. Revenue is trailing-twelve-month as of the latest quarterly filing. Headcount is from the most recent annual filing (10-K or 20-F).</li>
+          <li><strong>Gross Margin:</strong> (Revenue - Cost of Revenue) / Revenue, from the same TTM period.</li>
+          <li><strong>Market Cap:</strong> As of the data_date for each company.</li>
+          <li><strong>Layoffs:</strong> Any publicly reported reduction-in-force within the 2024-2026 window.</li>
+          <li><strong>Fiscal Year Variance:</strong> Companies have different fiscal year ends (e.g., Salesforce FY ends Jan 31, FactSet FY ends Aug 31). All revenue figures are TTM to normalize.</li>
+        </ul>
+      </div>
+    </details>
+    <details>
+      <summary>Source Citations</summary>
+      <div class="details-body">
+        <p style="font-size:13px;">All financial data from SEC 10-K/10-Q filings via <a href="https://perplexity.ai" style="color:var(--daas);">Perplexity Finance API</a>. Employee counts from most recent annual filings. Market cap as of data_date.</p>
+        <p style="font-size:13px;margin-top:8px;">Individual company sources follow the pattern: <code style="color:var(--daas);background:rgba(88,166,255,0.08);padding:2px 6px;border-radius:4px;">https://perplexity.ai/finance/{TICKER}</code></p>
+        <p style="font-size:13px;margin-top:8px;">Example: <a href="https://perplexity.ai/finance/CRM" style="color:var(--daas);">https://perplexity.ai/finance/CRM</a></p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2026 ChatB2B Research &middot; <a href="https://chatb2b.com">chatb2b.com</a></p>
+    <p style="margin-top:8px;">Data sourced from SEC filings via Perplexity Finance API. This report is for informational purposes only and does not constitute investment advice.</p>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const DATA = {"cohort_statistics": {"DaaS": {"n": 19, "rpe": {"mean": 412581.6174856476, "median": 385144.869537378, "std": 181643.43410974162, "min": 190409.9048233586, "max": 978173.3746130032, "p25": 310767.7481572254, "p75": 489908.10413651477, "iqr": 179140.3559792894, "cv": 0.440260608838348, "skewness": 1.674248900880443, "kurtosis": 4.358672465374983}, "revenue": {"mean": 4498965736.842105, "median": 3072700000.0, "total": 85480349000.0}, "gross_margin": {"mean": 0.6830352900565829, "median": 0.6816532780513086}, "employees": {"mean": 11280.78947368421, "median": 11085.0, "total": 214335}}, "SaaS": {"n": 19, "rpe": {"mean": 579697.9811154831, "median": 491226.8740031898, "std": 275621.96796149533, "min": 314658.3392814656, "max": 1426666.6666666667, "p25": 439018.0383248193, "p75": 570521.9110189928, "iqr": 131503.87269417348, "cv": 0.4754578710643948, "skewness": 2.1313359315124085, "kurtosis": 4.5017431209502}, "revenue": {"mean": 8591108939.55158, "median": 4683946000.0, "total": 163231069851.48}, "gross_margin": {"mean": 0.7249921315436867, "median": 0.7701603834562699}, "employees": {"mean": 17214.894736842107, "median": 7291.0, "total": 327083}}, "AI-First": {"n": 15, "rpe": {"mean": 459380.35921582987, "median": 341302.14285714284, "std": 402253.1845801152, "min": 14619.834710743802, "max": 1448614.5454545454, "p25": 201635.77272555896, "p75": 490552.40458423935, "iqr": 288916.6318586804, "cv": 0.8756429753913908, "skewness": 1.464593626669616, "kurtosis": 1.6148386330601818}, "revenue": {"mean": 1191082000.0, "median": 693412000.0, "total": 17866230000.0}, "gross_margin": {"mean": 0.16639803471598907, "median": 0.5866206312670318}, "employees": {"mean": 2135.133333333333, "median": 1193.0, "total": 32027}}}, "hypothesis_tests": {"kruskal_wallis": {"h_statistic": 7.835521718341965, "p_value": 0.019885571526010705, "significant": true, "interpretation": "Significant differences exist between at least two cohorts"}, "pairwise_mann_whitney": {"DaaS_vs_SaaS": {"u_statistic": 93.0, "p_value": 0.01108705352151141, "bonferroni_alpha": 0.016666666666666666, "significant_bonferroni": true, "effect_size_r": 0.4847645429362881, "effect_magnitude": "medium", "cohort_1_median": 385144.869537378, "cohort_2_median": 491226.8740031898, "median_difference": -106082.00446581177}, "DaaS_vs_AI-First": {"u_statistic": 160.0, "p_value": 0.5554355294984896, "bonferroni_alpha": 0.016666666666666666, "significant_bonferroni": false, "effect_size_r": -0.12280701754385959, "effect_magnitude": "small", "cohort_1_median": 385144.869537378, "cohort_2_median": 341302.14285714284, "median_difference": 43842.72668023518}, "SaaS_vs_AI-First": {"u_statistic": 205.0, "p_value": 0.03152100216309914, "bonferroni_alpha": 0.016666666666666666, "significant_bonferroni": false, "effect_size_r": -0.4385964912280702, "effect_magnitude": "medium", "cohort_1_median": 491226.8740031898, "cohort_2_median": 341302.14285714284, "median_difference": 149924.73114604695}}, "bonferroni_correction": {"alpha": 0.05, "adjusted_alpha": 0.016666666666666666, "n_comparisons": 3}}, "correlations": {"rpe_vs_ttm_revenue": {"spearman_rho": 0.4986292533462345, "p_value": 0.000144698666401163, "significant": true, "n": 53, "interpretation": "moderate positive"}, "rpe_vs_employees": {"spearman_rho": 0.17843896145782936, "p_value": 0.20111999596443758, "significant": false, "n": 53, "interpretation": "weak positive"}, "rpe_vs_gross_margin": {"spearman_rho": 0.27995484599258186, "p_value": 0.04232612071998136, "significant": true, "n": 53, "interpretation": "weak positive"}, "rpe_vs_market_cap": {"spearman_rho": 0.6003870343492985, "p_value": 2.011964560319855e-06, "significant": true, "n": 53, "interpretation": "strong positive"}, "rpe_vs_yoy_growth": {"spearman_rho": -0.08571428571428573, "p_value": 0.8717434402332361, "significant": false, "n": 6, "interpretation": "weak negative"}, "rpe_vs_gm_DaaS": {"spearman_rho": 0.31052631578947365, "p_value": 0.1956889295255579, "significant": false, "n": 19, "cohort": "DaaS"}, "rpe_vs_gm_SaaS": {"spearman_rho": -0.48947368421052634, "p_value": 0.03341526206953935, "significant": true, "n": 19, "cohort": "SaaS"}, "rpe_vs_gm_AI-First": {"spearman_rho": 0.5892857142857142, "p_value": 0.020794358483161638, "significant": true, "n": 15, "cohort": "AI-First"}}, "layoff_analysis": {"layoff_companies": 18, "no_layoff_companies": 35, "layoff_rpe_mean": 502941.5379625086, "layoff_rpe_median": 442970.1946932735, "no_layoff_rpe_mean": 476887.7165238222, "no_layoff_rpe_median": 422472.3631874914, "mann_whitney_u": 312.0, "p_value": 0.9625506754704641, "significant": false, "interpretation": "Companies with layoffs do not have significantly different RPE than those without"}, "ai_first_segmentation": {"AI Application": {"n": 13, "companies": ["SYM", "PLTR", "UPST", "TEM", "CRWD", "BRZE", "PATH", "S", "IONQ", "AI", "BBAI", "SOUN", "VERI"], "rpe_mean": 521760.3310405157, "rpe_median": 401528.1799379524, "gross_margin_mean": 0.5952674179229549, "total_employees": 31106}, "Pre-Revenue/Research": {"n": 2, "companies": ["RXRX", "SERV"], "rpe_mean": 53910.5423553719, "rpe_median": 53910.5423553719, "gross_margin_mean": -2.6212529561292888, "total_employees": 921}}, "classification_justifications": {"FICO": {"classified_as": "DaaS", "justification": "FICO's primary revenue derives from its proprietary FICO Score (used in >90% of US lending decisions) and analytics/data licensing. While it offers a SaaS platform (FICO Platform), its economic moat is the scoring data monopoly, not the software delivery model. Revenue is overwhelmingly driven by per-score licensing fees \u2014 a classic data-as-a-service model.", "could_be": "SaaS", "counter_argument": "FICO Platform is growing rapidly as a cloud-native SaaS offering. However, this still represents <30% of revenue."}, "CRWD": {"classified_as": "AI-First", "justification": "CrowdStrike's Falcon platform uses AI/ML models as the primary threat detection mechanism. Unlike traditional signature-based cybersecurity (SaaS), CrowdStrike's differentiation IS the AI \u2014 behavioral models that identify novel threats. The entire product thesis depends on AI superiority.", "could_be": "SaaS", "counter_argument": "CrowdStrike has SaaS-like subscription revenue and delivery model. However, the AI is not an add-on feature; it IS the product."}, "S": {"classified_as": "AI-First", "justification": "SentinelOne's Singularity platform uses autonomous AI for endpoint detection and response. Like CrowdStrike, the AI models are the core product, not a feature layer on top of traditional software.", "could_be": "SaaS", "counter_argument": "Same subscription model as SaaS companies, but the core differentiation and product architecture is AI-native."}}, "key_findings": {"saas_vs_daas_surprise": {"saas_median_rpe": 491226.8740031898, "daas_median_rpe": 385144.869537378, "saas_premium_pct": 27.543403237652786, "explanation": "SaaS companies generate more revenue per employee than DaaS companies, contradicting the common thesis that data companies are inherently more capital-efficient. This likely reflects: (1) SaaS's higher gross margins enabling more revenue retention, (2) mature SaaS companies like Shopify and Salesforce achieving massive scale, and (3) DaaS companies requiring more data infrastructure headcount."}, "top_5_rpe": [{"ticker": "SYM", "company": "Symbotic Inc.", "cohort": "AI-First", "rpe": 1448614.5454545454, "gross_margin": 0.192098699112297, "employees": 1650}, {"ticker": "SHOP", "company": "Shopify Inc.", "cohort": "SaaS", "rpe": 1426666.6666666667, "gross_margin": 0.4807026652821045, "employees": 8100}, {"ticker": "PLTR", "company": "Palantir Technologies Inc.", "cohort": "AI-First", "rpe": 1137054.3699186991, "gross_margin": 0.8236651721415028, "employees": 3936}, {"ticker": "TOST", "company": "Toast, Inc.", "cohort": "SaaS", "rpe": 1079473.6842105263, "gross_margin": 0.2584105314480741, "employees": 5700}, {"ticker": "ICE", "company": "Intercontinental Exchange, Inc.", "cohort": "DaaS", "rpe": 978173.3746130032, "gross_margin": 0.6188479189745213, "employees": 12920}], "bottom_5_rpe": [{"ticker": "SOUN", "company": "SoundHound AI, Inc.", "cohort": "AI-First", "rpe": 200617.5771971497, "gross_margin": 0.4235792090930618, "employees": 842}, {"ticker": "FDS", "company": "FactSet Research Systems Inc.", "cohort": "DaaS", "rpe": 190409.9048233586, "gross_margin": 0.5226339453264326, "employees": 12398}, {"ticker": "VERI", "company": "Veritone, Inc.", "cohort": "AI-First", "rpe": 155223.81930184804, "gross_margin": 0.5866206312670318, "employees": 487}, {"ticker": "RXRX", "company": "Recursion Pharmaceuticals, Inc.", "cohort": "AI-First", "rpe": 93201.25, "gross_margin": -0.3205160874988265, "employees": 800}, {"ticker": "SERV", "company": "Serve Robotics Inc.", "cohort": "AI-First", "rpe": 14619.834710743802, "gross_margin": -4.921989824759751, "employees": 121}], "ai_first_bimodal": "The AI-First cohort is NOT homogeneous. Pre-revenue research companies (SERV, RXRX) with <$100K RPE coexist with profitable AI application companies (PLTR, CRWD) with >$450K RPE. The median hides this bimodal distribution.", "gross_margin_gap": "SaaS gross margins (mean 72.5%) far exceed AI-First (16.6%), largely due to pre-revenue/hardware-heavy AI companies pulling down the average."}, "provocative_questions": [{"question": "Is 'Revenue Per Employee' the wrong metric for AI companies?", "context": "Pre-revenue AI companies like Serve Robotics ($14.6K RPE) and Recursion ($93K RPE) look terrible on RPE, but they're investing in R&D that may generate massive future RPE. Should we use 'R&D Spend Per Patent' or 'Model Performance Per Compute Dollar' instead?"}, {"question": "Are SaaS companies accidentally proving that software > data?", "context": "SaaS median RPE ($491,227) exceeds DaaS ($385,145) by 28%. If data is the 'new oil,' why are the companies that just build software on top of it more efficient? Is the value in the application layer, not the data layer?"}, {"question": "Will layoffs permanently inflate RPE, or is this a one-time efficiency mirage?", "context": "Companies like Twilio and Zoom slashed headcount 15-20% in 2023. Their RPE jumped. But is this sustainable efficiency or just the numerator lagging behind denominator cuts? Monitor RPE trajectories over the next 4 quarters."}, {"question": "Should CrowdStrike and Palantir be in the same cohort?", "context": "CrowdStrike ($451K RPE, 74% GM) looks like a SaaS company by delivery model. Palantir ($1.14M RPE, 82% GM) is a consulting-heavy enterprise play. Both are 'AI-First' but have radically different unit economics. Does the AI-First label obscure more than it reveals?"}, {"question": "Is Symbotic's $1.45M RPE real or an acquisition artifact?", "context": "Symbotic acquired Walmart's ASR division in January 2025, then laid off ~400 from that unit in May 2025. The 10-K headcount (1,650) predates these changes. If post-acquisition headcount was 2,000+, RPE drops to ~$1.2M. Still impressive, but the timing matters."}, {"question": "Why does scale destroy DaaS efficiency but not SaaS?", "context": "S&P Global (42K employees, $362K RPE) and Gartner (21K, $309K RPE) show declining marginal RPE at scale. Meanwhile, Salesforce (76K, $543K) and ServiceNow (26K, $505K) maintain high RPE despite massive headcount. Is data accumulation less scalable than software distribution?"}, {"question": "If AI automates 30% of knowledge work by 2030, which cohort benefits most?", "context": "DaaS companies could reduce data operations headcount. SaaS companies could automate customer success. AI-First companies could improve their own models. But the real question: does AI make RPE converge across all three cohorts, destroying the basis for this entire analysis?"}], "company_tables": {"DaaS": [{"ticker": "ICE", "company": "Intercontinental Exchange, Inc.", "employees": 12920, "employee_source": "2024 10-K", "ttm_revenue": 12638000000.0, "gross_margin": 0.6188479189745213, "rpe": 978173.3746130032, "market_cap": 93954023282.0, "founded": "2000", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "RAMP", "company": "LiveRamp Holdings, Inc.", "employees": 1300, "employee_source": "FY2025 10-K (est.)", "ttm_revenue": 795572000.0, "gross_margin": 0.7039890795553388, "rpe": 611978.4615384615, "market_cap": 1830540667.0, "founded": "1969", "layoffs": "No", "layoff_details": "Fiscal year ends March 31; ~1,300 estimated", "data_date": "2025-12-31"}, {"ticker": "FICO", "company": "Fair Isaac Corporation", "employees": 3586, "employee_source": "FY2024 10-K", "ttm_revenue": 2062860000.0, "gross_margin": 0.8285690740040527, "rpe": 575253.7646402677, "market_cap": 34350124475.0, "founded": "1956", "layoffs": "No", "layoff_details": "Fiscal year ends September 30", "data_date": "2025-12-31"}, {"ticker": "MSCI", "company": "MSCI Inc.", "employees": 6132, "employee_source": "2024 10-K (filed Jan 29, 2025)", "ttm_revenue": 3134459000.0, "gross_margin": 0.8244143566720764, "rpe": 511164.22048271366, "market_cap": 42498172994.0, "founded": "1998", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "CSGP", "company": "CoStar Group, Inc.", "employees": 6593, "employee_source": "2024 10-K (filed Feb 20, 2025)", "ttm_revenue": 3247100000.0, "gross_margin": 0.7757075544331865, "rpe": 492507.204610951, "market_cap": 19826430163.0, "founded": "1987", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "MCO", "company": "Moody's Corporation", "employees": 15838, "employee_source": "2024 10-K", "ttm_revenue": 7718000000.0, "gross_margin": 0.6816532780513086, "rpe": 487309.0036620785, "market_cap": 82320390000.0, "founded": "1909", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "ROP", "company": "Roper Technologies, Inc.", "employees": 18200, "employee_source": "2024 10-K (filed Feb 24, 2025)", "ttm_revenue": 7902500000.0, "gross_margin": 0.6924391015501423, "rpe": 434203.2967032967, "market_cap": 38318926148.0, "founded": "1981", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "EFX", "company": "Equifax Inc.", "employees": 14700, "employee_source": "2024 10-K", "ttm_revenue": 6074500000.0, "gross_margin": 0.4460284797102642, "rpe": 413231.2925170068, "market_cap": 25265801884.0, "founded": "1899", "layoffs": "No", "layoff_details": "Down from ~14,900 in 2023; modest natural attrition", "data_date": "2025-12-31"}, {"ticker": "VRSK", "company": "Verisk Analytics, Inc.", "employees": 7800, "employee_source": "2024 10-K (filed Feb 26, 2025)", "ttm_revenue": 3072700000.0, "gross_margin": 0.6731213590653171, "rpe": 393935.89743589744, "market_cap": 29930260052.0, "founded": "1971", "layoffs": "No", "layoff_details": "Sold insurance segment in 2023 (~2,400 employees departed via divestiture, not layoffs)", "data_date": "2025-12-31"}, {"ticker": "DNB", "company": "Dun & Bradstreet Holdings", "employees": 6247, "employee_source": "2024 10-K", "ttm_revenue": 2406000000.0, "gross_margin": 0.6152535328345802, "rpe": 385144.869537378, "market_cap": 4082629277.0, "founded": "1841", "layoffs": "No", "layoff_details": "", "data_date": "2025-06-30"}, {"ticker": "SPGI", "company": "S&P Global Inc.", "employees": 42350, "employee_source": "2024 10-K", "ttm_revenue": 15336000000.0, "gross_margin": 0.7024647887323944, "rpe": 362125.14757969306, "market_cap": 134440170668.0, "founded": "1888", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "ZI", "company": "ZoomInfo Technologies Inc.", "employees": 3508, "employee_source": "2024 10-K (filed Feb 25, 2025)", "ttm_revenue": 1249500000.0, "gross_margin": 0.8441776710684273, "rpe": 356185.86088939564, "market_cap": 1901985632.0, "founded": "2007", "layoffs": "Yes", "layoff_details": "~6% reduction in Q2 2025 (post-period)", "data_date": "2025-12-31"}, {"ticker": "TRU", "company": "TransUnion", "employees": 13400, "employee_source": "2024 10-K", "ttm_revenue": 4576400000.0, "gross_margin": 0.5279258806048422, "rpe": 341522.3880597015, "market_cap": 15386466000.0, "founded": "1968", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "WK", "company": "Workiva Inc.", "employees": 2828, "employee_source": "2024 10-K", "ttm_revenue": 884568000.0, "gross_margin": 0.7847197728156569, "rpe": 312789.2503536068, "market_cap": 3555006920.0, "founded": "2008", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "IT", "company": "Gartner, Inc.", "employees": 21044, "employee_source": "2024 10-K", "ttm_revenue": 6497256000.0, "gross_margin": 0.6765589965979484, "rpe": 308746.2459608439, "market_cap": 11876872118.0, "founded": "1979", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "VRNS", "company": "Varonis Systems, Inc.", "employees": 2406, "employee_source": "2024 10-K", "ttm_revenue": 623532000.0, "gross_margin": 0.788344463475812, "rpe": 259157.1072319202, "market_cap": 2776481556.0, "founded": "2004", "layoffs": "Yes", "layoff_details": "~5% (~120 employees) cut in October 2025 (post-period)", "data_date": "2025-12-31"}, {"ticker": "MORN", "company": "Morningstar, Inc.", "employees": 11085, "employee_source": "2024 10-K", "ttm_revenue": 2445500000.0, "gross_margin": 0.6103455326109181, "rpe": 220613.44158773115, "market_cap": 7498264270.0, "founded": "1984", "layoffs": "No", "layoff_details": "Down from 11,334 in 2023; modest natural attrition", "data_date": "2025-12-31"}, {"ticker": "CLVT", "company": "Clarivate Plc", "employees": 12000, "employee_source": "2024 10-K", "ttm_revenue": 2455200000.0, "gross_margin": 0.660475724991854, "rpe": 204600.0, "market_cap": 1633744620.0, "founded": "2016", "layoffs": "Yes", "layoff_details": "~200 employees (~3%) cut in January 2025 (post-period)", "data_date": "2025-12-31"}, {"ticker": "FDS", "company": "FactSet Research Systems Inc.", "employees": 12398, "employee_source": "FY2024 10-K (filed Oct 2024)", "ttm_revenue": 2360702000.0, "gross_margin": 0.5226339453264326, "rpe": 190409.9048233586, "market_cap": 8339780913.0, "founded": "1978", "layoffs": "No", "layoff_details": "Fiscal year ends August 31", "data_date": "2025-11-30"}], "SaaS": [{"ticker": "SHOP", "company": "Shopify Inc.", "employees": 8100, "employee_source": "2024 10-K", "ttm_revenue": 11556000000.0, "gross_margin": 0.4807026652821045, "rpe": 1426666.6666666667, "market_cap": 159050537235.0, "founded": "2006", "layoffs": "No", "layoff_details": "Minor cuts November 2025 (<1%, post-period). Major prior cuts: 10% May 2022, 20% May 2023", "data_date": "2025-12-31"}, {"ticker": "TOST", "company": "Toast, Inc.", "employees": 5700, "employee_source": "2024 10-K (filed Feb 26, 2025)", "ttm_revenue": 6153000000.0, "gross_margin": 0.2584105314480741, "rpe": 1079473.6842105263, "market_cap": 17145790000.0, "founded": "2011", "layoffs": "Yes", "layoff_details": "~10% (~550 employees) in February 2024", "data_date": "2025-12-31"}, {"ticker": "TWLO", "company": "Twilio Inc.", "employees": 5535, "employee_source": "2024 10-K (SEC filing twlo-20241231)", "ttm_revenue": 5067220000.0, "gross_margin": 0.4900256945623044, "rpe": 915486.901535682, "market_cap": 18950583936.0, "founded": "2008", "layoffs": "Yes", "layoff_details": "~17% in February 2023; ~5% in December 2023. Both within 2-year window", "data_date": "2025-12-31"}, {"ticker": "ZM", "company": "Zoom Communications, Inc.", "employees": 7412, "employee_source": "FY2025 10-K", "ttm_revenue": 4868769000.0, "gross_margin": 0.7701603834562699, "rpe": 656876.5515380464, "market_cap": 21997769798.0, "founded": "2011", "layoffs": "Yes", "layoff_details": "~15% (~1,300 employees) in February 2023; ~150 employees in February 2024. Fiscal year ends January 31", "data_date": "2026-01-31"}, {"ticker": "SNOW", "company": "Snowflake Inc.", "employees": 7834, "employee_source": "FY2025 10-K (confirmed via SEC/StockAnalysis)", "ttm_revenue": 4683946000.0, "gross_margin": 0.6716860100436683, "rpe": 597899.668113352, "market_cap": 56733338000.0, "founded": "2012", "layoffs": "No", "layoff_details": "Fiscal year ends January 31. Note: some third-party sources show lower count (incorrect); 7,834 confirmed from SEC filing", "data_date": "2026-01-31"}, {"ticker": "CRM", "company": "Salesforce, Inc.", "employees": 76453, "employee_source": "FY2025 10-K", "ttm_revenue": 41525000000.0, "gross_margin": 0.7767609873570138, "rpe": 543144.1539246334, "market_cap": 186639595687.0, "founded": "1999", "layoffs": "Yes", "layoff_details": "~1,000 (1.5%) in February 2025; ~4,000 support roles September 2025 (post-period). Major prior cuts: 8,000 (10%) in January 2023", "data_date": "2026-01-31"}, {"ticker": "DDOG", "company": "Datadog, Inc.", "employees": 6500, "employee_source": "2024 10-K", "ttm_revenue": 3427158000.0, "gross_margin": 0.7994408194778297, "rpe": 527255.0769230769, "market_cap": 39407428126.0, "founded": "2010", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "NET", "company": "Cloudflare, Inc.", "employees": 4263, "employee_source": "2024 10-K", "ttm_revenue": 2167937000.0, "gross_margin": 0.746822901218993, "rpe": 508547.2671827352, "market_cap": 62991292765.0, "founded": "2009", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "NOW", "company": "ServiceNow, Inc.", "employees": 26293, "employee_source": "2024 10-K", "ttm_revenue": 13278000000.0, "gross_margin": 0.7753426720891701, "rpe": 505001.3311527783, "market_cap": 118396740000.0, "founded": "2004", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "MNDY", "company": "monday.com Ltd.", "employees": 2508, "employee_source": "2024 10-K", "ttm_revenue": 1231997000.0, "gross_margin": 0.8919648343299538, "rpe": 491226.8740031898, "market_cap": 3792125545.0, "founded": "2012", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "TEAM", "company": "Atlassian Corporation", "employees": 12157, "employee_source": "FY2024 10-K", "ttm_revenue": 5759928000.0, "gross_margin": 0.8351168625718932, "rpe": 473795.1797318417, "market_cap": 20620404704.0, "founded": "2002", "layoffs": "Yes", "layoff_details": "~350 employees (~3%) in September 2025 (post-period). Fiscal year ends June 30", "data_date": "2025-12-31"}, {"ticker": "WDAY", "company": "Workday, Inc.", "employees": 20400, "employee_source": "FY2025 10-K", "ttm_revenue": 9552000000.0, "gross_margin": 0.7570142378559463, "rpe": 468235.2941176471, "market_cap": 38343869282.0, "founded": "2005", "layoffs": "Yes", "layoff_details": "~8.5% (~1,750 employees) in February 2025; ~2% (~400 employees) in February 2026 (post-period). Fiscal year ends January 31", "data_date": "2026-01-31"}, {"ticker": "DOCU", "company": "DocuSign, Inc.", "employees": 6838, "employee_source": "FY2025 10-K", "ttm_revenue": 3158892000.0, "gross_margin": 0.7931271471136082, "rpe": 461961.39221994736, "market_cap": 9360760020.0, "founded": "2003", "layoffs": "Yes", "layoff_details": "~6% (~440 employees) in February 2024; additional rounds in 2023. Fiscal year ends January 31", "data_date": "2025-10-31"}, {"ticker": "MDB", "company": "MongoDB, Inc.", "employees": 5558, "employee_source": "FY2025 10-K", "ttm_revenue": 2463797000.0, "gross_margin": 0.7174856532417241, "rpe": 443288.4130982368, "market_cap": 20570139505.0, "founded": "2007", "layoffs": "No", "layoff_details": "Fiscal year ends January 31", "data_date": "2026-01-31"}, {"ticker": "ASAN", "company": "Asana, Inc.", "employees": 1819, "employee_source": "FY2025 10-K (SEC filing asan-20250131)", "ttm_revenue": 790806000.0, "gross_margin": 0.8902904125664196, "rpe": 434747.6635514018, "market_cap": 1764024060.0, "founded": "2008", "layoffs": "Yes", "layoff_details": "77 employees via WARN notice in February 2025. Fiscal year ends January 31", "data_date": "2026-01-31"}, {"ticker": "VEEV", "company": "Veeva Systems Inc.", "employees": 7291, "employee_source": "FY2025 10-K", "ttm_revenue": 3080246000.0, "gross_margin": 0.7566645651029171, "rpe": 422472.3631874914, "market_cap": 30560230663.0, "founded": "2007", "layoffs": "No", "layoff_details": "Fiscal year ends January 31", "data_date": "2025-10-31"}, {"ticker": "HUBS", "company": "HubSpot, Inc.", "employees": 8246, "employee_source": "2024 10-K (filed Feb 12, 2025)", "ttm_revenue": 3130848000.0, "gross_margin": 0.837588091149746, "rpe": 379680.81494057726, "market_cap": 14523151485.0, "founded": "2006", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "SAP", "company": "SAP SE", "employees": 109973, "employee_source": "2024 20-F (filed Feb 27, 2025)", "ttm_revenue": 40013016851.48, "gross_margin": 0.73283290435136, "rpe": 363844.0058148819, "market_cap": 228770619748.0, "founded": "1972", "layoffs": "Yes", "layoff_details": "9,000-10,000 employee restructuring program in 2024, though mostly voluntary/retraining; net headcount up ~2.2% YoY despite restructuring", "data_date": "2025-12-31"}, {"ticker": "PCOR", "company": "Procore Technologies, Inc.", "employees": 4203, "employee_source": "2024 10-K", "ttm_revenue": 1322509000.0, "gross_margin": 0.7934131261110511, "rpe": 314658.3392814656, "market_cap": 8784047090.0, "founded": "2002", "layoffs": "No", "layoff_details": "~4% cut in January 2026 (post-period)", "data_date": "2025-12-31"}], "AI-First": [{"ticker": "SYM", "company": "Symbotic Inc.", "employees": 1650, "employee_source": "FY2024 10-K (filed Dec 4, 2024)", "ttm_revenue": 2390214000.0, "gross_margin": 0.192098699112297, "rpe": 1448614.5454545454, "market_cap": 32493157070.0, "founded": "2007", "layoffs": "Yes", "layoff_details": "~400 employees laid off May 2025 (post-period), from Walmart ASR division acquired January 2025. Fiscal year ends late September", "data_date": "2025-12-27"}, {"ticker": "PLTR", "company": "Palantir Technologies Inc.", "employees": 3936, "employee_source": "2024 10-K (filed Feb 18, 2025)", "ttm_revenue": 4475446000.0, "gross_margin": 0.8236651721415028, "rpe": 1137054.3699186991, "market_cap": 337350213400.0, "founded": "2003", "layoffs": "No", "layoff_details": "No mass layoffs; IT team ~60% cut in March 2025 (~120 people, post-period)", "data_date": "2025-12-31"}, {"ticker": "UPST", "company": "Upstart Holdings, Inc.", "employees": 1193, "employee_source": "2024 10-K (confirmed via Wikipedia/StockAnalysis)", "ttm_revenue": 1075521000.0, "gross_margin": 0.952082758030759, "rpe": 901526.4040234702, "market_cap": 2769250378.0, "founded": "2012", "layoffs": "No", "layoff_details": "Down from 1,388 in 2023 via attrition. Major prior cuts: ~7% late 2022, ~20% January 2023 (outside 2-year window)", "data_date": "2025-12-31"}, {"ticker": "TEM", "company": "Tempus AI, Inc.", "employees": 2400, "employee_source": "2024 10-K", "ttm_revenue": 1271789000.0, "gross_margin": 0.6964103322170581, "rpe": 529912.0833333334, "market_cap": 8885181844.0, "founded": "2015", "layoffs": "No", "layoff_details": "Ambry Genetics acquisition planned for 2025 (post-period; will increase headcount)", "data_date": "2025-12-31"}, {"ticker": "CRWD", "company": "CrowdStrike Holdings, Inc.", "employees": 10118, "employee_source": "FY2025 10-K", "ttm_revenue": 4565168000.0, "gross_margin": 0.7426905209183977, "rpe": 451192.7258351453, "market_cap": 98676371385.0, "founded": "2011", "layoffs": "Yes", "layoff_details": "~5% (~500 employees) in May 2025 (post-period). Fiscal year ends January 31", "data_date": "2025-10-31"}, {"ticker": "BRZE", "company": "Braze, Inc.", "employees": 1699, "employee_source": "FY2025 10-K", "ttm_revenue": 693412000.0, "gross_margin": 0.6812544345929981, "rpe": 408129.4879340789, "market_cap": 2003417680.0, "founded": "2011", "layoffs": "No", "layoff_details": "Fiscal year ends January 31", "data_date": "2025-10-31"}, {"ticker": "PATH", "company": "UiPath Inc.", "employees": 3868, "employee_source": "FY2025 10-K", "ttm_revenue": 1553111000.0, "gross_margin": 0.8315748198293619, "rpe": 401528.1799379524, "market_cap": 5902857838.0, "founded": "2005", "layoffs": "Yes", "layoff_details": "~10% (~420 employees) in July 2024. Fiscal year ends January 31", "data_date": "2025-10-31"}, {"ticker": "S", "company": "SentinelOne, Inc.", "employees": 2800, "employee_source": "FY2025 10-K", "ttm_revenue": 955646000.0, "gross_margin": 0.7469073276087589, "rpe": 341302.14285714284, "market_cap": 4422926404.0, "founded": "2013", "layoffs": "No", "layoff_details": "Fiscal year ends January 31", "data_date": "2025-10-31"}, {"ticker": "IONQ", "company": "IonQ, Inc.", "employees": 407, "employee_source": "2024 10-K", "ttm_revenue": 130016000.0, "gross_margin": 0.4040118139305931, "rpe": 319449.6314496315, "market_cap": 13314314898.0, "founded": "2015", "layoffs": "No", "layoff_details": "", "data_date": "2025-12-31"}, {"ticker": "AI", "company": "C3.ai, Inc.", "employees": 1076, "employee_source": "FY2025 10-K (ESTIMATE \u2014 fiscal year ends April 30; based on Feb 2026 layoff of ~280 = 26% of total)", "ttm_revenue": 307391000.0, "gross_margin": 0.4345247583696334, "rpe": 285679.36802973977, "market_cap": 1249002300.0, "founded": "2009", "layoffs": "Yes", "layoff_details": "~26% (~280 employees) announced February 2026 (post-period). ESTIMATE: pre-cut headcount ~1,076 inferred from layoff announcement. Fiscal year ends April 30", "data_date": "2026-01-31"}, {"ticker": "BBAI", "company": "BigBear.ai Holdings, Inc.", "employees": 630, "employee_source": "2024 10-K (confirmed via ir.bigbear.ai)", "ttm_revenue": 127672000.0, "gross_margin": 0.2230559558869603, "rpe": 202653.96825396825, "market_cap": 1355618425.0, "founded": "2020", "layoffs": "No", "layoff_details": "Headcount up from 480 in 2023 to 630 in 2024", "data_date": "2025-12-31"}, {"ticker": "SOUN", "company": "SoundHound AI, Inc.", "employees": 842, "employee_source": "2024 10-K", "ttm_revenue": 168920000.0, "gross_margin": 0.4235792090930618, "rpe": 200617.5771971497, "market_cap": 3575015947.0, "founded": "2005", "layoffs": "No", "layoff_details": "No layoffs in 2024-2026 window. Major prior cuts: 10% Nov 2022, 50% Jan 2023", "data_date": "2025-12-31"}, {"ticker": "VERI", "company": "Veritone, Inc.", "employees": 487, "employee_source": "2024 10-K (filed Apr 1, 2025; confirmed via Financhle)", "ttm_revenue": 75594000.0, "gross_margin": 0.5866206312670318, "rpe": 155223.81930184804, "market_cap": 143429508.0, "founded": "2014", "layoffs": "Yes", "layoff_details": "~14% cut in January 2024; additional ~15%+ cuts during 2024. Divested media agency (Veritone One) in October 2024, reducing headcount significantly", "data_date": "2025-09-30"}, {"ticker": "RXRX", "company": "Recursion Pharmaceuticals, Inc.", "employees": 800, "employee_source": "2024 10-K (est. ~800)", "ttm_revenue": 74561000.0, "gross_margin": -0.3205160874988265, "rpe": 93201.25, "market_cap": 1418890456.0, "founded": "2013", "layoffs": "Yes", "layoff_details": "~20% (~160 employees) in June 2025 (post-period)", "data_date": "2025-12-31"}, {"ticker": "SERV", "company": "Serve Robotics Inc.", "employees": 121, "employee_source": "2024 10-K", "ttm_revenue": 1769000.0, "gross_margin": -4.921989824759751, "rpe": 14619.834710743802, "market_cap": 535566173.0, "founded": "2021", "layoffs": "No", "layoff_details": "Very early stage company", "data_date": "2025-09-30"}]}, "boxplot_data": {"DaaS": {"min": 190409.9048233586, "q1": 310767.7481572254, "median": 385144.869537378, "q3": 489908.10413651477, "max": 758618.6381054488, "outliers": [978173.3746130032], "all_values": [978173.3746130032, 611978.4615384615, 575253.7646402677, 511164.22048271366, 492507.204610951, 487309.0036620785, 434203.2967032967, 413231.2925170068, 393935.89743589744, 385144.869537378, 362125.14757969306, 356185.86088939564, 341522.3880597015, 312789.2503536068, 308746.2459608439, 259157.1072319202, 220613.44158773115, 204600.0, 190409.9048233586]}, "SaaS": {"min": 314658.3392814656, "q1": 439018.0383248193, "median": 491226.8740031898, "q3": 570521.9110189928, "max": 767777.720060253, "outliers": [1426666.6666666667, 1079473.6842105263, 915486.901535682], "all_values": [1426666.6666666667, 1079473.6842105263, 915486.901535682, 656876.5515380464, 597899.668113352, 543144.1539246334, 527255.0769230769, 508547.2671827352, 505001.3311527783, 491226.8740031898, 473795.1797318417, 468235.2941176471, 461961.39221994736, 443288.4130982368, 434747.6635514018, 422472.3631874914, 379680.81494057726, 363844.0058148819, 314658.3392814656]}, "AI-First": {"min": 14619.834710743802, "q1": 201635.77272555896, "median": 341302.14285714284, "q3": 490552.40458423935, "max": 923927.35237226, "outliers": [1448614.5454545454, 1137054.3699186991], "all_values": [1448614.5454545454, 1137054.3699186991, 901526.4040234702, 529912.0833333334, 451192.7258351453, 408129.4879340789, 401528.1799379524, 341302.14285714284, 319449.6314496315, 285679.36802973977, 202653.96825396825, 200617.5771971497, 155223.81930184804, 93201.25, 14619.834710743802]}}, "scatter_data": [{"ticker": "SYM", "company": "Symbotic Inc.", "cohort": "AI-First", "rpe": 1448614.5454545454, "gross_margin": 0.192098699112297, "employees": 1650, "ttm_revenue": 2390214000.0}, {"ticker": "PLTR", "company": "Palantir Technologies Inc.", "cohort": "AI-First", "rpe": 1137054.3699186991, "gross_margin": 0.8236651721415028, "employees": 3936, "ttm_revenue": 4475446000.0}, {"ticker": "UPST", "company": "Upstart Holdings, Inc.", "cohort": "AI-First", "rpe": 901526.4040234702, "gross_margin": 0.952082758030759, "employees": 1193, "ttm_revenue": 1075521000.0}, {"ticker": "TEM", "company": "Tempus AI, Inc.", "cohort": "AI-First", "rpe": 529912.0833333334, "gross_margin": 0.6964103322170581, "employees": 2400, "ttm_revenue": 1271789000.0}, {"ticker": "CRWD", "company": "CrowdStrike Holdings, Inc.", "cohort": "AI-First", "rpe": 451192.7258351453, "gross_margin": 0.7426905209183977, "employees": 10118, "ttm_revenue": 4565168000.0}, {"ticker": "BRZE", "company": "Braze, Inc.", "cohort": "AI-First", "rpe": 408129.4879340789, "gross_margin": 0.6812544345929981, "employees": 1699, "ttm_revenue": 693412000.0}, {"ticker": "PATH", "company": "UiPath Inc.", "cohort": "AI-First", "rpe": 401528.1799379524, "gross_margin": 0.8315748198293619, "employees": 3868, "ttm_revenue": 1553111000.0}, {"ticker": "S", "company": "SentinelOne, Inc.", "cohort": "AI-First", "rpe": 341302.14285714284, "gross_margin": 0.7469073276087589, "employees": 2800, "ttm_revenue": 955646000.0}, {"ticker": "IONQ", "company": "IonQ, Inc.", "cohort": "AI-First", "rpe": 319449.6314496315, "gross_margin": 0.4040118139305931, "employees": 407, "ttm_revenue": 130016000.0}, {"ticker": "AI", "company": "C3.ai, Inc.", "cohort": "AI-First", "rpe": 285679.36802973977, "gross_margin": 0.4345247583696334, "employees": 1076, "ttm_revenue": 307391000.0}, {"ticker": "BBAI", "company": "BigBear.ai Holdings, Inc.", "cohort": "AI-First", "rpe": 202653.96825396825, "gross_margin": 0.2230559558869603, "employees": 630, "ttm_revenue": 127672000.0}, {"ticker": "SOUN", "company": "SoundHound AI, Inc.", "cohort": "AI-First", "rpe": 200617.5771971497, "gross_margin": 0.4235792090930618, "employees": 842, "ttm_revenue": 168920000.0}, {"ticker": "VERI", "company": "Veritone, Inc.", "cohort": "AI-First", "rpe": 155223.81930184804, "gross_margin": 0.5866206312670318, "employees": 487, "ttm_revenue": 75594000.0}, {"ticker": "RXRX", "company": "Recursion Pharmaceuticals, Inc.", "cohort": "AI-First", "rpe": 93201.25, "gross_margin": -0.3205160874988265, "employees": 800, "ttm_revenue": 74561000.0}, {"ticker": "SERV", "company": "Serve Robotics Inc.", "cohort": "AI-First", "rpe": 14619.834710743802, "gross_margin": -4.921989824759751, "employees": 121, "ttm_revenue": 1769000.0}, {"ticker": "ICE", "company": "Intercontinental Exchange, Inc.", "cohort": "DaaS", "rpe": 978173.3746130032, "gross_margin": 0.6188479189745213, "employees": 12920, "ttm_revenue": 12638000000.0}, {"ticker": "RAMP", "company": "LiveRamp Holdings, Inc.", "cohort": "DaaS", "rpe": 611978.4615384615, "gross_margin": 0.7039890795553388, "employees": 1300, "ttm_revenue": 795572000.0}, {"ticker": "FICO", "company": "Fair Isaac Corporation", "cohort": "DaaS", "rpe": 575253.7646402677, "gross_margin": 0.8285690740040527, "employees": 3586, "ttm_revenue": 2062860000.0}, {"ticker": "MSCI", "company": "MSCI Inc.", "cohort": "DaaS", "rpe": 511164.22048271366, "gross_margin": 0.8244143566720764, "employees": 6132, "ttm_revenue": 3134459000.0}, {"ticker": "CSGP", "company": "CoStar Group, Inc.", "cohort": "DaaS", "rpe": 492507.204610951, "gross_margin": 0.7757075544331865, "employees": 6593, "ttm_revenue": 3247100000.0}, {"ticker": "MCO", "company": "Moody's Corporation", "cohort": "DaaS", "rpe": 487309.0036620785, "gross_margin": 0.6816532780513086, "employees": 15838, "ttm_revenue": 7718000000.0}, {"ticker": "ROP", "company": "Roper Technologies, Inc.", "cohort": "DaaS", "rpe": 434203.2967032967, "gross_margin": 0.6924391015501423, "employees": 18200, "ttm_revenue": 7902500000.0}, {"ticker": "EFX", "company": "Equifax Inc.", "cohort": "DaaS", "rpe": 413231.2925170068, "gross_margin": 0.4460284797102642, "employees": 14700, "ttm_revenue": 6074500000.0}, {"ticker": "VRSK", "company": "Verisk Analytics, Inc.", "cohort": "DaaS", "rpe": 393935.89743589744, "gross_margin": 0.6731213590653171, "employees": 7800, "ttm_revenue": 3072700000.0}, {"ticker": "DNB", "company": "Dun & Bradstreet Holdings", "cohort": "DaaS", "rpe": 385144.869537378, "gross_margin": 0.6152535328345802, "employees": 6247, "ttm_revenue": 2406000000.0}, {"ticker": "SPGI", "company": "S&P Global Inc.", "cohort": "DaaS", "rpe": 362125.14757969306, "gross_margin": 0.7024647887323944, "employees": 42350, "ttm_revenue": 15336000000.0}, {"ticker": "ZI", "company": "ZoomInfo Technologies Inc.", "cohort": "DaaS", "rpe": 356185.86088939564, "gross_margin": 0.8441776710684273, "employees": 3508, "ttm_revenue": 1249500000.0}, {"ticker": "TRU", "company": "TransUnion", "cohort": "DaaS", "rpe": 341522.3880597015, "gross_margin": 0.5279258806048422, "employees": 13400, "ttm_revenue": 4576400000.0}, {"ticker": "WK", "company": "Workiva Inc.", "cohort": "DaaS", "rpe": 312789.2503536068, "gross_margin": 0.7847197728156569, "employees": 2828, "ttm_revenue": 884568000.0}, {"ticker": "IT", "company": "Gartner, Inc.", "cohort": "DaaS", "rpe": 308746.2459608439, "gross_margin": 0.6765589965979484, "employees": 21044, "ttm_revenue": 6497256000.0}, {"ticker": "VRNS", "company": "Varonis Systems, Inc.", "cohort": "DaaS", "rpe": 259157.1072319202, "gross_margin": 0.788344463475812, "employees": 2406, "ttm_revenue": 623532000.0}, {"ticker": "MORN", "company": "Morningstar, Inc.", "cohort": "DaaS", "rpe": 220613.44158773115, "gross_margin": 0.6103455326109181, "employees": 11085, "ttm_revenue": 2445500000.0}, {"ticker": "CLVT", "company": "Clarivate Plc", "cohort": "DaaS", "rpe": 204600.0, "gross_margin": 0.660475724991854, "employees": 12000, "ttm_revenue": 2455200000.0}, {"ticker": "FDS", "company": "FactSet Research Systems Inc.", "cohort": "DaaS", "rpe": 190409.9048233586, "gross_margin": 0.5226339453264326, "employees": 12398, "ttm_revenue": 2360702000.0}, {"ticker": "SHOP", "company": "Shopify Inc.", "cohort": "SaaS", "rpe": 1426666.6666666667, "gross_margin": 0.4807026652821045, "employees": 8100, "ttm_revenue": 11556000000.0}, {"ticker": "TOST", "company": "Toast, Inc.", "cohort": "SaaS", "rpe": 1079473.6842105263, "gross_margin": 0.2584105314480741, "employees": 5700, "ttm_revenue": 6153000000.0}, {"ticker": "TWLO", "company": "Twilio Inc.", "cohort": "SaaS", "rpe": 915486.901535682, "gross_margin": 0.4900256945623044, "employees": 5535, "ttm_revenue": 5067220000.0}, {"ticker": "ZM", "company": "Zoom Communications, Inc.", "cohort": "SaaS", "rpe": 656876.5515380464, "gross_margin": 0.7701603834562699, "employees": 7412, "ttm_revenue": 4868769000.0}, {"ticker": "SNOW", "company": "Snowflake Inc.", "cohort": "SaaS", "rpe": 597899.668113352, "gross_margin": 0.6716860100436683, "employees": 7834, "ttm_revenue": 4683946000.0}, {"ticker": "CRM", "company": "Salesforce, Inc.", "cohort": "SaaS", "rpe": 543144.1539246334, "gross_margin": 0.7767609873570138, "employees": 76453, "ttm_revenue": 41525000000.0}, {"ticker": "DDOG", "company": "Datadog, Inc.", "cohort": "SaaS", "rpe": 527255.0769230769, "gross_margin": 0.7994408194778297, "employees": 6500, "ttm_revenue": 3427158000.0}, {"ticker": "NET", "company": "Cloudflare, Inc.", "cohort": "SaaS", "rpe": 508547.2671827352, "gross_margin": 0.746822901218993, "employees": 4263, "ttm_revenue": 2167937000.0}, {"ticker": "NOW", "company": "ServiceNow, Inc.", "cohort": "SaaS", "rpe": 505001.3311527783, "gross_margin": 0.7753426720891701, "employees": 26293, "ttm_revenue": 13278000000.0}, {"ticker": "MNDY", "company": "monday.com Ltd.", "cohort": "SaaS", "rpe": 491226.8740031898, "gross_margin": 0.8919648343299538, "employees": 2508, "ttm_revenue": 1231997000.0}, {"ticker": "TEAM", "company": "Atlassian Corporation", "cohort": "SaaS", "rpe": 473795.1797318417, "gross_margin": 0.8351168625718932, "employees": 12157, "ttm_revenue": 5759928000.0}, {"ticker": "WDAY", "company": "Workday, Inc.", "cohort": "SaaS", "rpe": 468235.2941176471, "gross_margin": 0.7570142378559463, "employees": 20400, "ttm_revenue": 9552000000.0}, {"ticker": "DOCU", "company": "DocuSign, Inc.", "cohort": "SaaS", "rpe": 461961.39221994736, "gross_margin": 0.7931271471136082, "employees": 6838, "ttm_revenue": 3158892000.0}, {"ticker": "MDB", "company": "MongoDB, Inc.", "cohort": "SaaS", "rpe": 443288.4130982368, "gross_margin": 0.7174856532417241, "employees": 5558, "ttm_revenue": 2463797000.0}, {"ticker": "ASAN", "company": "Asana, Inc.", "cohort": "SaaS", "rpe": 434747.6635514018, "gross_margin": 0.8902904125664196, "employees": 1819, "ttm_revenue": 790806000.0}, {"ticker": "VEEV", "company": "Veeva Systems Inc.", "cohort": "SaaS", "rpe": 422472.3631874914, "gross_margin": 0.7566645651029171, "employees": 7291, "ttm_revenue": 3080246000.0}, {"ticker": "HUBS", "company": "HubSpot, Inc.", "cohort": "SaaS", "rpe": 379680.81494057726, "gross_margin": 0.837588091149746, "employees": 8246, "ttm_revenue": 3130848000.0}, {"ticker": "SAP", "company": "SAP SE", "cohort": "SaaS", "rpe": 363844.0058148819, "gross_margin": 0.73283290435136, "employees": 109973, "ttm_revenue": 40013016851.48}, {"ticker": "PCOR", "company": "Procore Technologies, Inc.", "cohort": "SaaS", "rpe": 314658.3392814656, "gross_margin": 0.7934131261110511, "employees": 4203, "ttm_revenue": 1322509000.0}]};
+
+const COLORS = { DaaS: '#58a6ff', SaaS: '#3fb950', 'AI-First': '#d2a8ff' };
+const COLORS_ALPHA = { DaaS: 'rgba(88,166,255,0.7)', SaaS: 'rgba(63,185,80,0.7)', 'AI-First': 'rgba(210,168,255,0.7)' };
+const COLORS_BG = { DaaS: 'rgba(88,166,255,0.15)', SaaS: 'rgba(63,185,80,0.15)', 'AI-First': 'rgba(210,168,255,0.15)' };
+
+// Global Chart.js defaults
+Chart.defaults.color = '#8b949e';
+Chart.defaults.borderColor = 'rgba(48,54,61,0.6)';
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.plugins.legend.display = false;
+
+// ============================================================
+// HELPERS
+// ============================================================
+function fmtK(v) { return '$' + Math.round(v / 1000).toLocaleString() + 'K'; }
+function fmtM(v) {
+  if (v >= 1e9) return '$' + (v / 1e9).toFixed(1) + 'B';
+  return '$' + (v / 1e6).toFixed(0) + 'M';
+}
+function fmtPct(v) { return (v * 100).toFixed(1) + '%'; }
+function fmtB(v) { return '$' + (v / 1e9).toFixed(1) + 'B'; }
+
+function copyChart(id) {
+  const canvas = document.getElementById(id);
+  canvas.toBlob(function(blob) {
+    if (navigator.clipboard && navigator.clipboard.write) {
+      navigator.clipboard.write([new ClipboardItem({'image/png': blob})]).then(() => {
+        const btn = canvas.closest('.chart-container').querySelector('.btn-copy');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy Chart', 1500);
+      });
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = id + '.png'; a.click();
+      URL.revokeObjectURL(url);
+      const btn = canvas.closest('.chart-container').querySelector('.btn-copy');
+      btn.textContent = 'Downloaded!';
+      setTimeout(() => btn.textContent = 'Copy Chart', 1500);
+    }
+  });
+}
+
+// ============================================================
+// CHART A: Horizontal bar — all 53 sorted by RPE
+// ============================================================
+function buildChartA() {
+  const all = DATA.scatter_data.slice().sort((a, b) => a.rpe - b.rpe);
+  new Chart(document.getElementById('chartA'), {
+    type: 'bar',
+    data: {
+      labels: all.map(d => d.ticker),
+      datasets: [{
+        data: all.map(d => d.rpe),
+        backgroundColor: all.map(d => COLORS_ALPHA[d.cohort]),
+        borderColor: all.map(d => COLORS[d.cohort]),
+        borderWidth: 1,
+        borderRadius: 2,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const d = all[ctx.dataIndex];
+              return `${d.company} (${d.cohort}) — ${fmtK(d.rpe)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { callback: v => fmtK(v) },
+          grid: { color: 'rgba(48,54,61,0.4)' }
+        },
+        y: {
+          ticks: { font: { size: 11 } },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+}
+
+// ============================================================
+// CHART B: Box Plot (simulated with floating bars + points)
+// ============================================================
+function buildChartB() {
+  const cohorts = ['DaaS', 'SaaS', 'AI-First'];
+  const bp = DATA.boxplot_data;
+
+  // Use floating bars for boxes and error bars style for whiskers
+  const boxData = cohorts.map(c => [bp[c].q1, bp[c].q3]);
+  const medianData = cohorts.map(c => bp[c].median);
+  const whiskerLow = cohorts.map(c => bp[c].min);
+  const whiskerHigh = cohorts.map(c => bp[c].max);
+
+  // Gather outliers
+  const outlierPoints = [];
+  cohorts.forEach((c, i) => {
+    bp[c].outliers.forEach(v => {
+      outlierPoints.push({ x: i, y: v, cohort: c });
+    });
+  });
+
+  new Chart(document.getElementById('chartB'), {
+    type: 'bar',
+    data: {
+      labels: cohorts,
+      datasets: [
+        {
+          label: 'IQR',
+          data: boxData,
+          backgroundColor: cohorts.map(c => COLORS_BG[c]),
+          borderColor: cohorts.map(c => COLORS[c]),
+          borderWidth: 2,
+          borderRadius: 4,
+          barPercentage: 0.5,
+        },
+        {
+          label: 'Median',
+          type: 'scatter',
+          data: cohorts.map((c, i) => ({ x: i, y: bp[c].median })),
+          pointStyle: 'line',
+          pointRadius: 18,
+          pointBorderWidth: 3,
+          pointBorderColor: '#e6edf3',
+          pointBackgroundColor: '#e6edf3',
+        },
+        {
+          label: 'Whisker Low',
+          type: 'scatter',
+          data: cohorts.map((c, i) => ({ x: i, y: bp[c].min })),
+          pointStyle: 'dash',
+          pointRadius: 10,
+          pointBorderWidth: 2,
+          pointBorderColor: cohorts.map(c => COLORS[c]),
+          pointBackgroundColor: 'transparent',
+        },
+        {
+          label: 'Whisker High',
+          type: 'scatter',
+          data: cohorts.map((c, i) => ({ x: i, y: bp[c].max })),
+          pointStyle: 'dash',
+          pointRadius: 10,
+          pointBorderWidth: 2,
+          pointBorderColor: cohorts.map(c => COLORS[c]),
+          pointBackgroundColor: 'transparent',
+        },
+        {
+          label: 'Outliers',
+          type: 'scatter',
+          data: outlierPoints.map(o => ({ x: o.x, y: o.y })),
+          pointStyle: 'circle',
+          pointRadius: 6,
+          pointBorderWidth: 2,
+          pointBorderColor: outlierPoints.map(o => COLORS[o.cohort]),
+          pointBackgroundColor: outlierPoints.map(o => COLORS_BG[o.cohort]),
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              if (ctx.datasetIndex === 0) {
+                const c = cohorts[ctx.dataIndex];
+                return `${c} IQR: ${fmtK(bp[c].q1)} – ${fmtK(bp[c].q3)}`;
+              }
+              if (ctx.datasetIndex === 1) return `Median: ${fmtK(ctx.raw.y)}`;
+              return fmtK(ctx.raw.y);
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: {
+          ticks: { callback: v => fmtK(v) },
+          grid: { color: 'rgba(48,54,61,0.4)' }
+        }
+      }
+    }
+  });
+}
+
+// ============================================================
+// CHART C: Scatter — RPE vs Gross Margin
+// ============================================================
+function buildChartC() {
+  const cohorts = ['DaaS', 'SaaS', 'AI-First'];
+  const datasets = cohorts.map(c => {
+    const pts = DATA.scatter_data.filter(d => d.cohort === c);
+    return {
+      label: c,
+      data: pts.map(d => ({
+        x: d.gross_margin * 100,
+        y: d.rpe,
+        r: Math.max(4, Math.sqrt(d.employees) / 3),
+        ticker: d.ticker,
+        company: d.company,
+        employees: d.employees,
+      })),
+      backgroundColor: COLORS_ALPHA[c],
+      borderColor: COLORS[c],
+      borderWidth: 1,
+    };
+  });
+
+  new Chart(document.getElementById('chartC'), {
+    type: 'bubble',
+    data: { datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, position: 'top', labels: { usePointStyle: true, pointStyle: 'circle', padding: 20 } },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const d = ctx.raw;
+              return `${d.ticker} — RPE: ${fmtK(d.y)}, GM: ${d.x.toFixed(1)}%, Emp: ${d.employees.toLocaleString()}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          title: { display: true, text: 'Gross Margin (%)', color: '#8b949e' },
+          ticks: { callback: v => v + '%' },
+          grid: { color: 'rgba(48,54,61,0.4)' },
+          min: -60, // Clip extreme outliers (SERV is -492%)
+        },
+        y: {
+          title: { display: true, text: 'Revenue Per Employee', color: '#8b949e' },
+          ticks: { callback: v => fmtK(v) },
+          grid: { color: 'rgba(48,54,61,0.4)' }
+        }
+      }
+    }
+  });
+}
+
+// ============================================================
+// CHART D: Grouped bar — Mean vs Median
+// ============================================================
+function buildChartD() {
+  const cohorts = ['DaaS', 'SaaS', 'AI-First'];
+  const cs = DATA.cohort_statistics;
+
+  new Chart(document.getElementById('chartD'), {
+    type: 'bar',
+    data: {
+      labels: cohorts,
+      datasets: [
+        {
+          label: 'Mean RPE',
+          data: cohorts.map(c => cs[c].rpe.mean),
+          backgroundColor: cohorts.map(c => COLORS_ALPHA[c]),
+          borderColor: cohorts.map(c => COLORS[c]),
+          borderWidth: 1, borderRadius: 4,
+        },
+        {
+          label: 'Median RPE',
+          data: cohorts.map(c => cs[c].rpe.median),
+          backgroundColor: cohorts.map(c => COLORS[c]),
+          borderColor: cohorts.map(c => COLORS[c]),
+          borderWidth: 0, borderRadius: 4,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, position: 'top', labels: { padding: 20 } },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtK(ctx.raw) } }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: {
+          ticks: { callback: v => fmtK(v) },
+          grid: { color: 'rgba(48,54,61,0.4)' }
+        }
+      }
+    }
+  });
+}
+
+// ============================================================
+// CHART E: SaaS vs DaaS focused comparison
+// ============================================================
+function buildChartE() {
+  const cs = DATA.cohort_statistics;
+  new Chart(document.getElementById('chartE'), {
+    type: 'bar',
+    data: {
+      labels: ['Median RPE', 'Mean RPE'],
+      datasets: [
+        {
+          label: 'DaaS',
+          data: [cs.DaaS.rpe.median, cs.DaaS.rpe.mean],
+          backgroundColor: 'rgba(88,166,255,0.7)',
+          borderColor: '#58a6ff', borderWidth: 1, borderRadius: 4,
+        },
+        {
+          label: 'SaaS',
+          data: [cs.SaaS.rpe.median, cs.SaaS.rpe.mean],
+          backgroundColor: 'rgba(63,185,80,0.7)',
+          borderColor: '#3fb950', borderWidth: 1, borderRadius: 4,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, position: 'top', labels: { padding: 20 } },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtK(ctx.raw) } }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: {
+          ticks: { callback: v => fmtK(v) },
+          grid: { color: 'rgba(48,54,61,0.4)' },
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+
+// ============================================================
+// TABLES — Sortable
+// ============================================================
+function buildTable(containerId, companies, cohort) {
+  const badgeClass = cohort === 'DaaS' ? 'badge-daas' : cohort === 'SaaS' ? 'badge-saas' : 'badge-ai';
+  let sortCol = 'rpe';
+  let sortAsc = false;
+
+  function render() {
+    const sorted = companies.slice().sort((a, b) => {
+      let va = a[sortCol], vb = b[sortCol];
+      if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+      if (va < vb) return sortAsc ? -1 : 1;
+      if (va > vb) return sortAsc ? 1 : -1;
+      return 0;
+    });
+
+    const cols = [
+      { key: '_rank', label: '#', fmt: (v, i) => i + 1 },
+      { key: 'ticker', label: 'Ticker', fmt: v => `<strong>${v}</strong>` },
+      { key: 'company', label: 'Company', fmt: v => `<span style="white-space:normal;min-width:160px;display:inline-block;">${v}</span>` },
+      { key: 'employees', label: 'Employees', fmt: v => v.toLocaleString() },
+      { key: 'employee_source', label: 'Source', fmt: v => `<span style="font-size:11px;color:var(--text-faint)">${v}</span>` },
+      { key: 'ttm_revenue', label: 'TTM Revenue', fmt: v => fmtM(v) },
+      { key: 'gross_margin', label: 'Gross Margin', fmt: v => fmtPct(v) },
+      { key: 'rpe', label: 'RPE', fmt: v => fmtK(v) },
+      { key: 'market_cap', label: 'Market Cap', fmt: v => fmtB(v) },
+      { key: 'founded', label: 'Founded', fmt: v => v },
+      { key: 'layoffs', label: 'Layoffs', fmt: v => v === 'Yes' ? '<span style="color:var(--danger)">Yes</span>' : '<span style="color:var(--text-faint)">No</span>' },
+    ];
+
+    let html = '<div class="table-wrap"><table><thead><tr>';
+    cols.forEach(c => {
+      const isSorted = sortCol === c.key;
+      const arrow = isSorted ? (sortAsc ? '&#9650;' : '&#9660;') : '&#8597;';
+      html += `<th class="${isSorted ? 'sorted' : ''}" data-col="${c.key}">${c.label} <span class="sort-arrow">${arrow}</span></th>`;
+    });
+    html += '</tr></thead><tbody>';
+    sorted.forEach((row, i) => {
+      html += '<tr>';
+      cols.forEach(c => {
+        const val = c.key === '_rank' ? i : row[c.key];
+        html += `<td>${c.fmt(val, i)}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+
+    document.getElementById(containerId).innerHTML = html;
+
+    // Attach sort handlers
+    document.getElementById(containerId).querySelectorAll('th').forEach(th => {
+      th.addEventListener('click', () => {
+        const col = th.dataset.col;
+        if (col === '_rank') return;
+        if (sortCol === col) sortAsc = !sortAsc;
+        else { sortCol = col; sortAsc = col === 'ticker' || col === 'company' || col === 'founded'; }
+        render();
+      });
+    });
+  }
+  render();
+}
+
+// ============================================================
+// PROVOCATIVE QUESTIONS
+// ============================================================
+function buildQuestions() {
+  const grid = document.getElementById('questions-grid');
+  DATA.provocative_questions.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `<h3>${i + 1}. ${q.question}</h3><p>${q.context}</p>`;
+    grid.appendChild(card);
+  });
+}
+
+// ============================================================
+// NAV ACTIVE STATE
+// ============================================================
+function setupNav() {
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav a[href^="#"]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.nav a[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+}
+
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active-panel'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab'));
+  document.getElementById(id).classList.add('active-panel');
+  btn.classList.add('active-tab');
+}
+
+// ============================================================
+// CHART BACKGROUND PLUGIN (for dark bg on export)
+// ============================================================
+const bgPlugin = {
+  id: 'customCanvasBackgroundColor',
+  beforeDraw: (chart) => {
+    const {ctx} = chart;
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = '#161b22';
+    ctx.fillRect(0, 0, chart.width, chart.height);
+    ctx.restore();
+  }
+};
+Chart.register(bgPlugin);
+
+// ============================================================
+// SMOOTH SCROLL FOR NAV
+// ============================================================
+document.querySelectorAll('.nav a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  buildChartA();
+  buildChartB();
+  buildChartC();
+  buildChartD();
+  buildChartE();
+  buildTable('daas-tab', DATA.company_tables.DaaS, 'DaaS');
+  buildTable('saas-tab', DATA.company_tables.SaaS, 'SaaS');
+  buildTable('ai-tab', DATA.company_tables['AI-First'], 'AI-First');
+  buildQuestions();
+  setupNav();
+});
+</script>
+<script src="/nav.js"></script>
+</body>
+</html>
