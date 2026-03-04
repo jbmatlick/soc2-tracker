@@ -14,6 +14,10 @@
           <button class="nav-dd-btn">GTM ▾</button>
           <div class="nav-dd-menu"><a href="/icp/">Account Universe</a><a href="/dream20/">Dream 20</a><a href="/surveys/">Surveys</a></div>
         </div>
+        <div class="nav-dd">
+          <button class="nav-dd-btn">Research ▾</button>
+          <div class="nav-dd-menu"><a href="/rpe/">RPE Report</a></div>
+        </div>
       </div>
     </div>
   `;
