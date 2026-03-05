@@ -48,10 +48,10 @@
   --color-primary-light: #029da5;
 
   /* Cohort */
-  --color-saas: #4A90D9;
+  --color-saas: #01696f;
   --color-daas: #01696f;
   --color-daas-light: #029da5;
-  --color-ai: #E6A817;
+  --color-ai: #10b981;
 
   /* Borders */
   --color-divider: rgba(255,255,255,0.06);
@@ -856,15 +856,15 @@ function fmtNum(n) {
 }
 
 function cohortColor(c) {
-  if (c === 'SaaS') return '#4A90D9';
+  if (c === 'SaaS') return '#01696f';
   if (c === 'DaaS') return '#029da5';
-  return '#E6A817';
+  return '#10b981';
 }
 
 function cohortColorRaw(c) {
-  if (c === 'SaaS') return '#4A90D9';
+  if (c === 'SaaS') return '#01696f';
   if (c === 'DaaS') return '#01696f';
-  return '#E6A817';
+  return '#10b981';
 }
 
 function cohortBg(c, alpha) {
@@ -1137,11 +1137,11 @@ Chart.defaults.plugins.tooltip.cornerRadius = 6;
         {
           label: 'SaaS Median',
           data: ts.saas_median,
-          borderColor: '#4A90D9',
-          backgroundColor: '#4A90D9',
+          borderColor: '#01696f',
+          backgroundColor: '#01696f',
           borderWidth: 2.5,
           pointRadius: 4,
-          pointBackgroundColor: '#4A90D9',
+          pointBackgroundColor: '#01696f',
           tension: 0.3,
           order: 1
         },
