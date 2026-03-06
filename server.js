@@ -13,6 +13,7 @@ db.exec('CREATE TABLE IF NOT EXISTS state(key TEXT PRIMARY KEY, value TEXT)');
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/saas-daas', express.static(path.join(__dirname, 'public/saas-daas')));
+app.use('/rpe-analysis', express.static(path.join(__dirname, 'public/rpe-analysis')));
 
 function getState(req, res) {
   const rows = db.prepare('SELECT key, value FROM state').all();
